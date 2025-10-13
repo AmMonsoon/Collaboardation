@@ -19,5 +19,4 @@ yarn-error.log*
 dist/
 build/
 
-# # Other
-# coverage/
+
