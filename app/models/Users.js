@@ -1,6 +1,5 @@
 
-
-module.exports = (sequelize, DataTypes) => {
+const {sequelize, DataTypes} = require("index.js") 
 
       const User = sequelize.define('User', {
         id: DataTypes.INTEGER,
@@ -10,4 +9,4 @@ module.exports = (sequelize, DataTypes) => {
       }, {});
 
       return User;
-    };
+module.exports = User;
