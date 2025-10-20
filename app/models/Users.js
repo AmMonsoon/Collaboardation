@@ -5,7 +5,7 @@ const {sequelize, DataTypes} = require("index.js")
         id: DataTypes.INTEGER,
         username: DataTypes.STRING,
         email: DataTypes.STRING,
-        avatar: Datatype.STRING
+        avatar: DataTypes.STRING
       }, {});
 
       return User;
