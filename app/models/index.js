@@ -1,14 +1,8 @@
-const {Sequelize, DataTypes} = require("sequelize")
+const express = require('express')
+const sequelize = require('./config/database.js')
 
-//database credentials
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASS,{
-  host: process.env.DB_HOST,
-  dialect: process.env.DB_DIALECT
-});
+const app = express();
 
+app.get('/',(req, res) => res.send("Server is running"));
 
-
-module.exports = {sequelize, DataTypes};
+app.listen(5000, () => console.log('Server is listening on port 5000'))
