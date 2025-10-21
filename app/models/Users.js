@@ -29,5 +29,5 @@ const {sequelize, DataTypes} = require("index.js")
         }
       }, {});
 
-      return User;
+
 module.exports = User;
