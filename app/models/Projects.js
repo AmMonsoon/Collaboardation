@@ -1,5 +1,5 @@
 const {sequelize, DataTypes} = require("index.js")
-const User = require('/Users')
+const User = require('.Users')
     
       const Project = sequelize.define('Project', {
         id: {
@@ -26,6 +26,7 @@ const User = require('/Users')
         }
       }, {});
       
-User.hasMany(Project, {foreignKey: 'userId', onDelete: 'CASCADE'})
+
+Project.belongsTo(User, {foreignKey: 'userId'})
 
 module.exports = Project;
