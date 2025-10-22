@@ -1,4 +1,4 @@
-const {Sequelize, DataTypes} = require("sequelize")
+const { Sequelize } = require("sequelize")
 const config = require('./config')
 
 //create the connection to database
@@ -22,4 +22,4 @@ async function connectDB() {
 //run the function to test connection
 connectDB()
 
-module.exports = {sequelize, DataTypes};
+module.exports = sequelize;

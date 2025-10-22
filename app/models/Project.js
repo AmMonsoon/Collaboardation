@@ -1,5 +1,6 @@
-const {sequelize, DataTypes} = require("index.js")
-const User = require('.Users')
+const { DataTypes } = require('sequelize')
+const sequelize = require('../config/database')
+const User = require('./User')
     
       const Project = sequelize.define('Project', {
         id: {
@@ -27,6 +28,5 @@ const User = require('.Users')
       }, {});
       
 
-Project.belongsTo(User, {foreignKey: 'userId'})
 
 module.exports = Project;
