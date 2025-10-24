@@ -3,7 +3,13 @@ const sequelize = require('./config/database')
 const { User, Project } = require('./models')
 const app = express();
 
+
+app.use(express.json())            //Required to allow Express to read JSON request bodies
+
+
+
 app.get('/',(req, res) => res.send("Server is running"));
+
 
 (async () => {
     try{
