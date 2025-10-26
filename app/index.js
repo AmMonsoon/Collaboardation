@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
         await sequelize.sync({ alter: true });
         console.log('Models synced successfully.');
         app.listen(3000, () => console.log('Server is listening on port 3000'));
-  setInterval(() => console.log('💤 Still alive...'), 3000);
+  setInterval(() => console.log('💤 Still alive...'), 5000);
     }catch(error){
         console.error('Failed to sync models: ' , error)
     }
