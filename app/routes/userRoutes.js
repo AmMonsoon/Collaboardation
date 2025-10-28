@@ -25,8 +25,8 @@ router.post('/', async(req, res) => {
       return res.status(400).json({ message: "Invalid email format"})
     }
     //checks for a duplicate email
-    const existingUser = User.findOne({where: {email: email}})
-    if(existingUser){
+    const existingEmail = User.findOne({where: {email: email}})
+    if(existingEmail){
       return res.status(409).json({ message: "Duplicate email"})
     }
     //creates new user
@@ -57,8 +57,7 @@ router.get('/:id', async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id)
     if(!user){
-      console.log("User does not exist")
-      res.status(404).send()
+      res.status(404).json({ message: "User does not exist"})
     }
     res.status(200).json(user)
   } catch (error) {
@@ -72,7 +71,28 @@ router.get('/:id', async (req, res) => {
 router.patch('/:id', async(req, res) => {
   try {
     const user = await User.findByPk(req.params.id)
+    const {email} = req.body
     const dataToBeUpdated = req.body
+    //checks is user exists
+    if(!user){
+      res.status(404).json({ message: "User does not exist"})
+    }
+    //checks if body is not empty
+    if(Object.keys(req.body).length === 0){
+      res.status(400).json({message: "No fields provided to update"})
+    }
+
+    //checks for valid email 
+    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(!emailPattern.test(email)){
+      return res.status(400).json({ message: "Invalid email format"})
+    }
+    //checks for duplicate email
+    const existingEmail = User.findOne({where: {email: email}})
+    if(existingEmail){
+      return res.status(409).json({ message: "Duplicate email"})
+    }
+
     const updatedUser = await User.update( dataToBeUpdated, { where: {id: user.id}})
     res.status(200).json(updatedUser)
   } catch (error) {
@@ -85,6 +105,10 @@ router.patch('/:id', async(req, res) => {
 
 router.delete('/:id', async(req, res) => {
   try {
+    const user = await User.findByPk(req.params.id)
+    if(!user){
+      res.status(404).json({ message: "User does not exist"})
+    }
     User.destroy( {where: {id: req.params.id}})
     res.status(204).send()
   } catch (error) {
