@@ -7,16 +7,15 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('💥 Unhandled Rejection:', reason);
 });
 const sequelize = require('./config/database')
-const { User, Project } = require('./models')
+// const { User, Project } = require('./models/Index')
 const userRoutes = require('./routes/userRoutes')
+const projectRoutes = require('./routes/projectRoutes')
 const app = express();
-
-// console.log("&&&&&&&&&&&&&&&&&&&&&", userRoutes)
 
 app.use(express.json())            //Required to allow Express to read JSON request bodies
 
 app.use('/users', userRoutes);
-
+app.use('/projects', projectRoutes);
 
 app.get('/', (req, res) => {
   res.status(200).send('Server is running');
