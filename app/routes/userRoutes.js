@@ -1,6 +1,6 @@
 const express = require('express')
 const router =  express.Router()
-const { User } = require('../models/Index')
+const { User, Project } = require('../models/Index')
 
 
 
@@ -51,6 +51,23 @@ router.get('/', async(req, res) => {
   }
 });
 
+//gets all projects for a specific user
+
+router.get('/:id/projects', async(req, res) => {
+  try {
+    let userId = req.params.id
+    let user = await User.findByPk(userId)
+    let projects = await Project.findAll({where: {userId}})
+    //checks if user exists
+    if(!user){
+      return res.status(404).json({message: "User does not exist"})
+    }
+    res.status(200).json(projects)
+  } catch (error) {
+    console.error("Failed to retrieve projects for a specific user", error);
+    res.status(500).json({ message: "Failed to retrieve projects for a specific user", error: error.message})
+  }
+})
 
 //find a specific user
 router.get('/:id', async (req, res) => {
@@ -113,9 +130,11 @@ router.delete('/:id', async(req, res) => {
     res.status(204).send()
   } catch (error) {
     console.error("Failed to delete user", error);
-    res.status(500).json({ message: "Failed to delete user, ", error: error.message})
+    res.status(500).json({ message: "Failed to delete user", error: error.message})
   }
 })
+
+
 
 
 module.exports = router;
