@@ -36,13 +36,12 @@ router.post('/:id', async(req, res) => {
 
 router.get('/:id', async(req, res) => {
     try {
+    //checks if id parameter is valid
     const projectId = parseInt(req.params.id, 10);
-    
-    
     if (isNaN(projectId)) {
         return res.status(400).json({ message: "Invalid project ID" });
     }
-
+    //checks if project exists
     let project = await Project.findByPk(projectId)
 
     if(!project){
@@ -64,6 +63,33 @@ router.get('/', async(req, res) => {
     } catch (error) {
         console.error("Failed to retrieve projects")
         res.status(500).json({message: "Failed to retrieve projects", error: error.message})
+    }
+})
+//updates a specific project
+router.patch('/:id', async(req, res) => {
+    try {
+        //checks if id parameter is valid
+        const projectId = parseInt(req.params.id, 10);
+        if(isNaN(projectId)) {
+        return res.status(400).json({ message: "Invalid project ID" });
+    }
+        //check if project exists
+        let project = await Project.findByPk(projectId)
+
+        if(!project){
+            return res.status(400).json({message: "Project does not exist"})
+        }
+        //check if title is valid and not an empty string
+        let {title} = req.body
+        if(!title || title.trim() === ""){
+            return res.status(400).json({message: "Title must be valid"})
+        }
+
+        const updatedProject = await Project.update({title}, {where: {id: projectId}})
+        res.status(200).json(updatedProject)
+    } catch (error) {
+        console.error("Failed to update project")
+        res.status(500).json({message: "Failed to update project", error: error.message})
     }
 
 })
