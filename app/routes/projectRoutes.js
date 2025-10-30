@@ -91,8 +91,25 @@ router.patch('/:id', async(req, res) => {
         console.error("Failed to update project")
         res.status(500).json({message: "Failed to update project", error: error.message})
     }
-
 })
+
+//delete a project
+router.delete('/:id', async(req, res) => {
+  try {
+    const projectId = req.params.id
+    const project = await Project.findByPk(projectId)
+    //checks if project exists
+    if(!project){
+      res.status(404).json({ message: "Project does not exist"})
+    }
+    Project.destroy({where:{id: projectId}})
+    res.status(204).send()
+  } catch (error) {
+    console.error("Failed to delete project", error);
+    res.status(500).json({ message: "Failed to delete project", error: error.message})
+  }
+})
+
 
 
 module.exports = router;
