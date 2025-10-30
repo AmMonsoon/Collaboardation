@@ -42,20 +42,31 @@ router.get('/:id', async(req, res) => {
     if (isNaN(projectId)) {
         return res.status(400).json({ message: "Invalid project ID" });
     }
-    
+
     let project = await Project.findByPk(projectId)
 
     if(!project){
         return res.status(400).json({message: "Project does not exist"})
     }
-        return res.status(200).json(project)
+
+        res.status(200).json(project)
     } catch (error) {
         console.error("Failed to retrieve project")
         res.status(500).json({message: "Failed to retrieve project", error: error.message})
     }
 })
 
+//gets all projects across all users
+router.get('/', async(req, res) => {
+    try {
+        let allProjects = await Project.findAll()
+        res.status(200).json(allProjects)
+    } catch (error) {
+        console.error("Failed to retrieve projects")
+        res.status(500).json({message: "Failed to retrieve projects", error: error.message})
+    }
 
+})
 
 
 module.exports = router;
