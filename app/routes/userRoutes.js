@@ -2,7 +2,7 @@ const express = require('express')
 const router =  express.Router()
 const { User, Project } = require('../models/Index')
 const userController =  require('../controllers/userController')
-
+const {validateId} = require('../middleware/validateId')
 
 //creates a new user
 router.post('/', userController.createUser)

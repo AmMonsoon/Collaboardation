@@ -28,7 +28,7 @@ const projectController = {
                 title,
                 userId
             })
-            res.status(201).json(project) 
+            res.status(201).json({message: "New Project Created", project}) 
         } catch (error) {
             console.error("Failed to create project")
             res.status(500).json({message: "Failed to create project", error: error.message})
@@ -87,7 +87,7 @@ const projectController = {
             }
     
             const updatedProject = await Project.update({title}, {where: {id: projectId}})
-            res.status(200).json(updatedProject)
+            res.status(200).json({message: "Project Successfully Updated",updatedProject})
         } catch (error) {
             console.error("Failed to update project")
             res.status(500).json({message: "Failed to update project", error: error.message})
@@ -107,7 +107,7 @@ const projectController = {
           res.status(404).json({ message: "Project does not exist"})
         }
         Project.destroy({where:{id: projectId}})
-        res.status(204).send()
+        res.status(200).json({message: "Project Deleted"})
       } catch (error) {
         console.error("Failed to delete project", error);
         res.status(500).json({ message: "Failed to delete project", error: error.message})
