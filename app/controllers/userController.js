@@ -5,6 +5,7 @@ const userController = {
     createUser: async(req, res) => {
         try {
         const {username, email} = req.body
+        
         //username required and cannot be an empty string
         if(!username || username.trim() === ""){
         console.log("username is required")
@@ -22,13 +23,13 @@ const userController = {
         return res.status(400).json({ message: "Invalid email format"})
         }
         //checks for a duplicate email
-        const existingEmail = User.findOne({where: {email: email}})
+        const existingEmail = await User.findOne({where: {email}})
         if(existingEmail){
         return res.status(409).json({ message: "Duplicate email"})
         }
         //creates new user
         const user = await User.create(req.body)
-        res.status(201).json(user);
+        res.status(201).json({message: "New User Created", user});
         }catch (error) {
         console.error("Failed to create user, ", error)
         res.status(500).json({ message: "Failed to create user, ", error: error.message})
@@ -44,7 +45,7 @@ const userController = {
         res.status(500).json({ message: "Failed to retrieve users, ", error: error.message})
         }
     },
-    getProjectForUser: async(req, res) => {
+    getProjectsForUser: async(req, res) => {
         try {
             let userId = req.params.id
             let user = await User.findByPk(userId)
@@ -76,6 +77,7 @@ const userController = {
             const user = await User.findByPk(req.params.id)
             const {email} = req.body
             const dataToBeUpdated = req.body
+            
             //checks is user exists
             if(!user){
             res.status(404).json({ message: "User does not exist"})
@@ -85,19 +87,20 @@ const userController = {
             res.status(400).json({message: "No fields provided to update"})
             }
 
-            //checks for valid email 
+            //checks for valid email
+    
             let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if(!emailPattern.test(email)){
             return res.status(400).json({ message: "Invalid email format"})
             }
             //checks for duplicate email
-            const existingEmail = User.findOne({where: {email: email}})
+            const existingEmail = await User.findOne({where: {email: email}})
             if(existingEmail){
             return res.status(409).json({ message: "Duplicate email"})
             }
 
             const updatedUser = await User.update( dataToBeUpdated, { where: {id: user.id}})
-            res.status(200).json(updatedUser)
+            res.status(200).json({message: "User Updated Successfully" , updatedUser})
         }catch (error) {
             console.error("Failed update user", error);
             res.status(500).json({ message: "Failed to update user, ", error: error.message})
@@ -105,15 +108,18 @@ const userController = {
     },
     deleteUser: async(req,res) => {
         try {
+           
             const user = await User.findByPk(req.params.id)
             if(!user){
             res.status(404).json({ message: "User does not exist"})
             }
             User.destroy( {where: {id: req.params.id}})
-            res.status(204).send()
+            res.status(200).json({message: "User deleted"})
         }catch (error) {
             console.error("Failed to delete user", error);
             res.status(500).json({ message: "Failed to delete user", error: error.message})
         }
     }   
 }
+
+module.exports = userController;
