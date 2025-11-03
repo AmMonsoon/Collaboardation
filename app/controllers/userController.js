@@ -48,12 +48,7 @@ const userController = {
     getProjectsForUser: async(req, res) => {
         try {
             let userId = req.params.id
-            let user = await User.findByPk(userId)
             let projects = await Project.findAll({where: {userId}})
-            //checks if user exists
-            if(!user){
-            return res.status(404).json({message: "User does not exist"})
-            }
             res.status(200).json(projects)
         }catch (error) {
             console.error("Failed to retrieve projects for a specific user", error);
@@ -62,10 +57,7 @@ const userController = {
     },
     getUser: async(req, res) => {
         try {
-            const user = await User.findByPk(req.params.id)
-            if(!user){
-            res.status(404).json({ message: "User does not exist"})
-            }
+            const user = req.model
             res.status(200).json(user)
         } catch (error) {
             console.error("Failed to find user", error);
@@ -74,31 +66,14 @@ const userController = {
     },
     updateUser: async(req, res) => {
         try {
-            const user = await User.findByPk(req.params.id)
-            const {email} = req.body
+            const user = req.model  //comes from middleware/checkExists
             const dataToBeUpdated = req.body
             
-            //checks is user exists
-            if(!user){
-            res.status(404).json({ message: "User does not exist"})
-            }
             //checks if body is not empty
             if(Object.keys(req.body).length === 0){
             res.status(400).json({message: "No fields provided to update"})
             }
-
-            //checks for valid email
-    
-            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if(!emailPattern.test(email)){
-            return res.status(400).json({ message: "Invalid email format"})
-            }
-            //checks for duplicate email
-            const existingEmail = await User.findOne({where: {email: email}})
-            if(existingEmail){
-            return res.status(409).json({ message: "Duplicate email"})
-            }
-
+            
             const updatedUser = await User.update( dataToBeUpdated, { where: {id: user.id}})
             res.status(200).json({message: "User Updated Successfully" , updatedUser})
         }catch (error) {
@@ -107,12 +82,7 @@ const userController = {
         }
     },
     deleteUser: async(req,res) => {
-        try {
-           
-            const user = await User.findByPk(req.params.id)
-            if(!user){
-            res.status(404).json({ message: "User does not exist"})
-            }
+        try { 
             User.destroy( {where: {id: req.params.id}})
             res.status(200).json({message: "User deleted"})
         }catch (error) {
