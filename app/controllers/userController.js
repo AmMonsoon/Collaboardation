@@ -1,10 +1,8 @@
 const { User, Project } = require('../models/Index')
-const { getProject } = require('./projectController')
 
 const userController = {
     createUser: async(req, res) => {
         try {
-        //creates new user
         const user = await User.create(req.body)
         res.status(201).json({message: "New User Created", user});
         }catch (error) {
@@ -46,10 +44,10 @@ const userController = {
             const user = req.model  //comes from middleware/checkExists
             const dataToBeUpdated = req.body
             
-            //checks if request body is not empty
-            if(Object.keys(req.body).length === 0){
-            res.status(400).json({message: "No fields provided to update"})
-            }
+            // //checks if request body is not empty
+            // if(Object.keys(req.body).length === 0){
+            // res.status(400).json({message: "No fields provided to update"})
+            // }
             
             const updatedUser = await User.update( dataToBeUpdated, { where: {id: user.id}})
             res.status(200).json({message: "User Updated Successfully" , updatedUser})
