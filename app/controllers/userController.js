@@ -4,29 +4,6 @@ const { getProject } = require('./projectController')
 const userController = {
     createUser: async(req, res) => {
         try {
-        const {username, email} = req.body
-        
-        //username required and cannot be an empty string
-        if(!username || username.trim() === ""){
-        console.log("username is required")
-        res.status(400).json({ message: " Username required"})
-        }
-        // checks for email and cannot be an empty string
-        if(!email || email.trim() === ""){
-        console.log("email is required")
-        res.status(400).json({ message: " Email required"})
-        }
-
-        //checks for valid email format
-        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if(!emailPattern.test(email)){
-        return res.status(400).json({ message: "Invalid email format"})
-        }
-        //checks for a duplicate email
-        const existingEmail = await User.findOne({where: {email}})
-        if(existingEmail){
-        return res.status(409).json({ message: "Duplicate email"})
-        }
         //creates new user
         const user = await User.create(req.body)
         res.status(201).json({message: "New User Created", user});
@@ -69,7 +46,7 @@ const userController = {
             const user = req.model  //comes from middleware/checkExists
             const dataToBeUpdated = req.body
             
-            //checks if body is not empty
+            //checks if request body is not empty
             if(Object.keys(req.body).length === 0){
             res.status(400).json({message: "No fields provided to update"})
             }

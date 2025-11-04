@@ -2,12 +2,13 @@ const express = require('express')
 const router =  express.Router()
 const { User, Project } = require('../models/Index')
 const userController =  require('../controllers/userController')
-const {validateId, checkExists, validateEmail, duplicateEmail} = require('../middleware/index')
+const {validateId, checkExists, validateEmail, duplicateEmail, checkUserFields} = require('../middleware/index')
 
 const userIdValidations = [ validateId("User"), checkExists(User, "User")]
 const userEmailValidations = [validateEmail, duplicateEmail]
+
 //creates a new user
-router.post('/', userEmailValidations, userController.createUser)
+router.post('/', checkUserFields, userEmailValidations, userController.createUser)
 //finds all users
 router.get('/', userController.getAllUsers)
 //gets all projects for a specific user

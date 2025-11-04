@@ -8,7 +8,7 @@ const duplicateEmail = async (req, res, next) => {
         return next()
     }
     
-    if(email === req.model.email) return next()
+    if(req.model && email === req.model.email) return next()
 
     const existingEmail = await User.findOne({where: { email }})
     if(existingEmail){

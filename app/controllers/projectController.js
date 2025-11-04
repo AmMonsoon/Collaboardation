@@ -4,26 +4,10 @@ const projectController = {
 
     //CREATE A PROJECT
     createProject: async(req, res) => {
-        
-        //checks if id parameter is valid
-        const userId = parseInt(req.params.id, 10);
-        if(isNaN(userId) || userId <= 0) {
-        return res.status(400).json({ message: "Invalid project ID" });
-        }
+        const userId = req.model.id
         const { title } = req.body
 
         try {
-            //checks if user exists
-            const user = await User.findByPk(userId)
-            if(!user){
-                return res.status(404).json({message: "User does not exist"})
-            }
-
-            //checks if title field is valid
-            if(!title || title.trim() === ""){
-            return res.status(400).json({message: "Title required"})
-            }
-
             const project = await Project.create( {
                 title,
                 userId
@@ -38,18 +22,7 @@ const projectController = {
     //GETS ONE PROJECT
     getProject:  async(req, res) => {
         try {
-        //checks if id parameter is valid
-        const projectId = parseInt(req.params.id, 10);
-        if (isNaN(projectId) || projectId <= 0) {
-            return res.status(400).json({ message: "Invalid project ID" });
-        }
-        //checks if project exists
-        let project = await Project.findByPk(projectId)
-    
-        if(!project){
-            return res.status(400).json({message: "Project does not exist"})
-        }
-    
+            const project = req.model
             res.status(200).json(project)
         } catch (error) {
             console.error("Failed to retrieve project")
@@ -69,24 +42,10 @@ const projectController = {
     //UPDATES A SPECIFIC PROJECT
     updateProject: async(req, res) => {
         try {
-            //checks if id parameter is valid
-            const projectId = parseInt(req.params.id, 10);
-            if(isNaN(projectId) || projectId <= 0) {
-            return res.status(400).json({ message: "Invalid project ID" });
-        }
-            //check if project exists
-            let project = await Project.findByPk(projectId)
-    
-            if(!project){
-                return res.status(400).json({message: "Project does not exist"})
-            }
-            //check if title is valid and not an empty string
+            let project = req.model  //req.model comes from checkExists middleware
             let {title} = req.body
-            if(!title || title.trim() === ""){
-                return res.status(400).json({message: "Title must be valid"})
-            }
-    
-            const updatedProject = await Project.update({title}, {where: {id: projectId}})
+
+            const updatedProject = await Project.update({title}, {where: {id: project.id}})
             res.status(200).json({message: "Project Successfully Updated",updatedProject})
         } catch (error) {
             console.error("Failed to update project")
@@ -96,17 +55,7 @@ const projectController = {
     //DELETE A PROJECT
     deleteProject: async(req, res) => {
       try {
-        //checks if id parameter is valid
-        const projectId = parseInt(req.params.id, 10);
-        if(isNaN(projectId) || projectId <= 0) {
-            return res.status(400).json({ message: "Invalid project ID" });
-        }
-        const project = await Project.findByPk(projectId)
-        //checks if project exists
-        if(!project){
-          res.status(404).json({ message: "Project does not exist"})
-        }
-        Project.destroy({where:{id: projectId}})
+        Project.destroy({where:{id: req.params.id}})
         res.status(200).json({message: "Project Deleted"})
       } catch (error) {
         console.error("Failed to delete project", error);
