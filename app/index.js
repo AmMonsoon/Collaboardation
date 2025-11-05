@@ -1,10 +1,10 @@
 const express = require('express')
 process.on('uncaughtException', (err) => {
-  console.error('💥 Uncaught Exception:', err);
+  console.error('Uncaught Exception:', err);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('💥 Unhandled Rejection:', reason);
+  console.error('Unhandled Rejection:', reason);
 });
 const sequelize = require('./config/database')
 // const { User, Project } = require('./models/Index')
@@ -16,6 +16,8 @@ app.use(express.json())            //Required to allow Express to read JSON requ
 
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
+
+//insert error handler here
 
 app.get('/', (req, res) => {
   res.status(200).send('Server is running');

@@ -43,12 +43,7 @@ const userController = {
         try {
             const user = req.model  //comes from middleware/checkExists
             const dataToBeUpdated = req.body
-            
-            // //checks if request body is not empty
-            // if(Object.keys(req.body).length === 0){
-            // res.status(400).json({message: "No fields provided to update"})
-            // }
-            
+              
             const updatedUser = await User.update( dataToBeUpdated, { where: {id: user.id}})
             res.status(200).json({message: "User Updated Successfully" , updatedUser})
         }catch (error) {
