@@ -10,7 +10,7 @@ const sequelize = require('./config/database')
 // const { User, Project } = require('./models/Index')
 const userRoutes = require('./routes/userRoutes')
 const projectRoutes = require('./routes/projectRoutes')
-const { errorHandler } = require('./middleware/index')
+const { errorHandler, notFoundHandler } = require('./middleware/index')
 
 const app = express();
 
@@ -19,7 +19,8 @@ app.use(express.json())            //Required to allow Express to read JSON requ
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
 
-app.use(errorHandler)
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.status(200).send('Server is running');
