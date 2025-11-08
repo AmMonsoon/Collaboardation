@@ -1,8 +1,13 @@
 
+
+
 const customErrors = {
-    ValidationError: require("./ValidationError"),
+    AppValidationError: require("./AppValidationError"),
     NotFoundError: require("./NotFoundError"),
-    BadRequestError: require("./BadRequestError")
+    BadRequestError: require("./BadRequestError"),
+    ConflictError: require("./ConflictError"),
+    ForbiddenError: require("./ForbiddenError"),
+    UnauthorizedError: require("./UnauthorizedError")
 }
 
 module.exports = customErrors;
