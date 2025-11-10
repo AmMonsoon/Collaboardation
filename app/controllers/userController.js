@@ -1,71 +1,97 @@
-const { User, Project } = require('../models/Index')
-const { ConflictError, BadRequestError } = require('../errors/index')
+const userService = require("../services/userService");
 
 const userController = {
-    createUser: async(req, res, next) => {
-        try {
-            const user = await User.create(req.body)
-            res.status(201).json({message: "New User Created", user});
-        }catch (error) {
-            if(error.name === "SequelizeValidationError"){
-                return next(new BadRequestError(error.message));
-            }
-            return next(error)
-        }
-    },
-    getAllUsers: async(req, res, next) => {
-        try{
-        const users = await User.findAll();
-        res.status(200).json(users);
-        }
-        catch(error){
-            next(error)
-        }
-    },
-    getProjectsForUser: async(req, res, next) => {
-        try {
-            let userId = req.params.id
-            let projects = await Project.findAll({where: {userId}})
-            res.status(200).json(projects)
-        }catch (error) {
-            next(error)
-            // console.error("Failed to retrieve projects for a specific user", error);
-            // res.status(500).json({ message: "Failed to retrieve projects for a specific user", error: error.message})
-        }   
-    },
-    getUser: async(req, res, next) => {
-        try {
-            const user = req.model
-            res.status(200).json(user)
-        } catch (error) {
-            next(error)
-            // console.error("Failed to find user", error);
-            // res.status(500).json({ message: "Failed to retrieve user, ", error: error.message})
-        }
-    },
-    updateUser: async(req, res, next) => {
-        try {
-            const user = req.model  //comes from middleware/checkExists
-            const dataToBeUpdated = req.body
+  // Create a new user
+  createUser: async (req, res, next) => {
+    try {
+      const user = await userService.createUser(req.body);
 
-            const updatedUser = await User.update( dataToBeUpdated, { where: {id: user.id}})
-            res.status(200).json({message: "User Updated Successfully" , updatedUser})
-        }catch (error) {
-            next(error)
-            // console.error("Failed update user", error);
-            // res.status(500).json({ message: "Failed to update user, ", error: error.message})
-        }
-    },
-    deleteUser: async(req,res, next) => {
-        try { 
-            User.destroy( {where: {id: req.params.id}})
-            res.status(200).json({message: "User deleted"})
-        }catch (error) {
-            next(error)
-            // console.error("Failed to delete user", error);
-            // res.status(500).json({ message: "Failed to delete user", error: error.message})
-        }
-    }   
-}
+      // Return safe fields only
+      const safeUser = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar
+      };
+
+      res.status(201).json({
+        message: "User created successfully",
+        user: safeUser
+      });
+      
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Get all users (safe fields ONLY)
+  getAllUsers: async (req, res, next) => {
+    try {
+      const users = await userService.getAllUsers();
+
+      const safeUsers = users.map(user => ({
+        id: user.id,
+        username: user.username,
+        avatar: user.avatar
+      }));
+
+      res.status(200).json(safeUsers);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Get one user by ID (full details)
+  getUserById: async (req, res, next) => {
+    try {
+      const user = await userService.getUserById(req.params.id);
+
+      const safeUser = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar
+      };
+
+      res.status(200).json(safeUser);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Update a user (return updated user - safe fields)
+  updateUser: async (req, res, next) => {
+    try {
+      const updatedUser = await userService.updateUser(req.params.id, req.body);
+
+      const safeUser = {
+        id: updatedUser.id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        avatar: updatedUser.avatar
+      };
+
+      res.status(200).json({
+        message: "User updated successfully",
+        user: safeUser
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Delete a user
+  deleteUser: async (req, res, next) => {
+    try {
+      await userService.deleteUser(req.params.id);
+
+      res.status(200).json({
+        message: "User deleted successfully"
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+};
 
 module.exports = userController;

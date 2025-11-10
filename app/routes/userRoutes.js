@@ -12,9 +12,9 @@ router.post('/', checkUserFields, userEmailValidations, userController.createUse
 //finds all users
 router.get('/', userController.getAllUsers)
 //gets all projects for a specific user
-router.get('/:id/projects', userIdValidations, userController.getProjectsForUser)
+router.get('/:id/projects', userIdValidations, userController.getUserById)
 //find a specific user
-router.get('/:id', userIdValidations, userController.getUser)
+router.get('/:id', userIdValidations, userController.getUserById)
 //updates an existing user
 router.patch('/:id',...userIdValidations, checkRequestBody, ...userEmailValidations, userController.updateUser)
 //delete an existing user
