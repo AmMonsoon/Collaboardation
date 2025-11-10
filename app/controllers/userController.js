@@ -1,15 +1,16 @@
 const { User, Project } = require('../models/Index')
+const { ConflictError, BadRequestError } = require('../errors/index')
 
 const userController = {
     createUser: async(req, res, next) => {
         try {
-        
-        const user = await User.create(req.body)
-        res.status(201).json({message: "New User Created", user});
+            const user = await User.create(req.body)
+            res.status(201).json({message: "New User Created", user});
         }catch (error) {
-            next(error)
-        // console.error("Failed to create user, ", error)
-        // res.status(500).json({ message: "Failed to create user, ", error: error.message})
+            if(error.name === "SequelizeValidationError"){
+                return next(new BadRequestError(error.message));
+            }
+            return next(error)
         }
     },
     getAllUsers: async(req, res, next) => {

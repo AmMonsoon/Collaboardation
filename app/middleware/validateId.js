@@ -1,10 +1,10 @@
-
+const { BadRequestError } = require("../errors/index")
 
 const validateId = (modelName = "modelName") => {
     return (req, res, next) => {
         let id = parseInt(req.params.id, 10);
         if(isNaN(id) || id <= 0) {
-            return res.status(400).json({ message: `Invalid ${modelName} ID` });
+            return next(new BadRequestError(`Invalid ${modelName} ID`))
         }
         next()
     } 
