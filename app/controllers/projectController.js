@@ -3,12 +3,16 @@ const projectController = {
 
     //CREATE A PROJECT
     createProject: async(req, res, next) => {
-        const userId = req.model.id
+        const userId = 1
         const { title } = req.body
 
         try {
             const project = await projectService.createProject(userId,title)
-            res.status(201).json({message: "New Project Created", project}) 
+            res.status(201).json({
+                success: true,
+                message: "New Project Created",
+                data: { project }
+            }) 
         } catch (error) {
             next(error)      
         }

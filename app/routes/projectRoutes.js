@@ -4,13 +4,13 @@ const { User, Project} = require('../models/Index')
 const {validateId, checkExists, validateTitle} = require('../middleware')
 const projectController = require('../controllers/projectController')
 
-const createProjectValidations = [validateId("User"), checkExists(User, "User"), validateTitle]
+const createProjectValidations = [validateTitle]
 const updateProjectValidations = [validateId("Project"), checkExists(Project, "Project"), validateTitle]
 const getProjectValidations = [validateId("Project"), checkExists(Project, "Project")]
 const deleteProjectValidations = [validateId("Project"), checkExists(Project, "Project")]
 
 //creates a new project
-router.post('/:id', createProjectValidations, projectController.createProject)
+router.post('/', createProjectValidations, projectController.createProject)
 //gets one project
 router.get('/:id', getProjectValidations, projectController.getProject)
 //gets all projects across all users

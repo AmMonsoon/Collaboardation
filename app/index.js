@@ -18,6 +18,7 @@ app.use(express.json())            //Required to allow Express to read JSON requ
 
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
+console.log("Project Routes Loaded")
 
 
 app.use(notFoundHandler);
