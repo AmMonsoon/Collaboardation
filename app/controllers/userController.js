@@ -1,6 +1,29 @@
 const userService = require("../services/userService");
 
 const userController = {
+       //REGISTER USER
+    registerUser: async(req, res, next) => {
+        try {
+            const data = req.body
+            const user = await userService.registerUser(data)
+            // Return safe fields only
+            const safeUser = {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                avatar: user.avatar
+            };
+
+            res.status(201).json({
+                success: true,
+                message: "User Registered Successfully",
+                data: { safeUser }
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+
   // Create a new user
   createUser: async (req, res, next) => {
     try {
@@ -18,7 +41,7 @@ const userController = {
         message: "User created successfully",
         user: safeUser
       });
-      
+
     } catch (error) {
       next(error);
     }

@@ -1,6 +1,10 @@
+const { registerUser } = require("../controllers/userController");
 const { User } = require("../models/Index");
 
 const userService = {
+  registerUser: async (username, email, password) =>{
+    
+  },
   createUser: async (userData) => {
         const user = await User.create(userData)
         return user;
