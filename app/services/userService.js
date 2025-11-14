@@ -1,9 +1,23 @@
 const { registerUser } = require("../controllers/userController");
+const ConflictError = require("../errors/ConflictError");
 const { User } = require("../models/Index");
+const bcrypt = require("bcrypt")
 
 const userService = {
-  registerUser: async (username, email, password) =>{
-    
+  registerUser: async (userData) =>{
+    const {username, email, password, avatar} = userData
+    const existingUser = await User.findOne({ where: { email } })
+    if(existingUser){
+        throw new ConflictError("Email already exists")
+    }
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const registerUser = await User.create({
+        username,
+        email,
+        password: hashedPassword,
+        avatar
+    })
+    return registerUser
   },
   createUser: async (userData) => {
         const user = await User.create(userData)
