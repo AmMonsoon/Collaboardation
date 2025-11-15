@@ -23,30 +23,6 @@ const userController = {
             next(error)
         }
     },
-
-  // Create a new user
-  createUser: async (req, res, next) => {
-    try {
-      const user = await userService.createUser(req.body);
-
-      // Return safe fields only
-      const safeUser = {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        avatar: user.avatar
-      };
-
-      res.status(201).json({
-        message: "User created successfully",
-        user: safeUser
-      });
-
-    } catch (error) {
-      next(error);
-    }
-  },
-
   // Get all users (safe fields ONLY)
   getAllUsers: async (req, res, next) => {
     try {

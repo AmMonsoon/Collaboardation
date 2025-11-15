@@ -6,9 +6,8 @@ const {validateId, checkExists, validateEmail, duplicateEmail, checkUserFields, 
 
 const userIdValidations = [ validateId("User"), checkExists(User, "User")]
 const userEmailValidations = [validateEmail, duplicateEmail]
-
-//creates a new user
-router.post('/', checkUserFields, userEmailValidations, userController.createUser)
+//registers a user
+router.post('/register', checkUserFields, validateEmail, duplicateEmail, userController.registerUser)
 //finds all users
 router.get('/', userController.getAllUsers)
 //gets all projects for a specific user
