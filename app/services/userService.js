@@ -1,4 +1,5 @@
 const { registerUser } = require("../controllers/userController");
+const { UnauthorizedError } = require("../errors");
 const ConflictError = require("../errors/ConflictError");
 const { User } = require("../models/Index");
 const bcrypt = require("bcrypt")
@@ -18,6 +19,23 @@ const userService = {
         avatar
     })
     return registerUser
+  },
+  authenticateUser: async (userData) => {
+    const {email, password} = userData
+    const user = await User.findOne({
+        where: { email },
+        attributes: {include: ["password"]}
+    })
+    console.log(password, "^&%^&%&^%&^%&^%^&", user)
+
+    if(!user){
+        throw new UnauthorizedError("Invalid Credentials")
+    }
+    const isMatch = await bcrypt.compare(password, user.password)
+    if(!isMatch){
+        throw new UnauthorizedError("Invalid Credentials")
+    }
+    return user
   },
   getAllUsers: async () => {  
         const users =  await User.findAll()

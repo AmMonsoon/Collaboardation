@@ -8,6 +8,8 @@ const userIdValidations = [ validateId("User"), checkExists(User, "User")]
 const userEmailValidations = [validateEmail, duplicateEmail]
 //registers a user
 router.post('/register', checkUserFields, validateEmail, duplicateEmail, userController.registerUser)
+//login a user
+router.post('/login', checkRequestBody, validateEmail, userController.authenticateUser)
 //finds all users
 router.get('/', userController.getAllUsers)
 //gets all projects for a specific user

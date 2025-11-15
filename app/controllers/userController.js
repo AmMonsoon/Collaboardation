@@ -23,6 +23,27 @@ const userController = {
             next(error)
         }
     },
+  //AUTHENTICATE USER
+  authenticateUser: async (req, res, next) => {
+    try {
+        const {email, password} = req.body
+        const authenticatedUser = await userService.authenticateUser({email, password})
+
+        const safeUser = {
+                id: authenticatedUser.id,
+                username: authenticatedUser.username,
+                email: authenticatedUser.email,
+                avatar: authenticatedUser.avatar
+        };
+        res.status(200).json({
+                success: true,
+                message: "User Authenticated Successfully",
+                data: { safeUser }
+            })
+    } catch (error) {
+        next(error)
+    }
+  },
   // Get all users (safe fields ONLY)
   getAllUsers: async (req, res, next) => {
     try {

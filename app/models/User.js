@@ -23,6 +23,10 @@ const Project = require("./Project")
             isEmail: true             //ensures valid email format
           }
         },
+        password: {
+          type: DataTypes.STRING,
+          allowNull: false
+        },
         avatar: {
           type: DataTypes.STRING,
           allowNull: true,
