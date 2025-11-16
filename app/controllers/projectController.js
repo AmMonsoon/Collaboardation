@@ -34,7 +34,7 @@ const projectController = {
     //GETS ALL PROJECTS ACROSS ALL USERS
     getAllProjects: async(req, res, next) => {
         try {
-            let userId = req.params.id
+            let userId = req.user.id
             let allProjects = await projectService.getProjectsByUser(userId)
             res.status(200).json(allProjects)
         } catch (error) {

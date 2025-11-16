@@ -1,4 +1,5 @@
 const userService = require("../services/userService");
+const { generateToken } = require("../utils/jwt");
 
 const userController = {
        //REGISTER USER
@@ -28,6 +29,7 @@ const userController = {
     try {
         const {email, password} = req.body
         const authenticatedUser = await userService.authenticateUser({email, password})
+        const token = generateToken(authenticatedUser)
 
         const safeUser = {
                 id: authenticatedUser.id,
@@ -37,7 +39,8 @@ const userController = {
         };
         res.status(200).json({
                 success: true,
-                message: "User Authenticated Successfully",
+                message: "Login successful",
+                token,
                 data: { safeUser }
             })
     } catch (error) {
