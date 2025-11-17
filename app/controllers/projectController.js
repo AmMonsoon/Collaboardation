@@ -6,7 +6,7 @@ const projectController = {
 
     //CREATE A PROJECT
     createProject: async(req, res, next) => {
-        const userId = 1
+        const userId = req.user.id
         const { title } = req.body
 
         try {
@@ -24,14 +24,14 @@ const projectController = {
     //GETS ONE PROJECT
     getProject:  async(req, res, next) => {
         try {
-            const projectId = req.model.id
-            const project = projectService.getProjectById(projectId)
+            const projectId = req.record.id
+            const project = await projectService.getProjectById(projectId)
             res.status(200).json(project)
         } catch (error) {
             next(error)
         }
     },
-    //GETS ALL PROJECTS ACROSS ALL USERS
+    //GETS ALL PROJECTS OWNED BY USER
     getAllProjects: async(req, res, next) => {
         try {
             let userId = req.user.id
@@ -44,10 +44,9 @@ const projectController = {
     //UPDATES A SPECIFIC PROJECT
     updateProject: async(req, res, next) => {
         try {
-            let projectId = req.model.id  //req.model comes from checkExists middleware
-            let {title} = req.body
+            let projectId = req.record.id  //req.record comes from requireOwnership middleware
 
-            const updatedProject = await projectService.updatedProject(projectId, title)
+            const updatedProject = await projectService.updateProject(projectId, req.body)
             res.status(200).json({message: "Project Successfully Updated",updatedProject})
         } catch (error) {
             next(error)
@@ -56,14 +55,13 @@ const projectController = {
     //DELETE A PROJECT
     deleteProject: async(req, res, next) => {
       try {
-        let projectId = req.model.id
+        let projectId = req.record.id
         await projectService.deleteProject(projectId)
-        res.status(200).json({message: "Project Deleted"})
+        res.status(200).json({success: true, message: "Project Deleted", id: projectId})
       } catch (error) {
             next(error)
       }
     }
     
-
 }
 module.exports = projectController;

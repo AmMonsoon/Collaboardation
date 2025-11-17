@@ -11,7 +11,7 @@ const projectService = {
   },
 
   getProjectsByUser: async (userId) => {  
-        const projects =  await Project.findAll(
+        const projects = await Project.findAll(
             { where:{ 
                 userId
             }
@@ -24,8 +24,9 @@ const projectService = {
         return project
   },
 
-  updateProject: async (projectId, updateData) => {
-        const [rows ,[updatedProject]] = await Project.update(updateData , { 
+  updateProject: async (projectId, updateFields) => {
+        
+        const [rows , updatedProject] = await Project.update(updateFields , { 
             where: {
                 id: projectId,
             },
@@ -35,8 +36,8 @@ const projectService = {
   },
 
   deleteProject: async (projectId) => {
-        const deletedUser = await Project.destroy({ where: { projectId } })
-        return deletedUser
+        const deletedProject = await Project.destroy({ where: { id: projectId }  })
+        return deletedProject
   },
 };
 

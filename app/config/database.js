@@ -7,7 +7,8 @@ const sequelize = new Sequelize(
   config.dbUser,
   config.dbPassword, {
   host: config.dbHost,
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: false
 });
 
 //function to test database connection

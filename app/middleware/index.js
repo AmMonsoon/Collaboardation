@@ -1,4 +1,5 @@
 
+
 module.exports = {
   validateId: require('./validateId'),
   checkExists: require('./checkExists'),
@@ -9,4 +10,5 @@ module.exports = {
   checkRequestBody: require('./checkRequestBody'),
   errorHandler: require('./errorHandler'),
   notFoundHandler: require('./notFoundHandler'),
+  requireOwnership: require('./requireOwnership')
 };

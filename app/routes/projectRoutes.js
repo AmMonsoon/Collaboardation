@@ -1,7 +1,7 @@
 const express = require('express')
 const router =  express.Router()
 const { User, Project} = require('../models/Index')
-const {validateId, checkExists, validateTitle,} = require('../middleware')
+const {validateId, checkExists, validateTitle, requireOwnership} = require('../middleware')
 const auth = require("../middleware/auth")
 const projectController = require('../controllers/projectController')
 
@@ -12,14 +12,14 @@ const deleteProjectValidations = [validateId("Project"), checkExists(Project, "P
 
 //creates a new project
 router.post('/', auth, createProjectValidations, projectController.createProject)
+//gets all projects the user owns
+router.get('/', auth, projectController.getAllProjects)
 //gets one project
-router.get('/:id',auth, getProjectValidations, projectController.getProject)
-//gets all projects across all users
-router.get('/',auth, projectController.getAllProjects)
+router.get('/:id',auth, getProjectValidations,requireOwnership(Project), projectController.getProject)
 //updates a specific project
-router.patch('/:id',auth, updateProjectValidations, projectController.updateProject)
+router.patch('/:id',auth, updateProjectValidations, requireOwnership(Project), projectController.updateProject)
 //delete a project
-router.delete('/:id',auth, deleteProjectValidations, projectController.deleteProject)
+router.delete('/:id',auth, deleteProjectValidations, requireOwnership(Project), projectController.deleteProject)
 
 
 
