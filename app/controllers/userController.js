@@ -47,6 +47,21 @@ const userController = {
         next(error)
     }
   },
+  getLoggedInUser: async (req, res, next) => {
+    try {
+      safeUser = {
+        id: req.user.id,
+        email: req.user.email
+      }
+      res.status(200).json({
+        success: true,
+        data: safeUser
+      })
+    } catch (error) {
+      next(error)
+    }
+
+  },
   // Get all users (safe fields ONLY)
   getAllUsers: async (req, res, next) => {
     try {

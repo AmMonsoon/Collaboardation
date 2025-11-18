@@ -1,14 +1,17 @@
 const express = require('express')
 const router =  express.Router()
-const { User, Project } = require('../models/Index')
+const auth = require("../middleware/auth")
+const { User } = require('../models/Index')
 const userController =  require('../controllers/userController')
 const {validateId, checkExists, validateEmail, duplicateEmail, checkUserFields, checkRequestBody} = require('../middleware/index')
 
 const userIdValidations = [ validateId("User"), checkExists(User, "User")]
 const userEmailValidations = [validateEmail, duplicateEmail]
+
 //registers a user
 router.post('/register', checkUserFields, validateEmail, duplicateEmail, userController.registerUser)
 //login a user
+router.post('/me', auth, userController.getLoggedInUser)
 router.post('/login', checkRequestBody, validateEmail, userController.authenticateUser)
 //finds all users
 router.get('/', userController.getAllUsers)

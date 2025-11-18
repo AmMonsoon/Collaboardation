@@ -1,4 +1,3 @@
-const { registerUser } = require("../controllers/userController");
 const { UnauthorizedError } = require("../errors");
 const ConflictError = require("../errors/ConflictError");
 const { User } = require("../models/Index");
@@ -26,7 +25,6 @@ const userService = {
         where: { email },
         attributes: {include: ["password"]}
     })
-    console.log(password, "^&%^&%&^%&^%&^%^&", user)
 
     if(!user){
         throw new UnauthorizedError("Invalid Credentials")
