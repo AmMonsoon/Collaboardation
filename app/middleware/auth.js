@@ -9,7 +9,7 @@ const auth = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      throw new UnauthorizedError("No token provided");
+      throw new UnauthorizedError("Missing authentication token");
     }
 
     const token = authHeader.split(" ")[1];
@@ -18,6 +18,10 @@ const auth = (req, res, next) => {
     const decoded = jwt.verify(token, secret);
     req.user = decoded; // attaches { id, email } from token
 
+    if(!req.user){
+      throw new UnauthorizedError("User no longer exists")
+    }
+    
     // 3️⃣ Attach user info from payload
     req.user = {
       id: decoded.id,

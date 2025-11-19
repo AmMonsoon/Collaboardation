@@ -1,5 +1,4 @@
-const { UnauthorizedError } = require("../errors");
-const ConflictError = require("../errors/ConflictError");
+const { UnauthorizedError, NotFoundError, ConflictError  } = require("../errors/index");
 const { User } = require("../models/Index");
 const bcrypt = require("bcrypt")
 
@@ -42,6 +41,7 @@ const userService = {
 
   getUserById: async (id) => {
         const user = await User.findByPk(id)
+        if(!user)throw new NotFoundError("User not found")
         return user
   },
 

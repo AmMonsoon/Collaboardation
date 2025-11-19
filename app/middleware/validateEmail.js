@@ -1,4 +1,4 @@
-const BadRequestError = require("../errors/BadRequestError");
+const {BadRequestError , AppValidationError} = require("../errors/index");
 
 //validates the email if its present
 const validateEmail = (req,res,next) => {    
@@ -8,7 +8,7 @@ const validateEmail = (req,res,next) => {
         }
     let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if(!emailPattern.test(email)){
-            return next(new BadRequestError(`Invalid email format`))
+            return next(new AppValidationError(`Invalid email format`, "email"))
         }
         next()
     }

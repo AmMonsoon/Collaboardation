@@ -1,4 +1,4 @@
-
+const {NotFoundError} = require("../errors/index")
 const { Project } = require("../models/Index");
 
 const projectService = {
@@ -21,6 +21,7 @@ const projectService = {
 
   getProjectById: async (projectId) => {
         const project = await Project.findByPk(projectId)
+        if (!project) throw new NotFoundError("Project not found")
         return project
   },
 
@@ -32,11 +33,13 @@ const projectService = {
             },
             returning: true
         })
+        if(!updatedProject) throw new NotFoundError("Project not found")
         return updatedProject
   },
 
   deleteProject: async (projectId) => {
         const deletedProject = await Project.destroy({ where: { id: projectId }  })
+        if(!deletedProject) throw new NotFoundError("Project not found")
         return deletedProject
   },
 };

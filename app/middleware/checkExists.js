@@ -5,7 +5,7 @@ const checkExists = (Model, modelName = "Model") => {
         let id = parseInt(req.params.id, 10)
         let model = await Model.findByPk(id)
         if(!model){
-            return next(new NotFoundError(`${modelName} does not exist`))
+            return next(new NotFoundError(`${modelName} not found`))
         }
         req.model = model
         next()
