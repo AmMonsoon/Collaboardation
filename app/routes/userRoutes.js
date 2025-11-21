@@ -1,28 +1,27 @@
 const express = require('express')
 const router =  express.Router()
-const auth = require("../middleware/auth")
 const { User } = require('../models/Index')
 const userController =  require('../controllers/userController')
-const {validateId, checkExists, validateEmail, duplicateEmail, checkUserFields, checkRequestBody} = require('../middleware/index')
+const {auth, asyncHandler, validateId, checkExists, validateEmail, duplicateEmail, checkUserFields, checkRequestBody} = require('../middleware/index')
 
 const userIdValidations = [ validateId("User"), checkExists(User, "User")]
 const userEmailValidations = [validateEmail, duplicateEmail]
 
 //registers a user
-router.post('/register', checkUserFields, validateEmail, duplicateEmail, userController.registerUser)
+router.post('/register', checkUserFields, validateEmail, duplicateEmail, asyncHandler(userController.registerUser))
 //login a user
 router.post('/me', auth, userController.getLoggedInUser)
-router.post('/login', checkRequestBody, validateEmail, userController.authenticateUser)
+router.post('/login', checkRequestBody, validateEmail, asyncHandler(userController.authenticateUser))
 //finds all users
-router.get('/', userController.getAllUsers)
+router.get('/', asyncHandler(userController.getAllUsers))
 //gets all projects for a specific user
-router.get('/:id/projects', userIdValidations, userController.getUserById)
+router.get('/:id/projects', userIdValidations, asyncHandler(userController.getUserById))
 //find a specific user
-router.get('/:id', userIdValidations, userController.getUserById)
+router.get('/:id', userIdValidations, asyncHandler(userController.getUserById))
 //updates an existing user
-router.patch('/:id',...userIdValidations, checkRequestBody, ...userEmailValidations, userController.updateUser)
+router.patch('/:id',...userIdValidations, checkRequestBody, ...userEmailValidations, asyncHandler(userController.updateUser))
 //delete an existing user
-router.delete('/:id',userIdValidations, userController.deleteUser)
+router.delete('/:id',userIdValidations, asyncHandler(userController.deleteUser))
 
 
 

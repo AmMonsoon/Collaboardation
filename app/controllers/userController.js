@@ -3,8 +3,8 @@ const { generateToken } = require("../utils/jwt");
 
 const userController = {
        //REGISTER USER
-    registerUser: async(req, res, next) => {
-        try {
+    registerUser: async(req, res) => {
+
             const data = req.body
             const user = await userService.registerUser(data)
             // Return safe fields only
@@ -20,15 +20,11 @@ const userController = {
                 message: "User Registered Successfully",
                 data: { safeUser }
             })
-        } catch (error) {
-            next(error)
-        }
     },
   //AUTHENTICATE USER
-  authenticateUser: async (req, res, next) => {
-    try {
-        const {email, password} = req.body
-        const authenticatedUser = await userService.authenticateUser({email, password})
+  authenticateUser: async (req, res) => {
+    const {email, password} = req.body
+    const authenticatedUser = await userService.authenticateUser({email, password})
         const token = generateToken(authenticatedUser)
 
         const safeUser = {
@@ -43,12 +39,9 @@ const userController = {
                 token,
                 data: { safeUser }
             })
-    } catch (error) {
-        next(error)
-    }
+
   },
-  getLoggedInUser: async (req, res, next) => {
-    try {
+  getLoggedInUser: async (req, res) => {
       safeUser = {
         id: req.user.id,
         email: req.user.email
@@ -57,14 +50,10 @@ const userController = {
         success: true,
         data: safeUser
       })
-    } catch (error) {
-      next(error)
-    }
 
   },
   // Get all users (safe fields ONLY)
-  getAllUsers: async (req, res, next) => {
-    try {
+  getAllUsers: async (req, res) => {
       const users = await userService.getAllUsers();
 
       const safeUsers = users.map(user => ({
@@ -74,14 +63,11 @@ const userController = {
       }));
 
       res.status(200).json(safeUsers);
-    } catch (error) {
-      next(error);
-    }
+    
   },
 
   // Get one user by ID (full details)
-  getUserById: async (req, res, next) => {
-    try {
+  getUserById: async (req, res) => {
       const user = await userService.getUserById(req.params.id);
 
       const safeUser = {
@@ -92,14 +78,10 @@ const userController = {
       };
 
       res.status(200).json(safeUser);
-    } catch (error) {
-      next(error);
-    }
   },
 
   // Update a user (return updated user - safe fields)
-  updateUser: async (req, res, next) => {
-    try {
+  updateUser: async (req, res) => {
       const updatedUser = await userService.updateUser(req.params.id, req.body);
 
       const safeUser = {
@@ -113,22 +95,14 @@ const userController = {
         message: "User updated successfully",
         user: safeUser
       });
-    } catch (error) {
-      next(error);
-    }
   },
 
   // Delete a user
-  deleteUser: async (req, res, next) => {
-    try {
+  deleteUser: async (req, res) => {
       await userService.deleteUser(req.params.id);
-
       res.status(200).json({
         message: "User deleted successfully"
       });
-    } catch (error) {
-      next(error);
-    }
   }
 };
 
