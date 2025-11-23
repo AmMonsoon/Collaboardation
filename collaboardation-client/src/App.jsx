@@ -1,7 +1,9 @@
+import Navbar from "../components/Navbar/Navbar";
+
 function App() {
   return (
     <div>
-      <h1>Collaboardation</h1>
+      <Navbar/>
     </div>
   );
 }
