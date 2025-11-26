@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar/Navbar";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "../pages/HomePage/HomePage.jsx"
-import LoginPage from "../pages/LoginPage/LoginPage.jsx"
+import HomePage from "./pages/HomePage/HomePage.jsx"
+import LoginPage from "./pages/LoginPage/LoginPage.jsx"
 
 function App() {
   return (

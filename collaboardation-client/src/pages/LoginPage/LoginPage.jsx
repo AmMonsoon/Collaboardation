@@ -1,34 +1,42 @@
 import { useState } from "react";
 import "./LoginPage.css"
+import { loginUser } from "../../api/userApi";
+
 const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password,  setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()      // prevents the page from reloading
-        console.log("Submitted") 
-        console.log("Email: ", email)
-        console.log("Password: ", password)
+        
         let valid = true;
-
+        
         setEmailError('')
         setPasswordError('')
-
+        
         if(!email.trim()){
             setEmailError("Email is required")
             valid = false;
         }
-
+        
         if(!password.trim()){
             setPasswordError("Password is required")
             valid = false;
         }
-
+        
         if(!valid) return;
 
+        try {
+            const data =  await loginUser({ email, password })
+            console.log("Login response", data)
+        } catch (error) {
+            console.error("Login Failed", error)
+        }
+        
     }
+    
     const handleEmailChange = (e) => {
         setEmail(e.target.value)
     }
