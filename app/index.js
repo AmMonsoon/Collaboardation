@@ -1,4 +1,5 @@
 const express = require('express')
+const cors  = require('cors')
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
 });
@@ -13,6 +14,15 @@ const projectRoutes = require('./routes/projectRoutes')
 const { errorHandler, notFoundHandler } = require('./middleware/index')
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",          
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, 
+  })
+);
 
 app.use(express.json())            //Required to allow Express to read JSON request bodies
 
