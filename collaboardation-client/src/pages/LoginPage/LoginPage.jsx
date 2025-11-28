@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useState, } from "react";
+import { useNavigate } from "react-router-dom";
 import "./LoginPage.css"
 import { loginUser } from "../../api/userApi";
+import { useAuth } from "../../../hooks/useAuth";
 
 const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password,  setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const { login } = useAuth()
+    const navigate = useNavigate()
 
     const handleSubmit = async(e) => {
         e.preventDefault()      // prevents the page from reloading
@@ -29,12 +33,13 @@ const LoginPage = () => {
         if(!valid) return;
 
         try {
-            const data =  await loginUser({ email, password })
+            const data =  await loginUser( {email, password})
+            login(data.user, data.token)
+            navigate("/")
             console.log("Login response", data)
         } catch (error) {
             console.error("Login Failed", error)
         }
-        
     }
     
     const handleEmailChange = (e) => {
