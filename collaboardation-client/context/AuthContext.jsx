@@ -21,6 +21,7 @@ const AuthProvider = ( { children } ) => {
 
         } 
     }, []);
+    
 
     const login = (user, token) => {
         setToken(token)
