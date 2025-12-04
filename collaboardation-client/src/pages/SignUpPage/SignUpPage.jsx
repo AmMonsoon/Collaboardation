@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { registerUser } from "../../api/userApi";
-
+import { useAuth } from "../../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
     const [email, setEmail] = useState('')
@@ -9,7 +10,9 @@ const SignUpPage = () => {
     const [usernameError, setUsernameError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const [emailError, setEmailError] = useState('')
-    
+    const { login } = useAuth()
+    const navigate = useNavigate();
+
      const handleSubmit = async(e) => {
         e.preventDefault()      // prevents the page from reloading
         
@@ -38,6 +41,8 @@ const SignUpPage = () => {
         try {
             const data = await registerUser( {username, email, password})
             console.log("SIGN UP RESPONSE", data)
+            login(data.user, data.token)
+            navigate("/")
         } catch (error) {
             console.error("Sign up Failed",  error)
         }

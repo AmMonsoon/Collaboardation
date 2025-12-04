@@ -28,7 +28,6 @@ const AuthProvider = ( { children } ) => {
         setUser(user)
         localStorage.setItem("token", token)
         localStorage.setItem("user", JSON.stringify(user))
-        console.log(user)
     }
 
     const logout = () => {
