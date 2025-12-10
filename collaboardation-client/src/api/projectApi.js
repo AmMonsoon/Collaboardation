@@ -19,7 +19,7 @@ export const createProject = async ({ title }) => {
 
 export const getProjects = async () => {
   try {
-    const response = await api.post("/projects")
+    const response = await api.get("/projects")
 
     return response.data;
   } catch (error) {
@@ -34,7 +34,7 @@ export const getProjects = async () => {
 
 export const getProject = async ({id}) => {
   try {
-    const response = await api.post(`/projects/${id}`)
+    const response = await api.get(`/projects/${id}`)
     return response.data;
   } catch (error) {
     console.error(
@@ -48,7 +48,7 @@ export const getProject = async ({id}) => {
 
 export const updateProject = async ({id, title}) => {
   try {
-    const response = await api.post(`/projects/${id}`,{
+    const response = await api.patch(`/projects/${id}`,{
         title
     })
 
@@ -65,7 +65,7 @@ export const updateProject = async ({id, title}) => {
 
 export const deleteProject = async ({id}) => {
   try {
-    const response = await api.post(`/projects/${id}`)
+    const response = await api.delete(`/projects/${id}`)
     return response.data;
   } catch (error) {
     console.error(
