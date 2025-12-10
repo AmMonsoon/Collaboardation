@@ -6,18 +6,21 @@ const userController = {
     registerUser: async(req, res) => {
 
             const data = req.body
-            const user = await userService.registerUser(data)
+            const newUser = await userService.registerUser(data)
+            const token = generateToken(newUser)
             // Return safe fields only
             const safeUser = {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                avatar: user.avatar
+                id: newUser.id,
+                username: newUser.username,
+                email: newUser.email,
+                avatar: newUser.avatar,
+                
             };
 
             res.status(201).json({
                 success: true,
                 message: "User Registered Successfully",
+                token,
                 data: { safeUser }
             })
     },
@@ -32,6 +35,7 @@ const userController = {
                 username: authenticatedUser.username,
                 email: authenticatedUser.email,
                 avatar: authenticatedUser.avatar
+                
         };
         res.status(200).json({
                 success: true,
@@ -48,7 +52,7 @@ const userController = {
       }
       res.status(200).json({
         success: true,
-        data: safeUser
+        user: safeUser
       })
 
   },
