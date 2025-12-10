@@ -1,0 +1,16 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-layout-main {
+  display: flex;
+  flex: 1;
+}
+
+.app-layout-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}

@@ -1,0 +1,38 @@
+.sidebar {
+  width: 250px;
+  background-color: #1e1e1e; /* VSCode-style dark */
+  color: white;
+  padding: 1rem;
+  border-right: 1px solid #333;
+  height: calc(100vh - 50px); /* subtract navbar height */
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item.active {
+  background: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
