@@ -11,6 +11,9 @@ const SideBar = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
+    const isActive = (id) => {
+        return location.pathname.startsWith(`/projects/${id}`);
+    };
 
     useEffect(() => {
         const fetchProjects = async () => {
