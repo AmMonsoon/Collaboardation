@@ -7,7 +7,7 @@ const ProjectPage = () => {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+    console.log("ProjectPage rendered");
   useEffect(() => {
     const fetchProject = async () => {
       try {
