@@ -6,7 +6,7 @@ export const createProject = async ({ title }) => {
       title
     });
 
-    return response.data;
+    return response.data.data.project;
   } catch (error) {
     console.error(
       "create project error:",
