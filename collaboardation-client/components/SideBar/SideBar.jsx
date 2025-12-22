@@ -1,23 +1,37 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { getProjects, createProject } from "../../src/api/projectApi";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { getProjects, createProject, updateProject } from "../../src/api/projectApi";
 import CreateProjectModal from "./CreateProjectModal";
+import RenameProjectModal from "./RenameProjectModal";
 import "./SideBar.css"
+
 
 const SideBar = () => {
     const [projects, setProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    // const [project, setProject] = useState()
     const [isCreateOpen, setIsCreateOpen] = useState(false)
+    const [isRenameOpen,  setIsRenameOpen] = useState(false)
+    const [activeProjectId, setActiveProjectId] = useState(null)
 
+    
     const navigate = useNavigate()
     const location = useLocation()
+
+    
 
     const isActive = (id) => {
         return location.pathname.startsWith(`/projects/${id}`);
     };
 
+    const openRenameModal = () => {
+        if (!activeProject) return
+        setIsRenameOpen(true)
+    }
+
+    const activeProject = projects.find((p) => p.id === activeProjectId)
+    console.log("ACTIVE PROJECT", activeProject)
+    
     const addProject = async(title) => {
         try {
             const newProject = await createProject({title})
@@ -31,6 +45,21 @@ const SideBar = () => {
         }
     }
 
+    const renameProject = async(title) => {
+        try {
+            const updatedProject = await updateProject({
+                id: activeProject.id,
+                title
+            })
+            console.log("UPDATED PROJECT",updatedProject)
+
+            setProjects((prev) => prev.map((p) => p.id === updatedProject.id ? updatedProject : p ))
+            // navigate(`/projects/${updatedProject.id}`)
+        } catch (error) {
+            console.error("Sidebar rename project error", error)
+            setError("Failed to rename project")
+        }
+    }
     
 
     useEffect(() => {
@@ -58,6 +87,19 @@ const SideBar = () => {
                 >
                 +
             </button>
+            <button 
+                className="rename-project-button" 
+                disabled={!activeProject}
+                onClick={openRenameModal}
+                >
+                Edit
+            </button>
+            {isRenameOpen && activeProject && (
+                    <RenameProjectModal
+                        currentTitle={activeProject.title}
+                        onClose={ ()=> setIsRenameOpen(false)} 
+                        onRename={renameProject}/>
+            )}
             {isCreateOpen && (
                     <CreateProjectModal 
                         onClose={ ()=> setIsCreateOpen(false)} 
@@ -71,7 +113,11 @@ const SideBar = () => {
                     <li
                     key={project.id}
                     className={`sidebar-item ${isActive(project.id)} ? "active" : "" `}
-                    onClick={()=> navigate(`/projects/${project.id}`)}>
+                    onClick={()=> {
+                        setActiveProjectId(project.id)
+                        navigate(`/projects/${project.id}`)} 
+                    }
+                    >
                         {project.title}
                     </li>
                 ))}
