@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { getProjects, createProject, updateProject } from "../../src/api/projectApi";
+import { getProjects, createProject, updateProject, deleteProject } from "../../src/api/projectApi";
 import CreateProjectModal from "./CreateProjectModal";
 import RenameProjectModal from "./RenameProjectModal";
 import "./SideBar.css"
+import DeleteProjectModal from "./DeleteProjectModal";
 
 
 const SideBar = () => {
@@ -12,6 +13,7 @@ const SideBar = () => {
     const [error, setError] = useState(null)
     const [isCreateOpen, setIsCreateOpen] = useState(false)
     const [isRenameOpen,  setIsRenameOpen] = useState(false)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false)
     const [activeProjectId, setActiveProjectId] = useState(null)
 
     
@@ -61,6 +63,17 @@ const SideBar = () => {
         }
     }
     
+    const removeProject = async() => {
+        if(!activeProject) return
+        try {
+            await deleteProject({id: activeProject.id})
+            setIsDeleteOpen(false)
+            navigate(`/`)
+        } catch (error) {
+            console.error("Sidebar delete project error", error)
+            setError("Failed to delete project")
+        }
+    }
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -94,6 +107,19 @@ const SideBar = () => {
                 >
                 Edit
             </button>
+            <button 
+                className="delete-project-button" 
+                disabled={!activeProject}
+                onClick={()=> setIsDeleteOpen(true)}
+                >
+                Delete
+            </button>
+            {isDeleteOpen && activeProject && (
+                    <DeleteProjectModal
+                        projectTitle={activeProject.title}
+                        onClose={ ()=> setIsDeleteOpen(false)} 
+                        onConfirm={removeProject}/>
+            )}
             {isRenameOpen && activeProject && (
                     <RenameProjectModal
                         currentTitle={activeProject.title}
@@ -105,6 +131,8 @@ const SideBar = () => {
                         onClose={ ()=> setIsCreateOpen(false)} 
                         onCreate={addProject}/>
             )}
+
+
             <h2 className="sidebar-title">Projects</h2>
             {loading && <p>Loading...</p>}
             {error &&  <p  style= {{color: "red"}}>{error}</p>}

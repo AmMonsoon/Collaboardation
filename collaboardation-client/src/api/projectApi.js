@@ -66,6 +66,7 @@ export const updateProject = async ({id, title}) => {
 export const deleteProject = async ({id}) => {
   try {
     const response = await api.delete(`/projects/${id}`)
+    console.log("DELETE RESPONSE",  response)
     return response.data;
   } catch (error) {
     console.error(
