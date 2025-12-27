@@ -54,7 +54,6 @@ const SideBar = () => {
                 title
             })
             console.log("UPDATED PROJECT",updatedProject)
-
             setProjects((prev) => prev.map((p) => p.id === updatedProject.id ? updatedProject : p ))
             // navigate(`/projects/${updatedProject.id}`)
         } catch (error) {
@@ -69,7 +68,12 @@ const SideBar = () => {
             await deleteProject({id: activeProject.id})
             setProjects(projs => projs.filter((p) =>p .id !== activeProject.id))
             setIsDeleteOpen(false)
-            navigate(`/`)
+            const remaining =  projects.filter(p => p.id !== activeProject.id)
+            if(remaining.length > 0){
+                navigate(`/projects/${remaining[0].id}`)
+            }else{
+                navigate(`/`)
+            }
         } catch (error) {
             console.error("Sidebar delete project error", error)
             setError("Failed to delete project")
@@ -137,20 +141,31 @@ const SideBar = () => {
             <h2 className="sidebar-title">Projects</h2>
             {loading && <p>Loading...</p>}
             {error &&  <p  style= {{color: "red"}}>{error}</p>}
-            <ul className="sidebar-list">
-                {projects.map( project => (
-                    <li
-                    key={project.id}
-                    className={`sidebar-item ${isActive(project.id)} ? "active" : "" `}
-                    onClick={()=> {
-                        setActiveProjectId(project.id)
-                        navigate(`/projects/${project.id}`)} 
-                    }
-                    >
-                        {project.title}
-                    </li>
-                ))}
-            </ul>
+            
+                
+            { projects.length === 0 ? (
+                <div className="sidebar-empty">
+                    <p>No projects yet</p>
+                    <button onClick={()=> setIsCreateOpen(true)}>
+                        Create your first project
+                    </button>
+                </div>
+            ) : (
+                <ul className="sidebar-list">
+                    {projects.map( project => (
+                        <li
+                        key={project.id}
+                        className={`sidebar-item ${isActive(project.id)} ? "active" : "" `}
+                        onClick={()=> {
+                            setActiveProjectId(project.id)
+                            navigate(`/projects/${project.id}`)} 
+                        }
+                        >
+                            {project.title}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </aside>
 
 
