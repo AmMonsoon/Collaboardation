@@ -67,6 +67,7 @@ const SideBar = () => {
         if(!activeProject) return
         try {
             await deleteProject({id: activeProject.id})
+            setProjects(projs => projs.filter((p) =>p .id !== activeProject.id))
             setIsDeleteOpen(false)
             navigate(`/`)
         } catch (error) {
