@@ -32,7 +32,7 @@ const SideBar = () => {
     }
 
     const activeProject = projects.find((p) => p.id === activeProjectId)
-    console.log("ACTIVE PROJECT", activeProject)
+    
     
     const addProject = async(title) => {
         try {
@@ -67,6 +67,7 @@ const SideBar = () => {
         try {
             await deleteProject({id: activeProject.id})
             setProjects(projs => projs.filter((p) =>p .id !== activeProject.id))
+            setActiveProjectId(null)
             setIsDeleteOpen(false)
             const remaining =  projects.filter(p => p.id !== activeProject.id)
             if(remaining.length > 0){
@@ -107,14 +108,14 @@ const SideBar = () => {
             </button>
             <button 
                 className="rename-project-button" 
-                disabled={!activeProject}
+                disabled={!activeProject || projects.length === 0}
                 onClick={openRenameModal}
                 >
                 Edit
             </button>
             <button 
                 className="delete-project-button" 
-                disabled={!activeProject}
+                disabled={!activeProject || projects.length === 0}
                 onClick={()=> setIsDeleteOpen(true)}
                 >
                 Delete
@@ -167,7 +168,6 @@ const SideBar = () => {
                 </ul>
             )}
         </aside>
-
 
     )
 

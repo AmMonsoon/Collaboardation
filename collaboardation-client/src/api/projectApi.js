@@ -51,7 +51,6 @@ export const updateProject = async ({id, title}) => {
     const response = await api.patch(`/projects/${id}`,{
         title
     })
-    console.log("UPDATE PROJECT RESPONSE", response.data)
     return response.data.updatedProject[0];
   } catch (error) {
     console.error(
@@ -66,7 +65,6 @@ export const updateProject = async ({id, title}) => {
 export const deleteProject = async ({id}) => {
   try {
     const response = await api.delete(`/projects/${id}`)
-    console.log("DELETE RESPONSE",  response)
     return response.data;
   } catch (error) {
     console.error(
