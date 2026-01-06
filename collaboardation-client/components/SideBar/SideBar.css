@@ -1,38 +1,134 @@
 .sidebar {
-  width: 250px;
-  background-color: #1e1e1e; /* VSCode-style dark */
-  color: white;
-  padding: 1rem;
-  border-right: 1px solid #333;
-  height: calc(100vh - 50px); /* subtract navbar height */
-  overflow-y: auto;
+  width: 260px;
+  height: 100vh;
+
+  background: var(--bg-surface);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
 }
 
 .sidebar-title {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sidebar-title h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .sidebar-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .sidebar-item {
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  margin-bottom: 4px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background 0.15s;
+  position: relative;
 }
 
 .sidebar-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-surface-hover);
+  box-shadow: var(--shadow-soft-hover);
 }
 
+.sidebar-item:hover .project-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
 .sidebar-item.active {
-  background: rgba(255, 255, 255, 0.2);
-  font-weight: bold;
+  background: rgba(59,130,246,0.15);
+}
+
+.sidebar-item.active .project-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-item.active .project-title {
+  color: #fff;
+}
+
+
+
+.button-primary {
+  background: var(--accent-primary);
+  border-radius: var(--radius-md);
+  color: white;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.button-primary:hover {
+  background: var(--accent-hover);
+  box-shadow: var(--shadow-soft-hover);
+}
+
+.project-title {
+  min-width: 0;
+  font-size: 20px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-actions {
+  flex-shrink: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.project-actions:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.project-menu {
+  position: absolute;
+  right: 8px;
+  top: 36px;
+
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  z-index: 10;
+}
+
+.project-menu button {
+  background: none;
+  border: none;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.project-menu button:hover {
+  background: var(--bg-surface-hover);
+}
+
+.project-menu .danger {
+  color: var(--danger);
 }

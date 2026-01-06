@@ -15,7 +15,7 @@ const SideBar = () => {
     const [isRenameOpen,  setIsRenameOpen] = useState(false)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
     const [activeProjectId, setActiveProjectId] = useState(null)
-
+    const [actionsOpenId, setActionsOpenId] = useState(null)
     
     const navigate = useNavigate()
     const location = useLocation()
@@ -100,26 +100,28 @@ const SideBar = () => {
     
     return(
         <aside className="sidebar">
-            <button 
-                className="create-project-button" 
-                onClick={() => setIsCreateOpen(true)}
-                >
-                +
-            </button>
-            <button 
-                className="rename-project-button" 
-                disabled={!activeProject || projects.length === 0}
-                onClick={openRenameModal}
-                >
-                Edit
-            </button>
-            <button 
-                className="delete-project-button" 
-                disabled={!activeProject || projects.length === 0}
-                onClick={()=> setIsDeleteOpen(true)}
-                >
-                Delete
-            </button>
+    
+                <button 
+                    className="create-project-button" 
+                    onClick={() => setIsCreateOpen(true)}
+                    >
+                    +
+                </button>
+                <button 
+                    className="rename-project-button" 
+                    disabled={!activeProject || projects.length === 0}
+                    onClick={openRenameModal}
+                    >
+                    Edit
+                </button>
+                <button 
+                    className="delete-project-button" 
+                    disabled={!activeProject || projects.length === 0}
+                    onClick={()=> setIsDeleteOpen(true)}
+                    >
+                    Delete
+                </button>
+        
             {isDeleteOpen && activeProject && (
                     <DeleteProjectModal
                         projectTitle={activeProject.title}
@@ -162,7 +164,24 @@ const SideBar = () => {
                             navigate(`/projects/${project.id}`)} 
                         }
                         >
-                            {project.title}
+                            <span className="project-title">{project.title}</span>
+                            <button
+                                className="project-actions"
+                                onClick={(e) => {
+                                e.stopPropagation()
+                                setActionsOpenId(project.id)
+                                }}
+                            >
+                                ⋯
+                            </button>
+                            {actionsOpenId === project.id && (
+                            <div className="project-menu">
+                            <button onClick={() => openRename(project)}>✏️ Edit</button>
+                            <button className="danger" onClick={() => openDelete(project)}>
+                                🗑️ Delete
+                            </button>
+                            </div>
+                            )}
                         </li>
                     ))}
                 </ul>
