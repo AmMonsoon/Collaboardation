@@ -1,5 +1,7 @@
 .sidebar {
   width: 260px;
+  min-width: 160px;
+  max-width: 260px;
   height: 100vh;
 
   background: var(--bg-surface);
@@ -8,6 +10,12 @@
   display: flex;
   flex-direction: column;
   padding: 16px;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-title {
@@ -26,6 +34,9 @@
 }
 
 .sidebar-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -36,6 +47,7 @@
   grid-template-columns: 1fr auto;
   align-items: center;
 
+  width: 200px;
   padding: 10px 12px;
   border-radius: var(--radius-md);
   cursor: pointer;

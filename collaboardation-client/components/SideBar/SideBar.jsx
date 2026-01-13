@@ -26,9 +26,16 @@ const SideBar = () => {
         return location.pathname.startsWith(`/projects/${id}`);
     };
 
-    const openRenameModal = () => {
-        if (!activeProject) return
+    const openRenameModal = (project) => {
+        setActiveProjectId(project.id)
+        setActionsOpenId(null)
         setIsRenameOpen(true)
+    }
+
+    const openDeleteModal = (project) => {
+        setActiveProjectId(project.id)
+        setActionsOpenId(null)
+        setIsDeleteOpen(true)
     }
 
     const activeProject = projects.find((p) => p.id === activeProjectId)
@@ -107,20 +114,7 @@ const SideBar = () => {
                     >
                     +
                 </button>
-                <button 
-                    className="rename-project-button" 
-                    disabled={!activeProject || projects.length === 0}
-                    onClick={openRenameModal}
-                    >
-                    Edit
-                </button>
-                <button 
-                    className="delete-project-button" 
-                    disabled={!activeProject || projects.length === 0}
-                    onClick={()=> setIsDeleteOpen(true)}
-                    >
-                    Delete
-                </button>
+               
         
             {isDeleteOpen && activeProject && (
                     <DeleteProjectModal
@@ -154,6 +148,7 @@ const SideBar = () => {
                     </button>
                 </div>
             ) : (
+            <div className="sidebar-content">
                 <ul className="sidebar-list">
                     {projects.map( project => (
                         <li
@@ -169,15 +164,18 @@ const SideBar = () => {
                                 className="project-actions"
                                 onClick={(e) => {
                                 e.stopPropagation()
+                                setActiveProjectId(project.id)
                                 setActionsOpenId(project.id)
                                 }}
                             >
                                 ⋯
                             </button>
                             {actionsOpenId === project.id && (
-                            <div className="project-menu">
-                            <button onClick={() => openRename(project)}>✏️ Edit</button>
-                            <button className="danger" onClick={() => openDelete(project)}>
+                            <div className="project-menu"
+                                 onClick={(e) => e.stopPropagation()}
+                            >
+                            <button onClick={() => {openRenameModal(project)}}>✏️ Edit</button>
+                            <button className="danger" onClick={() => {openDeleteModal(project)}}>
                                 🗑️ Delete
                             </button>
                             </div>
@@ -185,6 +183,7 @@ const SideBar = () => {
                         </li>
                     ))}
                 </ul>
+            </div>
             )}
         </aside>
 
