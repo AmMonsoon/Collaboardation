@@ -11,9 +11,7 @@ const SideBar = () => {
     const [projects, setProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    const [isCreateOpen, setIsCreateOpen] = useState(false)
-    const [isRenameOpen,  setIsRenameOpen] = useState(false)
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+    const [openModal, setOpenModal] = useState(null)
     const [activeProjectId, setActiveProjectId] = useState(null)
     const [actionsOpenId, setActionsOpenId] = useState(null)
     
@@ -29,14 +27,17 @@ const SideBar = () => {
     const openRenameModal = (project) => {
         setActiveProjectId(project.id)
         setActionsOpenId(null)
-        setIsRenameOpen(true)
+        setOpenModal("rename")
     }
 
     const openDeleteModal = (project) => {
         setActiveProjectId(project.id)
         setActionsOpenId(null)
-        setIsDeleteOpen(true)
+         setOpenModal("delete")
     }
+    
+    const openCreateModal = () => setOpenModal("create")
+    const closeModal = () => setOpenModal(null)
 
     const activeProject = projects.find((p) => p.id === activeProjectId)
     
@@ -75,7 +76,7 @@ const SideBar = () => {
             await deleteProject({id: activeProject.id})
             setProjects(projs => projs.filter((p) =>p .id !== activeProject.id))
             setActiveProjectId(null)
-            setIsDeleteOpen(false)
+            setOpenModal(null)
             const remaining =  projects.filter(p => p.id !== activeProject.id)
             if(remaining.length > 0){
                 navigate(`/projects/${remaining[0].id}`)
@@ -110,27 +111,27 @@ const SideBar = () => {
     
                 <button 
                     className="create-project-button" 
-                    onClick={() => setIsCreateOpen(true)}
+                    onClick={() => setOpenModal("create")}
                     >
                     +
                 </button>
                
         
-            {isDeleteOpen && activeProject && (
+            {openModal === "delete" && activeProject && (
                     <DeleteProjectModal
                         projectTitle={activeProject.title}
-                        onClose={ ()=> setIsDeleteOpen(false)} 
+                        onClose={closeModal} 
                         onConfirm={removeProject}/>
             )}
-            {isRenameOpen && activeProject && (
+            {openModal === "rename" && activeProject && (
                     <RenameProjectModal
                         currentTitle={activeProject.title}
-                        onClose={ ()=> setIsRenameOpen(false)} 
+                        onClose={closeModal} 
                         onRename={renameProject}/>
             )}
-            {isCreateOpen && (
+            {openModal === "create" && (
                     <CreateProjectModal 
-                        onClose={ ()=> setIsCreateOpen(false)} 
+                        onClose={closeModal} 
                         onCreate={addProject}/>
             )}
 

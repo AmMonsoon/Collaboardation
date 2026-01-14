@@ -1,4 +1,7 @@
+import { createPortal } from "react-dom";
 import { useState } from "react"
+
+const modalRoot =  document.getElementById("modal-root")
 
 const CreateProjectModal = ({ onClose, onCreate }) => {
   const [title, setTitle] = useState("");
@@ -9,7 +12,7 @@ const CreateProjectModal = ({ onClose, onCreate }) => {
     onClose();
   };
 
-  return (
+  return createPortal(
     <div className="modal-backdrop">
       <div className="modal">
         <h3>New Project</h3>
@@ -26,7 +29,8 @@ const CreateProjectModal = ({ onClose, onCreate }) => {
           <button onClick={handleSubmit}>Create</button>
         </div>
       </div>
-    </div>
+    </div>,
+    modalRoot
   );
 };
 

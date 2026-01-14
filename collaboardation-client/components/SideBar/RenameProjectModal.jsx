@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 
+const modalRoot = document.getElementById("modal-root")
 const RenameProjectModal = ({onClose, onRename, currentTitle}) => {
     const [title, setTitle] = useState(currentTitle)
 
@@ -13,7 +15,7 @@ const RenameProjectModal = ({onClose, onRename, currentTitle}) => {
         onClose();
     }
 
-    return(
+    return createPortal(
         <div className="modal-backdrop">
             <div className="modal">
                 <input
@@ -27,7 +29,8 @@ const RenameProjectModal = ({onClose, onRename, currentTitle}) => {
                     <button onClick={handleSubmit}>Confirm</button>
                 </div>
             </div>
-        </div>
+        </div>,
+        modalRoot
     )
 }
 
