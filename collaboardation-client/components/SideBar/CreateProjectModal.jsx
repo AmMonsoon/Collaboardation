@@ -1,9 +1,12 @@
 import { createPortal } from "react-dom";
 import { useState } from "react"
+import useEscapeKey from "../../hooks/useEscape";
 
 const modalRoot =  document.getElementById("modal-root")
 
 const CreateProjectModal = ({ onClose, onCreate }) => {
+  useEscapeKey(onClose)
+
   const [title, setTitle] = useState("");
 
   const handleSubmit = () => {
@@ -13,8 +16,8 @@ const CreateProjectModal = ({ onClose, onCreate }) => {
   };
 
   return createPortal(
-    <div className="modal-backdrop">
-      <div className="modal">
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
         <h3>New Project</h3>
 
         <input

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
+import useEscapeKey from "../../hooks/useEscape"
 
 const modalRoot = document.getElementById("modal-root")
 const RenameProjectModal = ({onClose, onRename, currentTitle}) => {
+
+    useEscapeKey(onClose)
     const [title, setTitle] = useState(currentTitle)
 
     useEffect(() => {
@@ -16,8 +19,8 @@ const RenameProjectModal = ({onClose, onRename, currentTitle}) => {
     }
 
     return createPortal(
-        <div className="modal-backdrop">
-            <div className="modal">
+        <div className="modal-backdrop" onClick={onClose}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
                 <input
                     placeholder="Project name"
                     value={title}
