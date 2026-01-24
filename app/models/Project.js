@@ -20,7 +20,7 @@ const sequelize = require('../config/database')
           allowNull: false,
           references: {
             model: 'Users',
-            id: 'id',
+            key: 'id',
           },
           onDelete: 'CASCADE',
         }
