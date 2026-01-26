@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize') 
 const sequelize = require("../config/database")
-    
+  
   const Board = sequelize.define('Board', {
         id: {
           type: DataTypes.INTEGER,

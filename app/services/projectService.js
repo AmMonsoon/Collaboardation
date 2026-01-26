@@ -14,8 +14,8 @@ const projectService = {
         const projects = await Project.findAll(
             { where:{ 
                 userId
-            }
-        })
+              }
+            })
         return projects
   },
 
