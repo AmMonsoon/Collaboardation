@@ -1,6 +1,6 @@
 const express = require('express')
 const router =  express.Router()
-const { User, Project} = require('../models/Index')
+const { Project } = require('../models/Index')
 const {validateId, checkExists, validateTitle, requireOwnership, auth, asyncHandler} = require('../middleware')
 const projectController = require('../controllers/projectController')
 
@@ -19,7 +19,6 @@ router.get('/:id',auth, getProjectValidations,requireOwnership(Project), asyncHa
 router.patch('/:id',auth, updateProjectValidations, requireOwnership(Project), asyncHandler(projectController.updateProject))
 //delete a project
 router.delete('/:id',auth, deleteProjectValidations, requireOwnership(Project), asyncHandler(projectController.deleteProject))
-
 
 
 module.exports = router;
