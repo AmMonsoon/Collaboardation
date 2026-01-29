@@ -1,11 +1,11 @@
 const express = require('express')
-const router = express.Router()
-const { Board } = require('../models/Index')
+const router = express.Router({mergeParams: true})
+const { Project, Board } = require('../models/Index')
 const boardController = require('../controllers/boardController')
 
 const {validateId, checkExists, validateTitle, requireOwnership, auth, asyncHandler} = require('../middleware')
 
-const createBoardValidations = [validateTitle]
+const createBoardValidations = [validateId("projectId", "Project"), checkExists(Project, "Project"), requireOwnership(Project), validateTitle]
 const getBoardValidations = [validateId("Board"), checkExists(Board, "Board"), requireOwnership(Board)]
 const updateBoardValidations = [validateId("Board"), checkExists(Board, "Board"), requireOwnership(Board)]
 const deleteBoardValidations = [validateId("Board"), checkExists(Board, "Board"), requireOwnership(Board)]
@@ -20,3 +20,5 @@ router.get('/:id', auth, getBoardValidations, asyncHandler(boardController.getBo
 router.patch('/:id', auth, updateBoardValidations, asyncHandler(boardController.updateBoard) )
 //delete a board
 router.delete('/:id', auth,  deleteBoardValidations, asyncHandler(boardController.deleteBoard))
+
+module.exports = router;
