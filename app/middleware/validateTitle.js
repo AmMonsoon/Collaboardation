@@ -2,7 +2,7 @@ const { AppValidationError } = require("../errors/index")
 
 //check if title is valid and not an empty string
 const validateTitle = (req, res, next) =>{
-    let {title} = req.body
+    let { title } = req.body
     if(!title || title.trim() === ""){
         return next(AppValidationError("Title is required", "title"))
     }

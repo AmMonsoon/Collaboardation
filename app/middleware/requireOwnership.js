@@ -1,8 +1,9 @@
 const ForbiddenError = require("../errors/ForbiddenError");
 
-const requireOwnership = (model) => {
+const requireOwnership = (paramId, model) => {
   return async (req, res, next) => {
-    const record = await model.findByPk(req.params.id);
+    
+    const record = await model.findByPk(req.params[paramId]);
 
     if (!record) {
       return next(new ForbiddenError("Resource not found"));

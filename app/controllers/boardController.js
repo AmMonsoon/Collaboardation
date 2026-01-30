@@ -5,8 +5,15 @@ const boardController = {
     //CREATE BOARD
     createBoard: async(req, res) => {
         const projectId = req.record.id;
-        const { title } = req.body;
-         const board = await boardService.createBoard(projectId, title)
+        const { title, description, position} = req.body;
+         const board = await boardService.createBoard(
+            {
+                projectId,
+                title, 
+                description, 
+                position
+            })
+        
         res.status(201).json({
             success: true,
             message: "New Board Created",

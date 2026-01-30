@@ -2,7 +2,7 @@ const {NotFoundError} = require("../errors/index")
 const { Board } = require("../models/Index")
 
 const boardService = {
-    createBoard: async (projectId, title) => {
+    createBoard: async ({projectId, title, description, position}) => {
          const board = await Board.create({
             projectId,
             title,

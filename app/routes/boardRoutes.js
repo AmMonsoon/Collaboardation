@@ -5,7 +5,7 @@ const boardController = require('../controllers/boardController')
 
 const {validateId, checkExists, validateTitle, requireOwnership, auth, asyncHandler} = require('../middleware')
 
-const createBoardValidations = [validateId("projectId", "Project"), checkExists(Project, "Project"), requireOwnership(Project), validateTitle]
+const createBoardValidations = [validateTitle, validateId("projectId", "Project"), checkExists("projectId", Project, "Project"), requireOwnership("projectId",Project)]
 const getBoardValidations = [validateId("Board"), checkExists(Board, "Board"), requireOwnership(Board)]
 const updateBoardValidations = [validateId("Board"), checkExists(Board, "Board"), requireOwnership(Board)]
 const deleteBoardValidations = [validateId("Board"), checkExists(Board, "Board"), requireOwnership(Board)]

@@ -1,8 +1,9 @@
 const NotFoundError = require("../errors/NotFoundError")
 
-const checkExists = (Model, modelName = "Model") => {
+const checkExists = (paramId, Model, modelName = "Model") => {
     return async(req, res, next) => {
-        let id = parseInt(req.params.id, 10)
+        let rawId = req.params[paramId]
+        let id = parseInt(rawId, 10)
         let model = await Model.findByPk(id)
         if(!model){
             return next(new NotFoundError(`${modelName} not found`))
