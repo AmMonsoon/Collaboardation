@@ -22,20 +22,24 @@ const boardController = {
     },
     //GET SPECIFIC BOARD
     getBoard: async(req, res) => {
-        const boardId = req.record.id;
-        const board = await boardService.getBoardById(boardId)
+        const { boardId } = req.params;
+        const board = await boardService.getBoardById({boardId})
         res.status(200).json(board)
     },
     //GET ALL BOARDS BY PROJECT ID
     getAllBoards: async(req, res) => {
         const projectId = req.record.id
-        const boards = await boardService.getBoards(projectId)
+        const boards = await boardService.getBoards({projectId})
         res.status(200).json(boards)
     },
     //UPDATE A BOARD
     updateBoard: async(req, res) => {
-        const boardId = req.record.id
-        const updatedBoard =  await boardService.updateBoard(boardId, req.body)
+        const { boardId } = req.params
+        const updatedBoard =  await boardService.updateBoard(
+            {
+            boardId,
+            updateFields: req.body
+            })
         res.status(200).json({
             message: "Board Updated Successfully",
             updatedBoard
@@ -43,8 +47,8 @@ const boardController = {
     },
     //DELETE A BOARD
     deleteBoard: async(req, res) => {
-        const boardId = req.record.id
-        await boardService.deleteBoard(boardId)
+        const { boardId } = req.params
+        await boardService.deleteBoard({boardId})
         res.status(200).json({success: true, message: "Board Deleted", id: boardId})
     }
 }

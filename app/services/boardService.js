@@ -11,19 +11,19 @@ const boardService = {
         })
         return board;
     },
-    getBoards: async(projectId) => {
+    getBoards: async({ projectId }) => {
         const boards =  await Board.findAll(
             { where: 
                 { projectId }
             })
             return boards
     },
-    getBoardById: async(boardId) => {
+    getBoardById: async({boardId}) => {
         const board = await Board.findByPk(boardId)
         if(!board) throw new NotFoundError("Board not found")
         return board
     },
-    updateBoard: async(boardId, updateFields) => {
+    updateBoard: async({boardId, updateFields}) => {
         const [rows , updatedBoard] = await Board.update(updateFields , { 
             where: {
                 id: boardId
@@ -33,7 +33,7 @@ const boardService = {
         if(!updatedBoard) throw new NotFoundError("Board not found")
         return updatedBoard
     },
-    deleteBoard: async(boardId) => {
+    deleteBoard: async({boardId}) => {
         const deletedBoard = await Board.destroy({ where: { id: boardId }  })
         if(!deletedBoard) throw new NotFoundError("Board not found")
         return deletedBoard
