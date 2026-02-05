@@ -24,6 +24,10 @@ const sequelize = require("../config/database")
           allowNull: false,
           defaultValue: 0
         },
+        dueDate:{
+          type: DataTypes.DATE,
+          allowNull: false
+        },
         boardId: {
           type: DataTypes.INTEGER,
           allowNull: false,
