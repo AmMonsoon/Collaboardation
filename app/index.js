@@ -12,6 +12,7 @@ const sequelize = require('./config/database')
 const userRoutes = require('./routes/userRoutes')
 const projectRoutes = require('./routes/projectRoutes')
 const boardRoutes =  require('./routes/boardRoutes')
+const taskRoutes = require('./routes/taskRoutes')
 const { errorHandler, notFoundHandler } = require('./middleware/index')
 
 const app = express();
@@ -30,7 +31,7 @@ app.use(express.json())            //Required to allow Express to read JSON requ
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
 app.use('/projects/:projectId/boards', boardRoutes);
-
+app.use('/boards/:boardId/tasks', taskRoutes)
 
 app.use(notFoundHandler);
 app.use(errorHandler);

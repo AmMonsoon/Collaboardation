@@ -4,10 +4,10 @@ const { AppValidationError } = require("../errors/index")
 const validateTitle = (req, res, next) =>{
     let { title } = req.body
     if(!title || title.trim() === ""){
-        return next(AppValidationError("Title is required", "title"))
+        return next(new AppValidationError("Title is required", "title"))
     }
     if(title.length < 3){
-        return next(AppValidationError("Title must be at least 3 characters", "title"))
+        return next(new AppValidationError("Title must be at least 3 characters", "title"))
     }
     next()
 }

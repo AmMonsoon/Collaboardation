@@ -2,7 +2,7 @@ const taskService = require('../services/taskService')
 
 const taskController = {
     createTask: async(req, res) => {
-        const { boardId } = req.params
+        const boardId  = req.record.id
         const { title, description, position, dueDate } = req.body
         const task = await taskService.createTask({
             title,

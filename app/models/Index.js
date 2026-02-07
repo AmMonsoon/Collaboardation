@@ -12,4 +12,4 @@ Board.belongsTo(Project, {foreignKey: 'projectId'})
 Board.hasMany(Task, {foreignKey: 'boardId', onDelete: 'CASCADE'})
 Task.belongsTo(Board, {foreignKey: 'boardId'})
 
-module.exports = {User, Project, Board}
+module.exports = {User, Project, Board, Task}
