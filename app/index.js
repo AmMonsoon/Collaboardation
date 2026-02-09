@@ -31,7 +31,7 @@ app.use(express.json())            //Required to allow Express to read JSON requ
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
 app.use('/projects/:projectId/boards', boardRoutes);
-app.use('/boards/:boardId/tasks', taskRoutes)
+app.use('/projects/:projectId/boards/:boardId/tasks', taskRoutes)
 
 app.use(notFoundHandler);
 app.use(errorHandler);

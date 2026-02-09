@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
 
-const { Board, Task } = require('../models/Index')
+const { Board, Task, Project } = require('../models/Index')
 
 const taskController = require('../controllers/taskController')
 
@@ -10,18 +10,65 @@ const {validateId, checkExists, validateTitle, requireOwnership, auth, asyncHand
 //create a task
 router.post('/',
     auth,
-    validateTitle,
+    validateId("projectId","Project"),
+    checkExists("projectId", Project, "Project"),
+    requireOwnership("projectId", Project),
+    
     validateId("boardId","Board"),
     checkExists("boardId", Board, "Board"),
-    requireOwnership("boardId", Board),
+    
+    validateTitle,
     asyncHandler(taskController.createTask))
 //get all tasks
-// router.get('/', "middleware", asyncHandler(taskController.getTasks))
-// //get a task
-// router.get('/:taskId', "middleware", asyncHandler(taskController.getTaskById))
-// //update a task
-// router.patch('/:taskId', "middleware", asyncHandler(taskController.updateTask))
-// //delete a task
-// router.delete('/:taskId', "middleware", asyncHandler(taskController.deleteTask))
+router.get('/',
+    auth,
+    validateId("projectId","Project"),
+    checkExists("projectId", Project, "Project"),
+    requireOwnership("projectId", Project),
+    
+    validateId("boardId","Board"),
+    checkExists("boardId", Board, "Board"),
+    asyncHandler(taskController.getTasks)
+)
 
+// //get a task
+router.get('/:taskId',
+    auth,
+    validateId("projectId","Project"),
+    checkExists("projectId", Project, "Project"),
+    requireOwnership("projectId", Project),
+
+    validateId("boardId","Board"),
+    checkExists("boardId", Board, "Board"),
+
+    validateId("taskId","Task"),
+    checkExists("taskId", Task, "Task"),
+
+    asyncHandler(taskController.getTaskById))
+// //update a task
+router.patch('/:taskId',
+    auth,
+    validateId("projectId","Project"),
+    checkExists("projectId", Project, "Project"),
+    requireOwnership("projectId", Project),
+
+    validateId("boardId","Board"),
+    checkExists("boardId", Board, "Board"),
+
+    validateId("taskId","Task"),
+    checkExists("taskId", Task, "Task"),
+    asyncHandler(taskController.updateTask))
+// //delete a task
+router.delete('/:taskId',
+    auth,
+    validateId("projectId","Project"),
+    checkExists("projectId", Project, "Project"),
+    requireOwnership("projectId", Project),
+
+    validateId("boardId","Board"),
+    checkExists("boardId", Board, "Board"),
+
+    validateId("taskId","Task"),
+    checkExists("taskId", Task, "Task"),
+    asyncHandler(taskController.deleteTask))
 module.exports = router;

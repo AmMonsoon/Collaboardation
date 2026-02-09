@@ -2,7 +2,7 @@ const taskService = require('../services/taskService')
 
 const taskController = {
     createTask: async(req, res) => {
-        const boardId  = req.record.id
+        const { boardId } = req.params
         const { title, description, position, dueDate } = req.body
         const task = await taskService.createTask({
             title,
@@ -14,7 +14,7 @@ const taskController = {
 
         res.status(201).json({
             success: true,
-            message: "New Board Created",
+            message: "New Task Created",
             data: { task }
         })
     },

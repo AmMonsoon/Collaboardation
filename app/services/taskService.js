@@ -13,7 +13,7 @@ const taskService = {
         return task;
     },
     getTasks: async({ boardId }) => {
-        const tasks =  await tasks.findAll(
+        const tasks =  await Task.findAll(
             { where: 
                 { boardId }
             })
