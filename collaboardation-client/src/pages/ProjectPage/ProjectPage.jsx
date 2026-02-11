@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProject } from "../../api/projectApi";
+import { createBoard } from "../../api/boardApi";
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -29,6 +30,20 @@ const ProjectPage = () => {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!project) return <p>Project not found</p>;
 
+  const handleTestCreateBoard = async() => {
+    try {
+      console.log(id)
+      const board = await createBoard({
+        projectId: Number(id),
+        title: "Test Board",
+        description: "Testing Frontend"
+      })
+      console.log("Created Board", board)
+    } catch (error) {
+      console.error("Error creating board", error)
+    }
+  }
+
   return (
     <div>
       <h1>{project.title}</h1>
@@ -38,6 +53,7 @@ const ProjectPage = () => {
       <div style={{ marginTop: "2rem" }}>
         <h2>Boards</h2>
         <p>This is where boards will go.</p>
+        <button onClick={handleTestCreateBoard}> Test Create Board</button>
       </div>
     </div>
   );
