@@ -6,11 +6,11 @@ const projectController = require('../controllers/projectController')
 const boardController = require('../controllers/boardController')
 
 const createProjectValidations = [validateTitle]
-const updateProjectValidations = [validateId("Project"), checkExists(Project, "Project"), validateTitle]
-const getProjectValidations = [validateId("Project"), checkExists(Project, "Project")]
-const deleteProjectValidations = [validateId("Project"), checkExists(Project, "Project")]
+const updateProjectValidations = [validateId("projectId", "Project"), checkExists("projectId", Project, "Project"), validateTitle]
+const getProjectValidations = [validateId("projectId", "Project"), checkExists("projectId", Project, "Project")]
+const deleteProjectValidations = [validateId("projectId", "Project"), checkExists("projectId", Project, "Project")]
 
-const createBoardValidations = [validateId("Project"), checkExists(Project, "Project"), requireOwnership(Project), validateTitle]
+const createBoardValidations = [validateId("projectId", "Project"), checkExists("projectId", Project, "Project"), requireOwnership("projectId",Project), validateTitle]
 
 
 //creates a new project
@@ -18,11 +18,11 @@ router.post('/', auth, createProjectValidations, asyncHandler(projectController.
 //gets all projects the user owns
 router.get('/', auth, asyncHandler(projectController.getAllProjects))
 //gets one project
-router.get('/:id',auth, getProjectValidations,requireOwnership(Project), asyncHandler(projectController.getProject))
+router.get('/:projectId',auth, getProjectValidations,requireOwnership("projectId",Project), asyncHandler(projectController.getProject))
 //updates a specific project
-router.patch('/:id',auth, updateProjectValidations, requireOwnership(Project), asyncHandler(projectController.updateProject))
+router.patch('/:projectId',auth, updateProjectValidations, requireOwnership("projectId",Project), asyncHandler(projectController.updateProject))
 //delete a project
-router.delete('/:id',auth, deleteProjectValidations, requireOwnership(Project), asyncHandler(projectController.deleteProject))
+router.delete('/:projectId',auth, deleteProjectValidations, requireOwnership("projectId",Project), asyncHandler(projectController.deleteProject))
 
 
 //  #####Board Routes######

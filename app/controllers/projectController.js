@@ -19,7 +19,6 @@ const projectController = {
 
     //GETS ONE PROJECT
     getProject:  async(req, res) => {
-        
             const projectId = req.record.id
             const project = await projectService.getProjectById(projectId)
             res.status(200).json(project)
