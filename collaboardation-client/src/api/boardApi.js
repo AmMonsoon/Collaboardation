@@ -18,9 +18,9 @@ export const createBoard = async ({ projectId, title, description }) => {
   }
 };
 
-export const getBoards = async () => {
+export const getBoards = async ({projectId}) => {
   try {
-    const response = await api.get("/boards")
+    const response = await api.get(`/projects/${projectId}/boards`)
 
     return response.data;
   } catch (error) {

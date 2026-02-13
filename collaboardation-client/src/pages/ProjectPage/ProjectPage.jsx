@@ -1,48 +1,57 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProject } from "../../api/projectApi";
-import { createBoard } from "../../api/boardApi";
+import { createBoard, getBoards } from "../../api/boardApi";
 
 const ProjectPage = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingProject, setLoadingProject] = useState(true);
   const [error, setError] = useState(null);
+  const [boards, setBoards] = useState([])
+  const [loadingBoards, setLoadingBoards] = useState(true);
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        setLoading(true);
+        setLoadingProject(true);
         const data = await getProject({ id });
         setProject(data);
       } catch (err) {
         console.error("Project fetch error:", err);
         setError("Failed to load project");
       } finally {
-        setLoading(false);
+        setLoadingProject(false);
       }
     };
 
     fetchProject();
   }, [id]);
 
-  if (loading) return <p>Loading project...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (!project) return <p>Project not found</p>;
+  useEffect(() => {
+    const fetchBoards = async () => {
+      try {
+        setLoadingBoards(true);
+        const data = await getBoards({projectId: Number(id)});
+        setBoards(data);
+      } catch (err) {
+        console.error("Boards fetch error:", err);
+        setError("Failed to load boards");
+      } finally {
+        setLoadingBoards(false);
+      }
+    };
 
-  const handleTestCreateBoard = async() => {
-    try {
-      console.log(id)
-      const board = await createBoard({
-        projectId: Number(id),
-        title: "Test Board",
-        description: "Testing Frontend"
-      })
-      console.log("Created Board", board)
-    } catch (error) {
-      console.error("Error creating board", error)
-    }
-  }
+    fetchBoards();
+  }, [id]);
+
+  if (loadingProject) return <p>Loading project...</p>;
+  if (!project) return <p>Project not found</p>;
+  
+  if (loadingBoards) return <p>Loading boards...</p>;
+  if (!boards || boards.length === 0) return <p>No Boards Yet</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
 
   return (
     <div>
@@ -52,8 +61,14 @@ const ProjectPage = () => {
       {/* Boards will be added here next */}
       <div style={{ marginTop: "2rem" }}>
         <h2>Boards</h2>
-        <p>This is where boards will go.</p>
-        <button onClick={handleTestCreateBoard}> Test Create Board</button>
+        {boards.map(board => (
+        <>
+          <li key={board.id}>
+          <h3>{board.title}</h3>
+          <p>{board.description}</p>
+          </li>
+        </>
+        ))}
       </div>
     </div>
   );
