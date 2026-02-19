@@ -32,3 +32,53 @@ export const getBoards = async ({projectId}) => {
     throw error;
   }
 };
+
+//get a specific board not needed for the UI atm
+export const getBoard = async ({projectId, boardId}) => {
+  try {
+    const response = await api.get(`/projects/${projectId}/boards/${boardId}`)
+    return response.data;
+  } catch (error) {
+    console.error(
+      "retrieving board error:",
+      error.response?.status,
+      error.response?.data
+    );
+    throw error;
+  }
+};
+
+export const updateBoard = async({
+        projectId,
+        boardId,
+        title,
+        description
+    }) => {
+    try {
+        const response = await api.patch(`/projects/${projectId}/boards/${boardId}`, {title, description})
+        console.log(response.data.updatedBoard)
+        return response.data.updatedBoard
+    }catch (error) {
+        console.error("updating board error:",
+        error.response?.status,
+        error.response?.data
+        );
+    throw error;
+    }
+}
+
+export const deleteBoard = async({
+        projectId,
+        boardId,
+    }) => {
+    try {
+        api.delete(`/projects/${projectId}/boards/${boardId}`)
+        return boardId
+    }catch (error) {
+        console.error("deleting board error:",
+        error.response?.status,
+        error.response?.data
+        );
+    throw error;
+    }
+}
