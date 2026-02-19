@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProject } from "../../api/projectApi";
 import { createBoard, getBoards, getBoard, updateBoard, deleteBoard} from "../../api/boardApi";
+import BoardItem from "../../../components/Boards/BoardItem";
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -61,18 +62,26 @@ const ProjectPage = () => {
 
     const handleCreateBoard = async() => {
         try {
+          if(!newBoardTitle || newBoardTitle.trim().length === 0){
+            setBoardError("Title is required")
+            return
+          } 
+          if(newBoardTitle.length > 30){
+            setBoardError("Title must be 30 characters or less")
+            return 
+          } 
           const createdBoard = await createBoard({
             projectId: Number(id),
             title: newBoardTitle,
             description: newBoardDescription
           })
-
-          setBoards(prev => [...prev,  createBoard])
+          
+          setBoards(prev => [...prev,  createdBoard])
 
           setNewBoardTitle("")
           setNewBoardDescription("")
         } catch (error) {
-          console.error("Create board error:", err);
+          console.error("Create board error:", error);
           setBoardError("Failed to create board");
         }
       }
@@ -98,7 +107,8 @@ const ProjectPage = () => {
           console.log(updatedBoard)
           setBoards( prev =>
             prev.map( board => board.id === updatedBoard.id ? updatedBoard : board)
-          );
+          )
+          return updatedBoard
         } catch (err) {
           console.error("Updating board error:", err);
           setBoardError("Failed to update board");
@@ -128,27 +138,38 @@ const ProjectPage = () => {
       <h1>{project.title}</h1>
       <p style={{ opacity: 0.7 }}>Project ID: {project.id}</p>
 
-      <div style={{ marginTop: "2rem" }}>
+      <div>
         <h2>Boards</h2>
-        <button onClick={createBoard}>New Board</button>
+        <input
+        value={newBoardTitle}
+        onChange={(e)=> setNewBoardTitle(e.target.value)}
+        placeholder="Title">
+        </input>
+        <input
+        value={newBoardDescription}
+        onChange={(e)=> setNewBoardDescription(e.target.value)}
+        placeholder="Description">
+        </input>
+        <button onClick={handleCreateBoard}>New Board</button>
         {boardError && <p style={{ color: "red" }}>{boardError}</p>}
         {boardLoading && <p>Loading boards...</p>}
         {!boardLoading && boards.length === 0 && <p>No Boards Yet</p>}
-        {boards.map(board => (
-        <li key={board.id}>
-          <h3>{board.title}</h3>
-          <p>{board.description}</p>
-          <button onClick={ () => {
-            handleUpdateBoard({
-              boardId: board.id,
-              title: board.title + "(Edited)",
-              description: board.description
-            })
-          }}>✏️ Edit</button>
-          <button onClick={() => handleDeleteBoard(board.id)}>🗑️ Delete</button>
-        </li>
         
-        ))}
+        <ul>
+          {
+            boards.map(board => (
+              <BoardItem
+                key={board.id}
+                board={board}
+                description={board.description}
+                onUpdate={handleUpdateBoard}
+                onDelete={handleDeleteBoard}
+              />
+            ))
+          }
+        </ul>
+        
+        
       </div>
     </div>
   );

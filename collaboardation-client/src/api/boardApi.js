@@ -56,8 +56,7 @@ export const updateBoard = async({
     }) => {
     try {
         const response = await api.patch(`/projects/${projectId}/boards/${boardId}`, {title, description})
-        console.log(response.data.updatedBoard)
-        return response.data.updatedBoard
+        return response.data.updatedBoard[0]
     }catch (error) {
         console.error("updating board error:",
         error.response?.status,
