@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getProject } from "../../api/projectApi";
 import { createBoard, getBoards, getBoard, updateBoard, deleteBoard} from "../../api/boardApi";
 import BoardItem from "../../../components/Boards/BoardItem";
+import "./ProjectPage.css"
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -134,12 +135,9 @@ const ProjectPage = () => {
   
 
   return (
-    <div>
-      <h1>{project.title}</h1>
-      <p style={{ opacity: 0.7 }}>Project ID: {project.id}</p>
-
-      <div>
-        <h2>Boards</h2>
+    <div className="project-page">
+      <div className="new-board-form">
+        <h1>{project.title}</h1>
         <input
         value={newBoardTitle}
         onChange={(e)=> setNewBoardTitle(e.target.value)}
@@ -155,7 +153,7 @@ const ProjectPage = () => {
         {boardLoading && <p>Loading boards...</p>}
         {!boardLoading && boards.length === 0 && <p>No Boards Yet</p>}
         
-        <ul>
+        <ul className="board-list">
           {
             boards.map(board => (
               <BoardItem

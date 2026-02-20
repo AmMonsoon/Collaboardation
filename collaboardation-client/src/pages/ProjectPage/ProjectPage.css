@@ -1,0 +1,19 @@
+.project-page {
+    background: var(--bg-main);
+    min-height: 100vh;
+    display: flex;
+    align-items: start;
+    color: var(--text-primary);
+}
+
+.new-board-form {
+    
+}
+
+.board-list {
+    display: flex;
+    gap: 1.5 rem;
+    align-items: flex-start;
+    overflow-x: auto;
+    padding-bottom: 1 rem;
+}

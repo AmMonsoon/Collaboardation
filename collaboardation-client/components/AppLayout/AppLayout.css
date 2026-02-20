@@ -4,13 +4,17 @@
   height: 100vh;
 }
 
-.app-layout-main {
+.app-main {
   display: flex;
   flex: 1;
 }
 
-.app-layout-content {
+.app-main > :first-child {
+  width: 250px;
+}
+
+.app-content {
+  flex-direction: column;
   flex: 1;
-  padding: 1.5rem;
   overflow-y: auto;
 }
