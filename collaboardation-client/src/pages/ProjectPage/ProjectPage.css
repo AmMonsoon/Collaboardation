@@ -7,13 +7,16 @@
 }
 
 .new-board-form {
-    
+    width: 50vh;
 }
 
 .board-list {
     display: flex;
-    gap: 1.5 rem;
+    gap: 20px;
     align-items: flex-start;
     overflow-x: auto;
-    padding-bottom: 1 rem;
+    padding-bottom: 1.5 rem;
+    background-color: rgb(58, 75, 186);
+    border-radius: 5px;
+    padding: 10px;
 }

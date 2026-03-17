@@ -136,8 +136,8 @@ const ProjectPage = () => {
 
   return (
     <div className="project-page">
-      <div className="new-board-form">
-        <h1>{project.title}</h1>
+      <div className="board-layout">
+        <div className="new-board-form">
         <input
         value={newBoardTitle}
         onChange={(e)=> setNewBoardTitle(e.target.value)}
@@ -149,6 +149,8 @@ const ProjectPage = () => {
         placeholder="Description">
         </input>
         <button onClick={handleCreateBoard}>New Board</button>
+        </div>
+        <h1>{project.title}</h1>
         {boardError && <p style={{ color: "red" }}>{boardError}</p>}
         {boardLoading && <p>Loading boards...</p>}
         {!boardLoading && boards.length === 0 && <p>No Boards Yet</p>}
