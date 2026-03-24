@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { createTask } from "../../src/api/taskApi";
 
-const BoardItem = ({board, onUpdate, onDelete}) => {
+const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
     const [title, setTitle] = useState(board.title)
     const [description, setDescription] = useState(board.description)
@@ -30,6 +31,22 @@ const BoardItem = ({board, onUpdate, onDelete}) => {
     setIsEditing(false)
    }
 
+   const handleCreateTask = async() => {
+    try {
+        const task = await createTask({
+            projectId,
+            boardId,
+            title,
+            description,
+            position,
+            dueDate})
+        
+
+    } catch (error) {
+        
+    }
+   }
+
    return (
     <li>
         
@@ -53,6 +70,8 @@ const BoardItem = ({board, onUpdate, onDelete}) => {
             <p>{board.description}</p>
             <button onClick={() => setIsEditing(true)}> ✏️ Edit</button>
             <button onClick={() => onDelete(board.id)}> 🗑️ Delete</button>
+
+            <button onClick={handleCreateTask}>Create Task</button>
         </>
         )
         }
