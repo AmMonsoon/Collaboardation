@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createTask } from "../../src/api/taskApi";
+import { createTask, getTasks } from "../../src/api/taskApi";
 
 const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
@@ -35,21 +35,31 @@ const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
     try {
         const task = await createTask({
             projectId,
-            boardId,
-            title,
-            description,
-            position,
-            dueDate})
-        
-
+            boardId: board.id,
+            title: "New Title",
+            description: "Testing...",
+            dueDate: new Date().toISOString()
+        })
+        console.log("Created Task", task)
     } catch (error) {
-        
+        console.error("Create task error:", error);
+    }
+   }
+
+   const handleFetchTasks= async() => {
+    try {
+        const tasks = await getTasks({
+            projectId,
+            boardId: board.id,
+        })
+        console.log("Fetched Tasks", tasks)
+    } catch (error) {
+        console.error("Fetch tasks error:", error);
     }
    }
 
    return (
     <li>
-        
         {isEditing ? (
         <>
             <input
@@ -72,6 +82,8 @@ const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
             <button onClick={() => onDelete(board.id)}> 🗑️ Delete</button>
 
             <button onClick={handleCreateTask}>Create Task</button>
+            <button onClick={handleFetchTasks}>Get Tasks</button>
+
         </>
         )
         }

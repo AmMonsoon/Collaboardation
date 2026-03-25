@@ -160,6 +160,7 @@ const ProjectPage = () => {
             boards.map(board => (
               <BoardItem
                 key={board.id}
+                projectId={Number(id)}
                 board={board}
                 description={board.description}
                 onUpdate={handleUpdateBoard}
