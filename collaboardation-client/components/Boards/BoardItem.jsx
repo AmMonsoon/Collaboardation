@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { createTask, getTasks } from "../../src/api/taskApi";
+import { createTask, getTasks, updateTask } from "../../src/api/taskApi";
 
-const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
+const BoardItem = ({projectId, board, taskId, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
     const [title, setTitle] = useState(board.title)
     const [description, setDescription] = useState(board.description)
-
+    console.log("%^%^%^%^%^%^%^%", taskId)
     useEffect(()=> {
         setTitle(board.title)
         setDescription(board.description || "")
@@ -58,6 +58,21 @@ const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
     }
    }
 
+   const handleUpdateTask= async() => {
+    try {
+        const updatedTask = await updateTask({
+            projectId,
+            boardId: board.id,
+            taskId: 6,
+            title: "Another Test Task Edited",
+            description,
+        })
+        console.log("Updated Task", updatedTask)
+    } catch (error) {
+        console.error("Updated task error:", error);
+    }
+   }
+
    return (
     <li>
         {isEditing ? (
@@ -83,6 +98,8 @@ const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
 
             <button onClick={handleCreateTask}>Create Task</button>
             <button onClick={handleFetchTasks}>Get Tasks</button>
+            <button onClick={handleUpdateTask}>Update Tasks</button>
+
 
         </>
         )

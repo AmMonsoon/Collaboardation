@@ -162,6 +162,7 @@ const ProjectPage = () => {
                 key={board.id}
                 projectId={Number(id)}
                 board={board}
+                taskId
                 description={board.description}
                 onUpdate={handleUpdateBoard}
                 onDelete={handleDeleteBoard}
