@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { createTask, getTasks, updateTask } from "../../src/api/taskApi";
+import { createTask, deleteTask, getTasks, updateTask } from "../../src/api/taskApi";
 
 const BoardItem = ({projectId, board, taskId, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
     const [title, setTitle] = useState(board.title)
     const [description, setDescription] = useState(board.description)
-    console.log("%^%^%^%^%^%^%^%", taskId)
     useEffect(()=> {
         setTitle(board.title)
         setDescription(board.description || "")
@@ -73,6 +72,15 @@ const BoardItem = ({projectId, board, taskId, onUpdate, onDelete}) => {
     }
    }
 
+   const handleDeleteTask = async() => {
+    try {
+        await deleteTask({projectId, boardId: board.id, taskId: 6})
+        console.log(`Task: ${6} successfully deleted` )
+    } catch (error) {
+        console.error("Deleting task error:", error);
+    }
+   }
+
    return (
     <li>
         {isEditing ? (
@@ -99,7 +107,7 @@ const BoardItem = ({projectId, board, taskId, onUpdate, onDelete}) => {
             <button onClick={handleCreateTask}>Create Task</button>
             <button onClick={handleFetchTasks}>Get Tasks</button>
             <button onClick={handleUpdateTask}>Update Tasks</button>
-
+            <button onClick={handleDeleteTask}> Delete Task</button>
 
         </>
         )

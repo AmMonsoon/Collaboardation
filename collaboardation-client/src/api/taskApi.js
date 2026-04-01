@@ -56,3 +56,20 @@ export const updateTask = async({
     throw error;
     }
 }
+
+export const deleteTask = async({
+        projectId,
+        boardId,
+        taskId
+    }) => {
+    try {
+        api.delete(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`)
+        return taskId
+    }catch (error) {
+        console.error("deleting task error:",
+        error.response?.status,
+        error.response?.data
+        );
+    throw error;
+    }
+}
