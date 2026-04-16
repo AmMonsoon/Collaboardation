@@ -8,6 +8,9 @@ const BoardItem = ({projectId, board, taskId, onUpdate, onDelete}) => {
     const [tasks, setTasks] = useState([])
     const [tasksLoading, setTasksLoading] = useState(false)
     const [tasksError, setTasksError] = useState(null)
+    
+    const [newTaskTitle, setNewTaskTitle] = useState("")
+    const [newTaskDescription, setNewTaskDescription] = useState("")
 
 
     useEffect(()=> {
