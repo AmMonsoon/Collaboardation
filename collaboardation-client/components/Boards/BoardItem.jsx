@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createTask, deleteTask, getTasks, updateTask } from "../../src/api/taskApi";
+import TaskItem from "./TaskItem";
 
 const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
@@ -102,7 +103,7 @@ const handleUpdateTask = async (task) => {
       projectId,
       boardId: board.id,
       taskId: task.id,
-      title: `${task.title} Edited`,
+      title: task.title,
       description: task.description,
       dueDate: task.dueDate
     })
@@ -187,18 +188,12 @@ const handleDeleteTask = async (taskId) => {
 </div>
   <ul>
     {tasks.map(task => (
-      <li key={task.id}>
-        <p>{task.title}</p>
-        <p>{task.description}</p>
-
-        <button onClick={() => handleUpdateTask(task)}>
-          Edit Task
-        </button>
-
-        <button onClick={() => handleDeleteTask(task.id)}>
-          Delete Task
-        </button>
-      </li>
+      <TaskItem 
+        key={task.id}
+        task={task}
+        onUpdate={handleUpdateTask}
+        onDelete={handleDeleteTask}
+      />
     ))}
   </ul>
 </div>
