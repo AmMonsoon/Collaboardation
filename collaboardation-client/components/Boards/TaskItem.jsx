@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import"./TaskItem.css"
 
 const TaskItem = ({task, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
@@ -44,7 +45,7 @@ const TaskItem = ({task, onUpdate, onDelete}) => {
     }
 
     return(
-        <li>
+        <li className="task-card">
             <p>{task.title}</p>
             <p>{task.description || "No Description"}</p>
             <button onClick={()=>  setIsEditing(true)}> Edit </button>

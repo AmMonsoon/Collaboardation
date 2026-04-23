@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createTask, deleteTask, getTasks, updateTask } from "../../src/api/taskApi";
 import TaskItem from "./TaskItem";
+import "./BoardItem.css"
 
 const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
@@ -139,7 +140,7 @@ const handleDeleteTask = async (taskId) => {
 }
 
    return (
-    <li>
+    <li className="board-column">
         {isEditing ? (
         <>
             <input
@@ -161,20 +162,20 @@ const handleDeleteTask = async (taskId) => {
             <button onClick={() => setIsEditing(true)}> ✏️ Edit</button>
             <button onClick={() => onDelete(board.id)}> 🗑️ Delete</button>
             <div className="task-section">
-  <h4>Tasks</h4>
+                <h4>Tasks</h4>
 
-  {tasksError && <p style={{ color: "red" }}>{tasksError}</p>}
-  {tasksLoading && <p>Loading tasks...</p>}
+                {tasksError && <p style={{ color: "red" }}>{tasksError}</p>}
+                {tasksLoading && <p>Loading tasks...</p>}
 
-  {!tasksLoading && tasks.length === 0 && (
-    <p>No tasks yet</p>
-  )}
-    <div className="new-task-form">
-  <input
-    value={newTaskTitle}
-    onChange={e => setNewTaskTitle(e.target.value)}
-    placeholder="Task title"
-  />
+                {!tasksLoading && tasks.length === 0 && (
+                    <p>No tasks yet</p>
+                )}
+                    <div className="new-task-form">
+                <input
+                    value={newTaskTitle}
+                    onChange={e => setNewTaskTitle(e.target.value)}
+                    placeholder="Task title"
+                />
 
   <input
     value={newTaskDescription}
@@ -186,7 +187,7 @@ const handleDeleteTask = async (taskId) => {
     Add Task
   </button>
 </div>
-  <ul>
+  <ul className="task-list">
     {tasks.map(task => (
       <TaskItem 
         key={task.id}
