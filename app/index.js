@@ -1,4 +1,5 @@
 const express = require('express')
+const cookieParser = require('cookie-parser')
 const cors  = require('cors')
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
@@ -17,6 +18,7 @@ const { errorHandler, notFoundHandler } = require('./middleware/index')
 
 const app = express();
 
+
 app.use(
   cors({
     origin: "http://localhost:5173",          
@@ -27,6 +29,7 @@ app.use(
 );
 
 app.use(express.json())            //Required to allow Express to read JSON request bodies
+app.use(cookieParser())
 
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);

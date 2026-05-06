@@ -17,10 +17,15 @@ const userController = {
                 
             };
 
-            res.status(201).json({
+            res.cookie("token", token, {
+              httpOnly: true,
+              secure: false,
+              sameSite: "lax"
+            })
+            .status(201)
+            .json({
                 success: true,
                 message: "User Registered Successfully",
-                token,
                 data: { safeUser }
             })
     },
@@ -37,13 +42,17 @@ const userController = {
                 avatar: authenticatedUser.avatar
                 
         };
-        res.status(200).json({
-                success: true,
-                message: "Login successful",
-                token,
-                data: { safeUser }
-            })
-
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: false, // true in production
+          sameSite: "lax",
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: "Login Successful",
+          data: { safeUser }
+        })
   },
   getLoggedInUser: async (req, res) => {
       safeUser = {
@@ -52,7 +61,7 @@ const userController = {
       }
       res.status(200).json({
         success: true,
-        user: safeUser
+        user: { safeUser }
       })
 
   },
@@ -107,6 +116,19 @@ const userController = {
       res.status(200).json({
         message: "User deleted successfully"
       });
+  },
+
+  logoutUser: async (req, res) => {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false, // true in production
+      sameSite: "lax",
+    })
+    .status(200)
+    .json({
+      success: true,
+      message: "Logout Successful"
+    })
   }
 };
 

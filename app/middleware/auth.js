@@ -5,14 +5,13 @@ const secret = process.env.JWT_SECRET;
 
 const auth = (req, res, next) => {
   try {
-    // 1️⃣ Extract token from headers
-    const authHeader = req.headers.authorization;
+    
+    const token = req.cookies?.token;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!token) {
       throw new UnauthorizedError("Missing authentication token");
     }
 
-    const token = authHeader.split(" ")[1];
 
     // 2️⃣ Verify token
     const decoded = jwt.verify(token, secret);
