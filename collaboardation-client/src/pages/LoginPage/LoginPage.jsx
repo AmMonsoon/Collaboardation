@@ -34,7 +34,7 @@ const LoginPage = () => {
 
         try {
             const data =  await loginUser( {email, password})
-            login(data.user, data.token)
+            login(data.data.safeUser)
             navigate("/")
             console.log("Login response", data)
         } catch (error) {

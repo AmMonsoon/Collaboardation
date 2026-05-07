@@ -1,44 +1,45 @@
 import { createContext, useState, useEffect } from "react"
+import api from "../src/api/axiosInstance"
 
 const AuthContext = createContext()
 
 const AuthProvider = ( { children } ) => {
     const [user, setUser] = useState(null)
-    const [token, setToken] = useState(null)
+    const [authLoading, setAuthLoading] = useState(true)
 
     useEffect(() => {
-        const jwtToken = localStorage.getItem("token");
-        const storedUser = localStorage.getItem("user");
-
-        if (jwtToken) setToken(jwtToken);
-        if (storedUser && storedUser !== "undefined"){
+        const checkAuth = async () => {
             try {
-                setUser(JSON.parse(storedUser));
+                const response = await api.get("/users/me")
+                console.log("Me Response", response.data)
+                setUser(response.data.data.safeUser)
             } catch (error) {
-                console.error("Failed to parse stored user", err)
-                localStorage.removeItem("user")
+                console.error("No active session found")
+                setUser(null)
+            }finally {
+                setAuthLoading(false)
             }
-
-        } 
+        }
+        checkAuth()
     }, []);
     
 
-    const login = (user, token) => {
-        setToken(token)
+    const login = (user) => { 
         setUser(user)
-        localStorage.setItem("token", token)
-        localStorage.setItem("user", JSON.stringify(user))
     }
 
-    const logout = () => {
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
-        setToken(null)
-        setUser(null)
+    const logout = async () => {
+        try {
+            await api.post("/users/logout")
+        } catch (error) {
+            console.error("Logout failed", error)
+        }finally{
+            setUser(null)
+        }
     }
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, authLoading }}>
             {children}
         </AuthContext.Provider>
     )
