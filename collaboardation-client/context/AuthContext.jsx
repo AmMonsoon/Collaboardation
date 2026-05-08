@@ -11,7 +11,6 @@ const AuthProvider = ( { children } ) => {
         const checkAuth = async () => {
             try {
                 const response = await api.get("/users/me")
-                console.log("Me Response", response.data)
                 setUser(response.data.data.safeUser)
             } catch (error) {
                 console.error("No active session found")

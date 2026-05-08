@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router-dom"
 import "./Navbar.css";
 import { useAuth } from "../../hooks/useAuth";
 const Navbar = () => {
-    const { token, logout } = useAuth()
+    const { user, logout } = useAuth()
     const navigate = useNavigate()
     
-    const handleLogout = () => {
-        logout()
+    const handleLogout = async () => {
+        await logout()
         navigate("/login")
     }
 
@@ -18,7 +18,7 @@ const Navbar = () => {
             
             <div className="navbar_links">
                 {
-                token
+                user
                 ? (<button onClick={handleLogout}>Logout</button>) 
                 :(
                 <>
