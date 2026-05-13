@@ -1,5 +1,6 @@
 .task-card {
   background: #2a2a2a;
+  border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 10px;
   padding: 0.75rem;
   display: flex;
@@ -10,5 +11,6 @@
 }
 
 .task-card:hover {
+  transform: translate(-2px);
   background: #333;
 }

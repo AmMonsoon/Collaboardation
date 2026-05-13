@@ -36,7 +36,6 @@ const LoginPage = () => {
             const data =  await loginUser( {email, password})
             login(data.data.safeUser)
             navigate("/")
-            console.log("Login response", data)
         } catch (error) {
             console.error("Login Failed", error)
         }

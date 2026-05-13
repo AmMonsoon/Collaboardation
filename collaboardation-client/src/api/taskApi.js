@@ -8,7 +8,7 @@ export const createTask = async ({ projectId, boardId, title, description, posit
         position,
         dueDate
     });
-    // console.log("@@@@RESPONSE@@@@@",response.data.data.task)
+
     return response.data.data.task;
   } catch (error) {
     console.error(
@@ -45,7 +45,6 @@ export const updateTask = async({
     }) => {
     try {
         const response = await api.patch(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`, {title, description, position, dueDate})
-        // console.log("@@@@RESPONSE@@@@@",response.data.updatedTask[0])
 
         return response.data.updatedTask[0]
     }catch (error) {

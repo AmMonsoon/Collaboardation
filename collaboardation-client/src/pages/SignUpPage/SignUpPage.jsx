@@ -40,7 +40,6 @@ const SignUpPage = () => {
 
         try {
             const data = await registerUser( {username, email, password})
-            console.log("SIGN UP RESPONSE", data)
             login(data.user, data.token)
             navigate("/")
         } catch (error) {

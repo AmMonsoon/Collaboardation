@@ -44,9 +44,7 @@ const SideBar = () => {
     
     const addProject = async(title) => {
         try {
-            const newProject = await createProject({title})
-            console.log("NEWPROJECT", newProject)
-          
+            const newProject = await createProject({title}) 
             setProjects((prev)=> [...prev, newProject])
             navigate(`/projects/${newProject.id}`)
         } catch (error) {
@@ -61,7 +59,6 @@ const SideBar = () => {
                 id: activeProject.id,
                 title
             })
-            console.log("UPDATED PROJECT",updatedProject)
             setProjects((prev) => prev.map((p) => p.id === updatedProject.id ? updatedProject : p ))
             // navigate(`/projects/${updatedProject.id}`)
         } catch (error) {

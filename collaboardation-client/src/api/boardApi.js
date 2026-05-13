@@ -6,7 +6,6 @@ export const createBoard = async ({ projectId, title, description }) => {
         title,
         description
     });
-    console.log("@@@@RESPONSE@@@@@",response.data.data.board)
     return response.data.data.board;
   } catch (error) {
     console.error(

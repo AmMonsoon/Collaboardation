@@ -61,7 +61,6 @@ const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
     fetchTasks()
    },[projectId, board.id])
 
-//    console.log(tasks)
    const handleCreateTask = async () => {
   if (!newTaskTitle.trim()) {
     setTasksError("Task title is required.")

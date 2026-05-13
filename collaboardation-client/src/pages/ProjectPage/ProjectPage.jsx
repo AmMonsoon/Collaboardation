@@ -105,7 +105,6 @@ const ProjectPage = () => {
           } 
 
           const updatedBoard = await updateBoard({projectId: Number(id), boardId, title, description});
-          console.log(updatedBoard)
           setBoards( prev =>
             prev.map( board => board.id === updatedBoard.id ? updatedBoard : board)
           )
@@ -162,8 +161,6 @@ const ProjectPage = () => {
                 key={board.id}
                 projectId={Number(id)}
                 board={board}
-                taskId
-                description={board.description}
                 onUpdate={handleUpdateBoard}
                 onDelete={handleDeleteBoard}
               />
