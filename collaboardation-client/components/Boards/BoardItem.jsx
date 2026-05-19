@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createTask, deleteTask, getTasks, updateTask } from "../../src/api/taskApi";
 import TaskItem from "./TaskItem";
+import {DragDropContext, Droppable, Draggable} from "@hello-pangea/dnd"
 import "./BoardItem.css"
 
 const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
@@ -137,6 +138,26 @@ const handleDeleteTask = async (taskId) => {
     setTasksError("Failed to delete task.")
   }
 }
+const reorderTasks = (list, startIndex, endIndex) => {
+  const result = [...list]
+  const [removed] = result.splice(startIndex, 1)
+
+  result.splice(endIndex, 0, removed)
+
+  return result
+}
+
+const handleDragEnd = (result) => {
+  if (!result.destination) return
+
+  const reorderedTasks = reorderTasks(
+    tasks,
+    result.source.index,
+    result.destination.index
+  )
+
+  setTasks(reorderedTasks)
+}
 
    return (
     <li className="board-column">
@@ -186,16 +207,41 @@ const handleDeleteTask = async (taskId) => {
     Add Task
   </button>
 </div>
-  <ul className="task-list">
-    {tasks.map(task => (
-      <TaskItem 
-        key={task.id}
-        task={task}
-        onUpdate={handleUpdateTask}
-        onDelete={handleDeleteTask}
-      />
-    ))}
-  </ul>
+ <DragDropContext onDragEnd={handleDragEnd}>
+  <Droppable droppableId={`board-${board.id}`}>
+    {(provided) => (
+      <ul
+        className="task-list"
+        ref={provided.innerRef}
+        {...provided.droppableProps}
+      >
+        {tasks.map((task, index) => (
+          <Draggable
+            key={task.id}
+            draggableId={`task-${task.id}`}
+            index={index}
+          >
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                <TaskItem
+                  task={task}
+                  onUpdate={handleUpdateTask}
+                  onDelete={handleDeleteTask}
+                />
+              </div>
+            )}
+          </Draggable>
+        ))}
+
+        {provided.placeholder}
+      </ul>
+    )}
+  </Droppable>
+</DragDropContext>
 </div>
 
         </>
