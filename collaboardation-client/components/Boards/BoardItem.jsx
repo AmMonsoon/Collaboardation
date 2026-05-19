@@ -4,11 +4,11 @@ import TaskItem from "./TaskItem";
 import {DragDropContext, Droppable, Draggable} from "@hello-pangea/dnd"
 import "./BoardItem.css"
 
-const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
+const BoardItem = ({projectId, board, tasks, setTasksByBoardId, onUpdate, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false)
     const [title, setTitle] = useState(board.title)
     const [description, setDescription] = useState(board.description)
-    const [tasks, setTasks] = useState([])
+    // const [tasks, setTasks] = useState([])
     const [tasksLoading, setTasksLoading] = useState(false)
     const [tasksError, setTasksError] = useState(null)
 
@@ -42,25 +42,25 @@ const BoardItem = ({projectId, board, onUpdate, onDelete}) => {
    }
 
    //Fetch Tasks
-   useEffect(() => {
-    const fetchTasks = async() => {
-        try {
-            setTasksLoading(true);
-            setTasksError(null)
-            const tasks = await getTasks({
-                projectId,
-                boardId: board.id,
-            })
-            setTasks(tasks)
-        } catch (error) {
-            console.error("Fetch tasks error:", error);
-            setTasksError("Failed to load tasks")
-        } finally {
-            setTasksLoading(false)
-        }
-    }
-    fetchTasks()
-   },[projectId, board.id])
+  //  useEffect(() => {
+  //   const fetchTasks = async() => {
+  //       try {
+  //           setTasksLoading(true);
+  //           setTasksError(null)
+  //           const tasks = await getTasks({
+  //               projectId,
+  //               boardId: board.id,
+  //           })
+  //           setTasks(tasks)
+  //       } catch (error) {
+  //           console.error("Fetch tasks error:", error);
+  //           setTasksError("Failed to load tasks")
+  //       } finally {
+  //           setTasksLoading(false)
+  //       }
+  //   }
+  //   fetchTasks()
+  //  },[projectId, board.id])
 
    const handleCreateTask = async () => {
   if (!newTaskTitle.trim()) {
@@ -207,7 +207,7 @@ const handleDragEnd = (result) => {
     Add Task
   </button>
 </div>
- <DragDropContext onDragEnd={handleDragEnd}>
+ 
   <Droppable droppableId={`board-${board.id}`}>
     {(provided) => (
       <ul
@@ -241,7 +241,7 @@ const handleDragEnd = (result) => {
       </ul>
     )}
   </Droppable>
-</DragDropContext>
+
 </div>
 
         </>

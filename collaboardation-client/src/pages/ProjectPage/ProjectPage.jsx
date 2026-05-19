@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { getProject } from "../../api/projectApi";
 import { createBoard, getBoards, getBoard, updateBoard, deleteBoard} from "../../api/boardApi";
 import BoardItem from "../../../components/Boards/BoardItem";
+import { DragDropContext } from "@hello-pangea/dnd";
+import { getTasks } from "../../api/taskApi";
 import "./ProjectPage.css"
 
 const ProjectPage = () => {
@@ -17,6 +19,8 @@ const ProjectPage = () => {
 
   const [newBoardTitle, setNewBoardTitle] = useState("")
   const [newBoardDescription, setNewBoardDescription] = useState("")
+
+  const [tasksByBoardId, setTasksByBoardId] = useState({})
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -43,6 +47,15 @@ const ProjectPage = () => {
         setBoardError(null)
         const data = await getBoards({projectId: Number(id)});
         setBoards(data);
+        const taskEntries = await Promise.all(data.map( async (board) => {
+          const tasks = await getTasks(
+            {
+              projectId: Number(id),
+              boardId: board.id
+            })
+            return [board.id, tasks]
+        }))
+        setTasksByBoardId(Object.fromEntries(taskEntries))
       } catch (err) {
         console.error("Boards fetch error:", err);
         setBoardError("Failed to load boards");
@@ -154,6 +167,7 @@ const ProjectPage = () => {
         {boardLoading && <p>Loading boards...</p>}
         {!boardLoading && boards.length === 0 && <p>No Boards Yet</p>}
         
+      <DragDropContext onDragEnd={handleDragEnd}>
         <ul className="board-list">
           {
             boards.map(board => (
@@ -161,13 +175,15 @@ const ProjectPage = () => {
                 key={board.id}
                 projectId={Number(id)}
                 board={board}
+                tasks={tasksByBoardId[board.id] || []}
+                setTasksByBoardId={setTasksByBoardId}
                 onUpdate={handleUpdateBoard}
                 onDelete={handleDeleteBoard}
               />
             ))
           }
         </ul>
-        
+      </DragDropContext>
         
       </div>
     </div>
