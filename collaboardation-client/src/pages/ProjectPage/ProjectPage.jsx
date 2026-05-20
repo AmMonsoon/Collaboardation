@@ -144,7 +144,77 @@ const ProjectPage = () => {
         setBoardError("Failed to delete board")
       }
     }
-  
+
+    const reorderTasks = (list, startIndex, endIndex) => {
+      const result = [...list]
+      const [removed] = result.splice(startIndex, 1)
+
+      result.splice(endIndex, 0, removed)
+
+      return result
+    }
+    
+    const handleDragEnd = (result) => {
+  const { source, destination } = result;
+
+  // User dropped outside a droppable area
+  if (!destination) return;
+
+  // Convert "board-5" -> 5
+  const sourceBoardId = Number(
+    source.droppableId.replace("board-", "")
+  );
+
+  const destinationBoardId = Number(
+    destination.droppableId.replace("board-", "")
+  );
+
+  setTasksByBoardId((prev) => {
+    // Copy source board tasks
+    const sourceTasks = [...(prev[sourceBoardId] || [])];
+
+    // Copy destination board tasks
+    const destinationTasks = [
+      ...(prev[destinationBoardId] || [])
+    ];
+
+    // Remove dragged task from source board
+    const [movedTask] = sourceTasks.splice(
+      source.index,
+      1
+    );
+
+    // SAME BOARD REORDER
+    if (sourceBoardId === destinationBoardId) {
+      sourceTasks.splice(
+        destination.index,
+        0,
+        movedTask
+      );
+
+      return {
+        ...prev,
+        [sourceBoardId]: sourceTasks,
+      };
+    }
+
+    // DIFFERENT BOARD MOVE
+    destinationTasks.splice(
+      destination.index,
+      0,
+      {
+        ...movedTask,
+        boardId: destinationBoardId,
+      }
+    );
+
+    return {
+      ...prev,
+      [sourceBoardId]: sourceTasks,
+      [destinationBoardId]: destinationTasks,
+    };
+  });
+};
 
   return (
     <div className="project-page">

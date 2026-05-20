@@ -84,7 +84,11 @@ const BoardItem = ({projectId, board, tasks, setTasksByBoardId, onUpdate, onDele
       dueDate: new Date().toISOString()
     })
 
-    setTasks(prev => [...prev, createdTask])
+    setTasksByBoardId(prev => ({
+      ...prev,
+      [board.id]: [...(prev[board.id] || []),
+      createdTask]})
+    )
 
     setNewTaskTitle("")
     setNewTaskDescription("")
@@ -109,11 +113,10 @@ const handleUpdateTask = async (task) => {
       dueDate: task.dueDate
     })
 
-    setTasks(prev =>
-      prev.map(t =>
-        t.id === updatedTask.id ? updatedTask : t
-      )
-    )
+    setTasksByBoardId(prev => ({
+      ...prev,
+      [board.id]: (prev[board.id] || []).map(task => task.id === updatedTask.id ? updatedTask : task)
+    }))
   } catch (error) {
     console.error("Update task error:", error)
     setTasksError("Failed to update task.")
@@ -130,34 +133,16 @@ const handleDeleteTask = async (taskId) => {
       taskId
     })
 
-    setTasks(prev =>
-      prev.filter(task => task.id !== taskId)
-    )
+    setTasksByBoardId(prev => ({
+      ...prev,
+      [board.id]: (prev[board.id] || []).filter(task => task.id !== taskId)
+    }))
   } catch (error) {
     console.error("Delete task error:", error)
     setTasksError("Failed to delete task.")
   }
 }
-const reorderTasks = (list, startIndex, endIndex) => {
-  const result = [...list]
-  const [removed] = result.splice(startIndex, 1)
 
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
-const handleDragEnd = (result) => {
-  if (!result.destination) return
-
-  const reorderedTasks = reorderTasks(
-    tasks,
-    result.source.index,
-    result.destination.index
-  )
-
-  setTasks(reorderedTasks)
-}
 
    return (
     <li className="board-column">
