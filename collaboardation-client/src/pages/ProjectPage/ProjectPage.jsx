@@ -4,7 +4,7 @@ import { getProject } from "../../api/projectApi";
 import { createBoard, getBoards, getBoard, updateBoard, deleteBoard} from "../../api/boardApi";
 import BoardItem from "../../../components/Boards/BoardItem";
 import { DragDropContext } from "@hello-pangea/dnd";
-import { getTasks } from "../../api/taskApi";
+import { getTasks, updateTask } from "../../api/taskApi";
 import "./ProjectPage.css"
 
 const ProjectPage = () => {
@@ -154,43 +154,31 @@ const ProjectPage = () => {
       return result
     }
     
-    const handleDragEnd = (result) => {
+    const handleDragEnd = async (result) => {
   const { source, destination } = result;
 
   // User dropped outside a droppable area
   if (!destination) return;
 
   // Convert "board-5" -> 5
-  const sourceBoardId = Number(
-    source.droppableId.replace("board-", "")
-  );
-
-  const destinationBoardId = Number(
-    destination.droppableId.replace("board-", "")
-  );
+  const sourceBoardId = Number(source.droppableId.replace("board-", ""));
+  const destinationBoardId = Number(destination.droppableId.replace("board-", ""));
+  let movedTask;
 
   setTasksByBoardId((prev) => {
     // Copy source board tasks
     const sourceTasks = [...(prev[sourceBoardId] || [])];
 
     // Copy destination board tasks
-    const destinationTasks = [
-      ...(prev[destinationBoardId] || [])
-    ];
-
+    const destinationTasks = [...(prev[destinationBoardId] || [])];
+    
     // Remove dragged task from source board
-    const [movedTask] = sourceTasks.splice(
-      source.index,
-      1
-    );
+    const [removedTask] = sourceTasks.splice(source.index, 1);
+    movedTask = removedTask
 
     // SAME BOARD REORDER
     if (sourceBoardId === destinationBoardId) {
-      sourceTasks.splice(
-        destination.index,
-        0,
-        movedTask
-      );
+      sourceTasks.splice(destination.index, 0, movedTask);
 
       return {
         ...prev,
@@ -199,13 +187,7 @@ const ProjectPage = () => {
     }
 
     // DIFFERENT BOARD MOVE
-    destinationTasks.splice(
-      destination.index,
-      0,
-      {
-        ...movedTask,
-        boardId: destinationBoardId,
-      }
+    destinationTasks.splice(destination.index, 0,{...movedTask, boardId: destinationBoardId }
     );
 
     return {
@@ -214,6 +196,36 @@ const ProjectPage = () => {
       [destinationBoardId]: destinationTasks,
     };
   });
+  try {
+  console.log("persisting drag", {
+  projectId: Number(id),
+  boardId: destinationBoardId,
+  taskId: movedTask.id,
+  title: movedTask.title,
+  description: movedTask.description,
+  dueDate: movedTask.dueDate,
+  position: destination.index,
+});
+
+console.log("Drag result:", {
+  source: result.source,
+  destination: result.destination,
+  sourceBoardId,
+  destinationBoardId,
+});
+
+await updateTask({
+  projectId: Number(id),
+  boardId: destinationBoardId,
+  taskId: movedTask.id,
+  title: movedTask.title,
+  description: movedTask.description,
+  dueDate: movedTask.dueDate,
+  position: destination.index,
+});
+  } catch (error) {
+    console.error("Failed to persist drag update", error)
+  }
 };
 
   return (

@@ -44,7 +44,7 @@ export const updateTask = async({
         dueDate
     }) => {
     try {
-        const response = await api.patch(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`, {title, description, position, dueDate})
+        const response = await api.patch(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`, {title, description, position, dueDate, boardId})
 
         return response.data.updatedTask[0]
     }catch (error) {
