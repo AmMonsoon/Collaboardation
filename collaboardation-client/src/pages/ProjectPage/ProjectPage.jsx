@@ -153,36 +153,49 @@ const ProjectPage = () => {
 
       return result
     }
+
+    const assignPositions = (tasks) => {
+      return tasks.map((task, index) => ({
+        ...task,
+        index
+      }))   
+    }
     
-    const handleDragEnd = async (result) => {
-  const { source, destination } = result;
-
-  // User dropped outside a droppable area
-  if (!destination) return;
-
-  // Convert "board-5" -> 5
-  const sourceBoardId = Number(source.droppableId.replace("board-", ""));
-  const destinationBoardId = Number(destination.droppableId.replace("board-", ""));
-  let movedTask;
-
-  setTasksByBoardId((prev) => {
-    // Copy source board tasks
-    const sourceTasks = [...(prev[sourceBoardId] || [])];
-
-    // Copy destination board tasks
-    const destinationTasks = [...(prev[destinationBoardId] || [])];
     
+  const handleDragEnd = async (result) => {
+    const { source, destination } = result;
+
+    // User dropped outside a droppable area
+    if (!destination) return;
+
+    // Convert "board-5" -> 5
+    const sourceBoardId = Number(source.droppableId.replace("board-", ""));
+    const destinationBoardId = Number(destination.droppableId.replace("board-", ""));
+    
+
+    let movedTask
+    let tasksToPersist = []
+
     // Remove dragged task from source board
-    const [removedTask] = sourceTasks.splice(source.index, 1);
-    movedTask = removedTask
+    setTasksByBoardId((prev) => {
+      // Copy source board tasks
+     const sourceTasks = [...(prev[sourceBoardId] || [])];
+  
+     // Copy destination board tasks
+     const destinationTasks = [...(prev[destinationBoardId] || [])];
+     const [removedTask] = sourceTasks.splice(source.index, 1);
+     movedTask = removedTask;
+     
 
     // SAME BOARD REORDER
     if (sourceBoardId === destinationBoardId) {
       sourceTasks.splice(destination.index, 0, movedTask);
 
+      const updatedSourceTasks = assignPositions(sourceTasks)
+      tasksToPersist = updatedSourceTasks
       return {
         ...prev,
-        [sourceBoardId]: sourceTasks,
+        [sourceBoardId]: updatedSourceTasks,
       };
     }
 
@@ -190,41 +203,37 @@ const ProjectPage = () => {
     destinationTasks.splice(destination.index, 0,{...movedTask, boardId: destinationBoardId }
     );
 
+      const updatedSourceTasks = assignPositions(sourceTasks)
+      const updatedDestinationTasks = assignPositions(destinationTasks)
+
+      tasksToPersist = [
+        ...updatedSourceTasks,
+        ...updatedDestinationTasks
+      ]
+      
     return {
       ...prev,
-      [sourceBoardId]: sourceTasks,
-      [destinationBoardId]: destinationTasks,
+      [sourceBoardId]: updatedSourceTasks,
+      [destinationBoardId]: updatedDestinationTasks,
     };
   });
+
   try {
-  console.log("persisting drag", {
-  projectId: Number(id),
-  boardId: destinationBoardId,
-  taskId: movedTask.id,
-  title: movedTask.title,
-  description: movedTask.description,
-  dueDate: movedTask.dueDate,
-  position: destination.index,
-});
-
-console.log("Drag result:", {
-  source: result.source,
-  destination: result.destination,
-  sourceBoardId,
-  destinationBoardId,
-});
-
-await updateTask({
-  projectId: Number(id),
-  boardId: destinationBoardId,
-  taskId: movedTask.id,
-  title: movedTask.title,
-  description: movedTask.description,
-  dueDate: movedTask.dueDate,
-  position: destination.index,
-});
+    await Promise.all(
+  tasksToPersist.map((task) =>
+    updateTask({
+      projectId: Number(id),
+      boardId: task.boardId,
+      taskId: task.id,
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate,
+      position: task.position,
+    })
+  )
+);
   } catch (error) {
-    console.error("Failed to persist drag update", error)
+      console.error("Failed to persist drag update", error)
   }
 };
 
