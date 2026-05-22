@@ -220,16 +220,16 @@ const ProjectPage = () => {
 
   try {
     await Promise.all(
-  tasksToPersist.map((task) =>
-    updateTask({
-      projectId: Number(id),
-      boardId: task.boardId,
-      taskId: task.id,
-      title: task.title,
-      description: task.description,
-      dueDate: task.dueDate,
-      position: task.position,
-    })
+      tasksToPersist.map((task) =>
+        updateTask({
+          projectId: Number(id),
+          boardId: task.boardId,
+          taskId: task.id,
+          title: task.title,
+          description: task.description,
+          dueDate: task.dueDate,
+          position: task.position,
+        })
   )
 );
   } catch (error) {
