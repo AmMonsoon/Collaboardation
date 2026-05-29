@@ -9,6 +9,7 @@ const LoginPage = () => {
     const [password,  setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [loginError,  setLoginError] = useState('')
     const { login } = useAuth()
     const navigate = useNavigate()
 
@@ -19,6 +20,7 @@ const LoginPage = () => {
         
         setEmailError('')
         setPasswordError('')
+        setLoginError('')
         
         if(!email.trim()){
             setEmailError("Email is required")
@@ -38,6 +40,7 @@ const LoginPage = () => {
             navigate("/")
         } catch (error) {
             console.error("Login Failed", error)
+            setLoginError("Invalid Email or Password")
         }
     }
     
@@ -53,6 +56,7 @@ const LoginPage = () => {
         <div className="login-container">
         <h1 className="login-title"> Login Page</h1>
         <form onSubmit={handleSubmit}>
+            {loginError &&  <p className="error-text" style= {{color: "red"}}>{loginError}</p>}
             <label className="email">Email:
                 <input type="email" value={email} onChange={handleEmailChange}/>
                 {emailError &&  <p className="error-text" style= {{color: "red"}}>{emailError}</p>}
