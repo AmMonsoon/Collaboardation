@@ -18,4 +18,16 @@ test("user can fetch current user after login", async() => {
     expect(loginBody.success).toBe(true)
     expect(loginBody.data.safeUser.email).toBe("newuser@test.com")
     expect(typeof loginBody.data.safeUser.id).toBe("number")
+
+    const meResponse = await apiContext.get("/users/me")
+
+    expect(meResponse.status()).toBe(200)
+
+    const meBody = await meResponse.json()
+
+    expect(meBody.success).toBe(true)
+    expect(meBody.data.safeUser.id).toBe(loginBody.data.safeUser.id)
+    expect(meBody.data.safeUser.email).toBe(loginBody.data.safeUser.email)
 })
+
+test()
