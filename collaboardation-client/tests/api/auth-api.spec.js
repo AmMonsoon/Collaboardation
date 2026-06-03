@@ -30,4 +30,10 @@ test("user can fetch current user after login", async() => {
     expect(meBody.data.safeUser.email).toBe(loginBody.data.safeUser.email)
 })
 
-test()
+test("user cannot fetch current user when not authenticated", async() => {
+    const apiContext = await request.newContext({
+        baseURL: "http://localhost:3000"
+    })
+    const meResponse = await apiContext.get("users/me")
+    expect(meResponse.status()).toBe(401)
+})
