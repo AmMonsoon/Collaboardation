@@ -37,3 +37,40 @@ test("user cannot fetch current user when not authenticated", async() => {
     const meResponse = await apiContext.get("users/me")
     expect(meResponse.status()).toBe(401)
 })
+
+test("user must have valid credentials", async() => {
+    const apiContext = await request.newContext({
+        baseURL: " http://localhost:3000"
+    })
+
+    const loginResponse = await apiContext.post("/users/login", {
+        data: {
+            email: "invaliduser@test.com",
+            password: "fail"
+        }
+    })
+    expect(loginResponse.status()).toBe(401)
+})
+
+test("user can successfully logout", async() => {
+    const apiContext = await request.newContext({
+        baseURL: " http://localhost:3000"
+    })
+
+    const loginResponse = await apiContext.post("/users/login", {
+        data: {
+            email: "newuser@test.com",
+            password: "test"
+        }
+    })
+
+    expect(loginResponse.status()).toBe(200)
+
+    const logoutReponse = await apiContext.post("users/logout")
+
+    expect(logoutReponse.status()).toBe(200)
+
+    const meResponse = await apiContext.get("/users/me")
+
+    expect(meResponse.status()).toBe(401)
+})
