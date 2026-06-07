@@ -4,8 +4,6 @@ const errorHandler = (err, req, res, next) => {
     return next(err);
   }
 
-  console.log("❌ Error:", err);
-
   // Handle custom application errors
   if (err.isCustom) {
     return res.status(err.status).json({

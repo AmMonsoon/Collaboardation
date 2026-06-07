@@ -15,7 +15,8 @@ const taskService = {
     getTasks: async({ boardId }) => {
         const tasks =  await Task.findAll(
             { where: 
-                { boardId }
+                { boardId },
+              order: [["position", "ASC"]]
             })
             return tasks
     },
