@@ -1,21 +1,12 @@
 import { test, expect } from "@playwright/test"
-import { createApiContext, loginApi, createProject } from "./helpers/apiHelpers"
+import { createApiContext, loginApi, createProject, createBoard } from "./helpers/apiHelpers"
 
 test("user can create a board", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
     const projectBody = await createProject(apiContext)
     const projectId = projectBody.data.project.id
-    
-    const boardResponse =  await apiContext.post(`/projects/${projectId}/boards`, {
-        data: {
-            title: "Testing Create Board API",
-            description: "please pass the first time"
-        }
-    })
-
-    expect(boardResponse.status()).toBe(201)
-    const boardBody = await boardResponse.json()
+    const boardBody = await createBoard(apiContext, projectId)
 
     expect(boardBody.success).toBe(true)
     expect(boardBody.message).toBe("New Board Created")
@@ -30,15 +21,7 @@ test("user can get a specific board", async() => {
     const loginBody = await loginApi(apiContext)
     const projectBody = await createProject(apiContext)
     const projectId = projectBody.data.project.id
-    
-    const boardResponse =  await apiContext.post(`/projects/${projectId}/boards`, {
-        data: {
-            title: "Testing Get Board API",
-            description: "hopefully one and done"
-        }
-    })
-    expect(boardResponse.status()).toBe(201)
-    const boardBody = await boardResponse.json()
+    const boardBody = await createBoard(apiContext, projectId, "Testing Get Board API", "hopefully one and done")
     const boardId = boardBody.data.board.id
 
 
@@ -58,15 +41,7 @@ test("user can update a board", async() => {
     const loginBody = await loginApi(apiContext)
     const projectBody = await createProject(apiContext)
     const projectId = projectBody.data.project.id
-    
-    const boardResponse =  await apiContext.post(`/projects/${projectId}/boards`, {
-        data: {
-            title: "Testing Update Board API",
-            description: "working on api update testing"
-        }
-    })
-    expect(boardResponse.status()).toBe(201)
-    const boardBody = await boardResponse.json()
+    const boardBody = await createBoard(apiContext, projectId, "Testing Update Board API", "working on api update testing")
     const boardId = boardBody.data.board.id
 
     const updatedBoardResponse = await apiContext.patch(`/projects/${projectId}/boards/${boardId}`, {
@@ -99,16 +74,8 @@ test("user can delete a board", async() => {
     const loginBody = await loginApi(apiContext)
     const projectBody = await createProject(apiContext)
     const projectId = projectBody.data.project.id
-    
-    const boardResponse =  await apiContext.post(`/projects/${projectId}/boards`, {
-        data: {
-            title: "Testing Delete Board API",
-            description: "this wont exist after the test"
-        }
-    })
+    const boardBody = await createBoard(apiContext, projectId, "Testing Delete Board API", "this wont exist after the test")
 
-    expect(boardResponse.status()).toBe(201)
-    const boardBody = await boardResponse.json()
     const boardId = boardBody.data.board.id
 
     const deletedBoardResponse = await apiContext.delete(`/projects/${projectId}/boards/${boardId}`)
