@@ -177,18 +177,22 @@ const handleDeleteTask = async (taskId) => {
                 )}
                     <div className="new-task-form">
                 <input
+                    data-testid="task-title-input"
                     value={newTaskTitle}
                     onChange={e => setNewTaskTitle(e.target.value)}
                     placeholder="Task title"
                 />
 
-  <input
-    value={newTaskDescription}
-    onChange={e => setNewTaskDescription(e.target.value)}
-    placeholder="Task description"
-  />
+              <input
+                data-testid="task-description-input"
+                value={newTaskDescription}
+                onChange={e => setNewTaskDescription(e.target.value)}
+                placeholder="Task description"
+              />
 
-  <button onClick={handleCreateTask}>
+  <button 
+  data-testid="submit-task-button"
+  onClick={handleCreateTask}>
     Add Task
   </button>
 </div>

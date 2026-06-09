@@ -21,6 +21,7 @@ const CreateProjectModal = ({ onClose, onCreate }) => {
         <h3>New Project</h3>
 
         <input
+          data-testid= "project-title-input"
           placeholder="Project name"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -29,7 +30,9 @@ const CreateProjectModal = ({ onClose, onCreate }) => {
 
         <div className="modal-actions">
           <button onClick={onClose}>Cancel</button>
-          <button onClick={handleSubmit}>Create</button>
+          <button 
+          data-testid="submit-project-button"
+          onClick={handleSubmit}>Create</button>
         </div>
       </div>
     </div>,

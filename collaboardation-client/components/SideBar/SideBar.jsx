@@ -107,6 +107,7 @@ const SideBar = () => {
         <aside className="sidebar">
     
                 <button 
+                    data-testid="create-project-button"
                     className="create-project-button" 
                     onClick={() => setOpenModal("create")}
                     >

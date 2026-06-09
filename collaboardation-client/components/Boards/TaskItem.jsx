@@ -46,8 +46,8 @@ const TaskItem = ({task, onUpdate, onDelete}) => {
 
     return(
         <li className="task-card">
-            <p>{task.title}</p>
-            <p>{task.description || "No Description"}</p>
+            <p data-testid="task-card">{task.title}</p>
+            <p data-testid= "task-description">{task.description || "No Description"}</p>
             <button onClick={()=>  setIsEditing(true)}> Edit </button>
             <button onClick={() => onDelete(task.id)}> Delete </button>
         </li>

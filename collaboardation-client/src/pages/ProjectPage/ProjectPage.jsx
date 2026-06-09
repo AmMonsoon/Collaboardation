@@ -242,16 +242,20 @@ const ProjectPage = () => {
       <div className="board-layout">
         <div className="new-board-form">
         <input
+        data-testid="board-title-input"
         value={newBoardTitle}
         onChange={(e)=> setNewBoardTitle(e.target.value)}
         placeholder="Title">
         </input>
         <input
+        data-testid="board-description-input"
         value={newBoardDescription}
         onChange={(e)=> setNewBoardDescription(e.target.value)}
         placeholder="Description">
         </input>
-        <button onClick={handleCreateBoard}>New Board</button>
+        <button 
+        data-testid="submit-board-button"
+        onClick={handleCreateBoard}>New Board</button>
         </div>
         <h1>{project.title}</h1>
         {boardError && <p style={{ color: "red" }}>{boardError}</p>}
