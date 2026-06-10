@@ -58,14 +58,14 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit}>
             {loginError &&  <p className="error-text" style= {{color: "red"}}>{loginError}</p>}
             <label className="email">Email:
-                <input type="email" value={email} onChange={handleEmailChange}/>
+                <input data-testid="email-input" type="email" value={email} onChange={handleEmailChange}/>
                 {emailError &&  <p className="error-text" style= {{color: "red"}}>{emailError}</p>}
             </label>
             <label className="password">Password:
-                <input type="password" value={password} onChange={handlePasswordChange}/>
+                <input data-testid="password-input" type="password" value={password} onChange={handlePasswordChange}/>
                 {passwordError &&  <p className="error-text" style= {{color: "red"}}>{passwordError}</p>}
             </label>
-            <button type="submit">Submit</button>
+            <button data-testid="login-button" type="submit">Log In</button>
         </form>
         </div>
     );

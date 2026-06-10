@@ -3,7 +3,7 @@ export class LoginPage {
         this.page = page
         this.emailInput = this.page.getByLabel("Email")
         this.passwordInput = this.page.getByLabel("Password")
-        this.submitButton = this.page.getByRole("button", {name: "Submit"})
+        this.submitButton = this.page.getByRole("button", {name: "Log In"})
     }
 
     async goto() {
