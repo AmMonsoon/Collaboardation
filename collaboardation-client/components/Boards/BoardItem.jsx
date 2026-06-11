@@ -112,7 +112,7 @@ const handleUpdateTask = async (task) => {
       description: task.description,
       dueDate: task.dueDate
     })
-
+    
     setTasksByBoardId(prev => ({
       ...prev,
       [board.id]: (prev[board.id] || []).map(task => task.id === updatedTask.id ? updatedTask : task)
