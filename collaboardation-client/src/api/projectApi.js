@@ -51,7 +51,7 @@ export const updateProject = async ({id, title}) => {
     const response = await api.patch(`/projects/${id}`,{
         title
     })
-    return response.data.updatedProject[0];
+    return response.data.updatedProject;
   } catch (error) {
     console.error(
       "updating project error:",

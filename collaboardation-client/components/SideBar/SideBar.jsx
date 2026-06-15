@@ -14,6 +14,7 @@ const SideBar = () => {
     const [openModal, setOpenModal] = useState(null)
     const [activeProjectId, setActiveProjectId] = useState(null)
     const [actionsOpenId, setActionsOpenId] = useState(null)
+    const [selectedProject, setSelectedProject] = useState(null)
     
     const navigate = useNavigate()
     const location = useLocation()
@@ -25,13 +26,13 @@ const SideBar = () => {
     };
 
     const openRenameModal = (project) => {
-        setActiveProjectId(project.id)
+        setSelectedProject(project)
         setActionsOpenId(null)
         setOpenModal("rename")
     }
 
     const openDeleteModal = (project) => {
-        setActiveProjectId(project.id)
+        setSelectedProject(project)
         setActionsOpenId(null)
          setOpenModal("delete")
     }
@@ -55,12 +56,14 @@ const SideBar = () => {
 
     const renameProject = async(title) => {
         try {
+            console.log("RENAMING TO", title)
             const updatedProject = await updateProject({
-                id: activeProject.id,
+                id: selectedProject.id,
                 title
             })
+            console.log("UPDATED PROJECT:", updatedProject)
             setProjects((prev) => prev.map((p) => p.id === updatedProject.id ? updatedProject : p ))
-            // navigate(`/projects/${updatedProject.id}`)
+    
         } catch (error) {
             console.error("Sidebar rename project error", error)
             setError("Failed to rename project")
@@ -115,15 +118,15 @@ const SideBar = () => {
                 </button>
                
         
-            {openModal === "delete" && activeProject && (
+            {openModal === "delete" && selectedProject && (
                     <DeleteProjectModal
-                        projectTitle={activeProject.title}
+                        currentTitle={selectedProject.title}
                         onClose={closeModal} 
                         onConfirm={removeProject}/>
             )}
-            {openModal === "rename" && activeProject && (
+            {openModal === "rename" && selectedProject && (
                     <RenameProjectModal
-                        currentTitle={activeProject.title}
+                        currentTitle={selectedProject.title}
                         onClose={closeModal} 
                         onRename={renameProject}/>
             )}
@@ -151,6 +154,7 @@ const SideBar = () => {
                 <ul className="sidebar-list">
                     {projects.map( project => (
                         <li
+                        data-testid="project-list"
                         key={project.id}
                         className={`sidebar-item ${isActive(project.id)} ? "active" : "" `}
                         onClick={()=> {
@@ -160,6 +164,7 @@ const SideBar = () => {
                         >
                             <span className="project-title">{project.title}</span>
                             <button
+                                data-testid="project-actions-menu-button"
                                 className="project-actions"
                                 onClick={(e) => {
                                 e.stopPropagation()
@@ -173,8 +178,8 @@ const SideBar = () => {
                             <div className="project-menu"
                                  onClick={(e) => e.stopPropagation()}
                             >
-                            <button onClick={() => {openRenameModal(project)}}>✏️ Edit</button>
-                            <button className="danger" onClick={() => {openDeleteModal(project)}}>
+                            <button data-testid="project-edit-button" onClick={() => {openRenameModal(project)}}>✏️ Edit</button>
+                            <button data-testid="project-delete-button" className="danger" onClick={() => {openDeleteModal(project)}}>
                                 🗑️ Delete
                             </button>
                             </div>

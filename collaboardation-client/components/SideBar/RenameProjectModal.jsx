@@ -22,6 +22,7 @@ const RenameProjectModal = ({onClose, onRename, currentTitle}) => {
         <div className="modal-backdrop" onClick={onClose}>
             <div className="modal" onClick={e => e.stopPropagation()}>
                 <input
+                    data-testid="edit-project-title-input"
                     placeholder="Project name"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -29,7 +30,7 @@ const RenameProjectModal = ({onClose, onRename, currentTitle}) => {
                 />
                 <div className="modal-actions">
                     <button onClick={onClose}>Cancel</button>
-                    <button onClick={handleSubmit}>Confirm</button>
+                    <button data-testid="edit-project-confirm-button"onClick={handleSubmit}>Confirm</button>
                 </div>
             </div>
         </div>,

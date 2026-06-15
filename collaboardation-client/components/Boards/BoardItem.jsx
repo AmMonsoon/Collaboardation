@@ -145,27 +145,29 @@ const handleDeleteTask = async (taskId) => {
 
 
    return (
-    <li className="board-column">
+    <li className="board-column" data-testid="board-column">
         {isEditing ? (
         <>
             <input
+            data-testid="edit-board-title-input"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             >
             </input>
             <input
+            data-testid="edit-board-description-input"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             ></input>
-            <button onClick={handleSave}>Update</button>
-            <button onClick={handleCancel}>Cancel</button>
+            <button data-testid="edit-board-update-button" onClick={handleSave}>Update</button>
+            <button data-testid="edit-board-cancel-button"onClick={handleCancel}>Cancel</button>
         </>
         ) : (
         <>
-            <h3>{board.title}</h3>
-            <p>{board.description}</p>
-            <button onClick={() => setIsEditing(true)}> ✏️ Edit</button>
-            <button onClick={() => onDelete(board.id)}> 🗑️ Delete</button>
+            <h3 data-testid= "board-title">{board.title}</h3>
+            <p data-testid="board-description">{board.description}</p>
+            <button data-testid="board-edit-button" onClick={() => setIsEditing(true)}> ✏️ Edit</button>
+            <button data-testid="board-delete-button"onClick={() => onDelete(board.id)}> 🗑️ Delete</button>
             <div className="task-section">
                 <h4>Tasks</h4>
 
