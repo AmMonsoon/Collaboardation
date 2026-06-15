@@ -34,10 +34,10 @@ const projectController = {
     },
     //UPDATES A SPECIFIC PROJECT
     updateProject: async(req, res) => {
-        
-            let projectId = req.record.id  //req.record comes from requireOwnership middleware
 
+            let projectId = req.record.id  //req.record comes from requireOwnership middleware
             const updatedProject = await projectService.updateProject(projectId, req.body)
+            
             res.status(200).json({message: "Project Successfully Updated",updatedProject})
        
     },

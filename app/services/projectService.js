@@ -24,18 +24,18 @@ const projectService = {
         if (!project) throw new NotFoundError("Project not found")
         return project
   },
-
   updateProject: async (projectId, updateFields) => {
-        
-        const [rows , updatedProject] = await Project.update(updateFields , { 
-            where: {
-                id: projectId,
-            },
-            returning: true
-        })
-        if(!updatedProject) throw new NotFoundError("Project not found")
-        return updatedProject
-  },
+      const project = await Project.findByPk(projectId)
+      
+      if (!project) {
+      throw new NotFoundError("Project not found")
+      }
+
+      project.title = updateFields.title
+      await project.save()
+
+      return project
+},
 
   deleteProject: async (projectId) => {
         const deletedProject = await Project.destroy({ where: { id: projectId }  })
