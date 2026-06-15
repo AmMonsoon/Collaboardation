@@ -2,7 +2,7 @@ import {test, expect} from "@playwright/test"
 import { LoginPage } from "../pages/LoginPage"
 
 test("user can log in and edit a project", async({page}) => {
-    //login
+        //login
         const loginPage = new LoginPage(page)
         await loginPage.goto()
         await loginPage.login("newuser@test.com", "test")
@@ -31,7 +31,6 @@ test("user can log in and edit a project", async({page}) => {
         await expect(page.getByTestId("edit-project-title-input")).toHaveValue(updatedProjectTitle)
 
         await page.getByTestId("edit-project-confirm-button").click()
-        // await page.pause()
-        await expect(page.getByText(updatedProjectTitle).first()).toBeVisible({
-            timeout: 10000
-})})
+        
+        await expect(page.getByText(updatedProjectTitle).first()).toBeVisible()
+    })

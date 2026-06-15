@@ -50,7 +50,7 @@ test("user can update a project", async() => {
     )
     expect(updatedProjectResponse.status()).toBe(200)
     const updatedProjectResponseBody = await updatedProjectResponse.json()
-    expect(updatedProjectResponseBody.updatedProject[0].title).toBe("Update Project API")
+    expect(updatedProjectResponseBody.updatedProject.title).toBe("Update Project API")
 })
 
 test("user can delete a project", async() => {

@@ -16,7 +16,7 @@ const DeleteProjectModal = ({onClose, onConfirm, projectTitle}) => {
                 <h4>Are you sure you want to delete this {projectTitle}?</h4>
                 <div className="modal-actions">
                         <button onClick={onClose}>Cancel</button>
-                        <button onClick={handleSubmit}>Confirm</button>
+                        <button data-testid="delete-confirm-button"onClick={handleSubmit}>Confirm</button>
                 </div>
             </div>
         </div>,
