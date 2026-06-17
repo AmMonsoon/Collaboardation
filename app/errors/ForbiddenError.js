@@ -1,4 +1,4 @@
-const CustomError = require("./customError");
+const CustomError = require("./CustomError");
 
  class ForbiddenError extends CustomError{
     constructor(message = "Access Forbidden", type = "forbidden"){

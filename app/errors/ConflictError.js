@@ -1,4 +1,4 @@
-const CustomError = require("./customError");
+const CustomError = require("./CustomError");
 
 class ConflictError extends CustomError{
     constructor(message = "Conflict Occurred"){

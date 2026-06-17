@@ -1,4 +1,4 @@
-const CustomError = require("./customError");
+const CustomError = require("./CustomError");
 
 class UnauthorizedError extends CustomError{
     constructor(message = "Unauthorized Access", type = "unauthorized"){

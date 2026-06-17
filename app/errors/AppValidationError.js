@@ -1,4 +1,4 @@
-const CustomError = require("./customError");
+const CustomError = require("./CustomError");
 
 class AppValidationError extends CustomError{
     constructor(message = "Email is invalid", type = "validation", field = "email"){

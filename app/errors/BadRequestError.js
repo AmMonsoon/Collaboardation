@@ -1,4 +1,4 @@
-const CustomError = require("./customError");
+const CustomError = require("./CustomError");
 
 class BadRequestError extends CustomError{
     constructor(message = "Request body could not be read properly", type = "bad_request"){
