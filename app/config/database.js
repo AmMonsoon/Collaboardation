@@ -7,6 +7,7 @@ const sequelize = new Sequelize(
   config.dbUser,
   config.dbPassword, {
   host: config.dbHost,
+  port: config.dbPort,
   dialect: 'postgres',
   logging: false
 });

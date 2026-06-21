@@ -36,18 +36,19 @@ app.use('/projects', projectRoutes);
 app.use('/projects/:projectId/boards', boardRoutes);
 app.use('/projects/:projectId/boards/:boardId/tasks', taskRoutes)
 
-app.use(notFoundHandler);
-app.use(errorHandler);
-
 app.get('/', (req, res) => {
   res.status(200).send('Server is running');
 });
 
+app.use(notFoundHandler);
+app.use(errorHandler);
 
+
+const PORT = process.env.PORT || 3000
 (async () => {
     try{
         await sequelize.sync({ alter: true });
-        app.listen(3000, () => console.log('Server is listening on port 3000'));
+        app.listen(PORT , () => console.log(`Server is listening on port ${PORT}`));
     }catch(error){
         console.error('Failed to sync models: ' , error)
     }
