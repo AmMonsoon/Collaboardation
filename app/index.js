@@ -1,5 +1,8 @@
+console.log("1")
 const express = require('express')
+console.log("2")
 const cookieParser = require('cookie-parser')
+console.log("3")
 const cors  = require('cors')
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
@@ -8,12 +11,17 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection:', reason);
 });
+console.log("4")
 const sequelize = require('./config/database')
-
+console.log("5")
 const userRoutes = require('./routes/userRoutes')
+console.log("6")
 const projectRoutes = require('./routes/projectRoutes')
+console.log("7")
 const boardRoutes =  require('./routes/boardRoutes')
+console.log("8")
 const taskRoutes = require('./routes/taskRoutes')
+console.log("9")
 const { errorHandler, notFoundHandler } = require('./middleware/index')
 
 const app = express();
