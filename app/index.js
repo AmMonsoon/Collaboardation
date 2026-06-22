@@ -56,7 +56,7 @@ console.log("19")
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-
+console.log("before startup")
 const PORT = process.env.PORT || 3000
 (async () => {
     try{
