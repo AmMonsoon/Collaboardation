@@ -5,12 +5,20 @@ const config = require('./config')
 const sequelize = new Sequelize(
   config.dbName,
   config.dbUser,
-  config.dbPassword, {
-  host: config.dbHost,
-  port: config.dbPort,
-  dialect: 'postgres',
-  logging: false
-});
+  config.dbPassword,
+  {
+    host: config.dbHost,
+    port: config.dbPort,
+    dialect: "postgres",
+    logging: false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  }
+);
 
 //function to test database connection
 async function connectDB() {

@@ -47,7 +47,14 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 3000
 (async () => {
     try{
-        await sequelize.sync({ alter: true });
+        console.log("Starting Server")
+
+        console.log("Authenticating DB")
+        await sequelize.authenticate();
+        console.log("Database authenticated");
+        console.log("Syncing Models")
+        await sequelize.sync();
+        console.log("Models synced");
         app.listen(PORT , () => console.log(`Server is listening on port ${PORT}`));
     }catch(error){
         console.error('Failed to sync models: ' , error)
