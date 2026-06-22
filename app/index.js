@@ -23,10 +23,10 @@ console.log("8")
 const taskRoutes = require('./routes/taskRoutes')
 console.log("9")
 const { errorHandler, notFoundHandler } = require('./middleware/index')
-
+console.log("10")
 const app = express();
 
-
+console.log("11")
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",          
@@ -35,18 +35,23 @@ app.use(
     credentials: true, 
   })
 );
-
+console.log("12")
 app.use(express.json())            //Required to allow Express to read JSON request bodies
+console.log("13")
 app.use(cookieParser())
-
+console.log("14")
 app.use('/users', userRoutes);
+console.log("15")
 app.use('/projects', projectRoutes);
+console.log("16")
 app.use('/projects/:projectId/boards', boardRoutes);
+console.log("17")
 app.use('/projects/:projectId/boards/:boardId/tasks', taskRoutes)
-
+console.log("18")
 app.get('/', (req, res) => {
   res.status(200).send('Server is running');
 });
+console.log("19")
 
 app.use(notFoundHandler);
 app.use(errorHandler);
