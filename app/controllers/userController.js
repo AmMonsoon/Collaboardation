@@ -1,6 +1,13 @@
 const userService = require("../services/userService");
 const { generateToken } = require("../utils/jwt");
 
+const isProduction = process.env.NODE_ENV === "production"
+const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax"
+}
+
 const userController = {
        //REGISTER USER
     registerUser: async(req, res) => {
@@ -17,11 +24,7 @@ const userController = {
                 
             };
 
-            res.cookie("token", token, {
-              httpOnly: true,
-              secure: false,
-              sameSite: "lax"
-            })
+            res.cookie("token", token, cookieOptions)
             .status(201)
             .json({
                 success: true,
@@ -42,11 +45,7 @@ const userController = {
                 avatar: authenticatedUser.avatar
                 
         };
-        res.cookie("token", token, {
-          httpOnly: true,
-          secure: false, // true in production
-          sameSite: "lax",
-        })
+        res.cookie("token", token, cookieOptions)
         .status(200)
         .json({
           success: true,
@@ -119,11 +118,7 @@ const userController = {
   },
 
   logoutUser: async (req, res) => {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: false, // true in production
-      sameSite: "lax",
-    })
+    res.clearCookie("token", cookieOptions)
     .status(200)
     .json({
       success: true,

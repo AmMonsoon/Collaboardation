@@ -2,6 +2,7 @@ const { Sequelize } = require("sequelize")
 const config = require('./config')
 
 //create the connection to database
+const useSSL = process.env.DB_SSL === "true"
 const sequelize = new Sequelize(
   config.dbName,
   config.dbUser,
@@ -11,12 +12,12 @@ const sequelize = new Sequelize(
     port: config.dbPort,
     dialect: "postgres",
     logging: false,
-    dialectOptions: {
+    dialectOptions: useSSL ? {
       ssl: {
         require: true,
         rejectUnauthorized: false,
       },
-    },
+    } : {},
   }
 );
 

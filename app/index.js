@@ -27,9 +27,20 @@ console.log("10")
 const app = express();
 
 console.log("11")
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://collaboardation-frontend.s3-website-us-west-2.amazonaws.com",
+   "https://d1bv7rt92clmyg.cloudfront.net"
+]
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",          
+    origin(origin, callback) {
+      if(!origin || allowedOrigins.includes(origin)){
+        callback(null, true)
+      } else {
+        callback(new Error("Not allowed by CORS"))
+      }
+    },          
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, 
