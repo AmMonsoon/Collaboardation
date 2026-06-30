@@ -145,7 +145,7 @@ const SideBar = () => {
             { projects.length === 0 ? (
                 <div className="sidebar-empty">
                     <p>No projects yet</p>
-                    <button onClick={()=> setIsCreateOpen(true)}>
+                    <button onClick={()=> openCreateModal(true)}>
                         Create your first project
                     </button>
                 </div>
