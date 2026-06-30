@@ -29,8 +29,8 @@ const app = express();
 console.log("11")
 const allowedOrigins = [
   "http://localhost:5173",
-  "http://collaboardation-frontend.s3-website-us-west-2.amazonaws.com",
-   "https://d1bv7rt92clmyg.cloudfront.net"
+  "https://collaboardation.com",
+  "https://www.collaboardation.com"
 ]
 app.use(
   cors({
