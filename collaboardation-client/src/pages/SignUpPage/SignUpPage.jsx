@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { registerUser } from "../../api/userApi";
 import { useAuth } from "../../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "./SignUpPage.css"
 
 const SignUpPage = () => {
     const [email, setEmail] = useState('')
@@ -59,9 +60,17 @@ const SignUpPage = () => {
         setPassword(e.target.value)
     }
     return(
-    <>
-        <h1 className="sign-up-title"> Sign Up Page</h1>
+    <div className="sign-up-container">
         <form onSubmit={handleSubmit}>
+        <img 
+        src="collaboardation-logo.png"
+        alt="Collaboardation logo"
+        className="app-logo"
+        />
+        <p className="login-tagline">
+                Manage projects. Organize tasks. Collaborate.
+        </p>
+        
             <label className="username">Username:
                 <input type="username" value={username} onChange={handleUsernameChange}/>
                 {usernameError &&  <p className="error-text" style= {{color: "red"}}>{usernameError}</p>}
@@ -75,9 +84,12 @@ const SignUpPage = () => {
                 {passwordError &&  <p className="error-text" style= {{color: "red"}}>{passwordError}</p>}
             </label>
             <button type="submit">Submit</button>
+            <div className="sign-up-form-link-container">
+                <span>Already have an account? </span>
+                <Link className="sign-up-form-link" to="/login">Log in</Link>
+            </div>
         </form>
-    
-    </>
+    </div>
     );
 }
 

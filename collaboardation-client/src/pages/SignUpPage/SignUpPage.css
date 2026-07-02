@@ -1,0 +1,81 @@
+.sign-up-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8fafc;
+  
+}
+
+.sign-up-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+input {
+  width: 95%;
+  padding: 8px 10px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Error message */
+.error-text {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Button */
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005fcc;
+}
+
+.sign-up-form-link-container {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.sign-up-form-link {
+  margin-left: 0.35rem;
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sign-up-form-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+
+.app-logo{
+  width: 280px;
+  height: auto;
+  display: block;
+  margin:  auto 20px;
+}

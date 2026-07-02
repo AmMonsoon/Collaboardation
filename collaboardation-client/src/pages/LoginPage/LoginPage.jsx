@@ -1,5 +1,5 @@
 import { useState, } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css"
 import { loginUser } from "../../api/userApi";
 import { useAuth } from "../../../hooks/useAuth";
@@ -54,8 +54,15 @@ const LoginPage = () => {
 
     return(
         <div className="login-container">
-        <h1 className="login-title"> Login Page</h1>
         <form onSubmit={handleSubmit}>
+        <img 
+        src="collaboardation-logo.png"
+        alt="Collaboardation logo"
+        className="app-logo"
+        />
+            <p className="login-tagline">
+                Manage projects. Organize tasks. Collaborate.
+            </p>
             {loginError &&  <p className="error-text" style= {{color: "red"}}>{loginError}</p>}
             <label className="email">Email:
                 <input data-testid="email-input" type="email" value={email} onChange={handleEmailChange}/>
@@ -66,6 +73,10 @@ const LoginPage = () => {
                 {passwordError &&  <p className="error-text" style= {{color: "red"}}>{passwordError}</p>}
             </label>
             <button data-testid="login-button" type="submit">Log In</button>
+            <div className="login-form-link-container">
+                <span>Don't have an account?</span>
+                <Link className="login-form-link"to="/register"> Sign up</Link>
+            </div>
         </form>
         </div>
     );

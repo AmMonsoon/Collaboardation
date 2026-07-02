@@ -1,12 +1,10 @@
 /* Container */
 .login-container {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: #f8fafc;
 }
 
 /* Title */
@@ -25,7 +23,7 @@ label {
 }
 
 input {
-  width: 100%;
+  width: 95%;
   padding: 8px 10px;
   margin-top: 4px;
   border: 1px solid #ccc;
@@ -55,4 +53,39 @@ button {
 
 button:hover {
   background: #005fcc;
+}
+
+.login-form-link-container {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.login-form-link {
+  margin-left: 0.35rem;
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-form-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.login-tagline {
+    text-align: center;
+    color: #068b56;
+    margin-bottom: 28px;
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 320px;
+}
+
+.app-logo{
+  width: 280px;
+  height: auto;
+  display: block;
+  margin:  auto 20px;
 }
