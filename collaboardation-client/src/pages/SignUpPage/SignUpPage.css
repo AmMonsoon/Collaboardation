@@ -12,6 +12,7 @@
     margin-bottom: 20px;
     font-size: 28px;
     font-weight: bold;
+    border: #005fcc;
 }
 
 label {
@@ -41,16 +42,16 @@ button {
   margin-top: 15px;
   width: 100%;
   padding: 10px;
-  background: #007bff;
+  background: #4bc896;
   border: none;
   border-radius: 5px;
-  color: white;
+  color: black;
   font-size: 16px;
   cursor: pointer;
 }
 
 button:hover {
-  background: #005fcc;
+  background: #43b588;
 }
 
 .sign-up-form-link-container {
@@ -78,4 +79,15 @@ button:hover {
   height: auto;
   display: block;
   margin:  auto 20px;
+}
+
+@media (max-width: 480px) {
+  .app-logo {
+    width: 220px;
+    max-width: 70vw;
+  }
+  .sign-up-container{
+    padding: 24px 16px;
+  }
+
 }

@@ -56,7 +56,7 @@ const LoginPage = () => {
         <div className="login-container">
         <form onSubmit={handleSubmit}>
         <img 
-        src="collaboardation-logo.png"
+        src="/collaboardation-logo.png"
         alt="Collaboardation logo"
         className="app-logo"
         />

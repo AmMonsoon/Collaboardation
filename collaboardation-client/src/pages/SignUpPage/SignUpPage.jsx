@@ -63,7 +63,7 @@ const SignUpPage = () => {
     <div className="sign-up-container">
         <form onSubmit={handleSubmit}>
         <img 
-        src="collaboardation-logo.png"
+        src="/collaboardation-logo.png"
         alt="Collaboardation logo"
         className="app-logo"
         />

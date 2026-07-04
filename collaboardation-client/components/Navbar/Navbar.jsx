@@ -13,7 +13,11 @@ const Navbar = () => {
     return(
         <nav className="navbar">
             <div className="navbar_logo">
-                Collaboardation
+                <img 
+                    src="/collaboardation-logo.png"
+                    alt="Collaboardation logo"
+                    className="app-logo"
+                />
             </div>
             
             <div className="navbar_links">

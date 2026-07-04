@@ -76,7 +76,7 @@ button:hover {
 
 .login-tagline {
     text-align: center;
-    color: #068b56;
+    color: #0e8052;
     margin-bottom: 28px;
     font-size: 15px;
     line-height: 1.5;
@@ -85,7 +85,19 @@ button:hover {
 
 .app-logo{
   width: 280px;
+  max-width: 80vw;
   height: auto;
   display: block;
-  margin:  auto 20px;
+  margin: 0 auto 20px;
+}
+
+@media (max-width: 480px) {
+  .app-logo {
+    width: 220px;
+    max-width: 70vw;
+  }
+  .login-container{
+    padding: 24px 16px;
+  }
+
 }

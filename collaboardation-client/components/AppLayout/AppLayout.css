@@ -7,13 +7,19 @@
 .app-main {
   display: flex;
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .app-main > :first-child {
+  flex: 0 0 250px;
   width: 250px;
+  z-index: 10;
 }
 
 .app-content {
-  flex-direction: column;
   flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: auto;
 }
