@@ -27,6 +27,17 @@ const TaskItem = ({task, onUpdate, onDelete}) => {
         setIsEditing(false)
     }
 
+    const taskColors = [
+        "var(--task-pink)",
+        "var(--task-green)",
+        "var(--task-blue)",
+        "var(--task-yellow)",
+        "var(--task-purple)",
+        "var(--task-peach)"
+    ]
+
+    const taskColor = taskColors[task.id % taskColors.length]
+
     if(isEditing){
         return(
             <li data-testid="task-card" className="task-card">
@@ -47,7 +58,7 @@ const TaskItem = ({task, onUpdate, onDelete}) => {
     }
 
     return(
-        <li className="task-card" data-testid="task-card">
+        <li className="task-card" data-testid="task-card" style={{ backgroundColor: taskColor}}>
             <p data-testid="task-title">{task.title}</p>
             <p data-testid= "task-description">{task.description || "No Description"}</p>
             <button data-testid="task-edit-button" onClick={()=>  setIsEditing(true)}> Edit </button>

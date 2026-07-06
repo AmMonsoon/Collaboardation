@@ -3,7 +3,7 @@
   --bg-main: #d2dada;
   --bg-surface: #ffffff;
   --bg-surface-hover: #f5f7f7;
-  
+
 /* Text */
   --text-primary: #111827;      
   --text-secondary: #4b5563;   
@@ -24,7 +24,19 @@
   --radius-1g: 16px;
   --shadow-soft: 0 0 0 0 rgba(59,130,246,0);
   --shadow-soft-hover: 0 0 0 3px rgba(59,130,246,0.15);
+
+  /* Task Card Colors */
+  
+  --task-pink: #fde2e4;
+  --task-green: #d5f5e3;
+  --task-blue: #d6eaf8;
+  --task-yellow: #fff3bf;
+  --task-purple: #e8daef;
+  --task-peach: #fad7a0;
+
 }
+
+
 
 
 /* ===== MODAL SYSTEM ===== */
