@@ -1,18 +1,12 @@
 .board-column {
   flex: 0 0 320px;
   min-height: 520px;
-  max-height: calc(100vh - 220px);
-  overflow-y: auto;
-
   background: var(--bg-surface);
-  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  padding: 1rem;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-  scrollbar-width: thin;
 }
 
 .task-section{
