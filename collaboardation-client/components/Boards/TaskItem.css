@@ -15,3 +15,9 @@
   box-shadow: 0 8px 10px rgba(0, 0, 0, .12);
   background: #f1fcf7;
 }
+
+@media (max-width: 768px) {
+  .task-card {
+    width: 100%;
+  }
+}

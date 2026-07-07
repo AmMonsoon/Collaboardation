@@ -36,3 +36,20 @@
     border-radius: 5px;
     min-width: 0;
 }
+
+@media (max-width: 768px){
+    .project-page {
+        padding: 16px;
+    }
+
+    .new-board-form {
+        max-width: 100%;
+    }
+
+    .board-list {
+        flex-direction: column;
+        overflow-x: hidden;
+        gap: 16px;
+        padding: 0;
+    }
+}
