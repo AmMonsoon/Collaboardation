@@ -54,6 +54,16 @@ Amazon S3
 Amazon CloudFront
 
 ---
+## Screenshots
+### Login Page
+
+### SideBar
+
+### Kanban Board
+
+### Drag and Drop
+
+---
 
 ## Architecture
 
