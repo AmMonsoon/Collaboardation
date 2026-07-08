@@ -19,5 +19,6 @@
 @media (max-width: 768px) {
   .task-card {
     width: 100%;
+    box-sizing: border-box;
   }
 }

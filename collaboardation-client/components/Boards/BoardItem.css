@@ -49,8 +49,10 @@
 @media (max-width: 768px) {
   .board-column {
     width: 100%;
+    flex: none;
     max-height: none;
     min-height: auto;
     padding: 16px;
+    box-sizing: border-box;
   }
 }

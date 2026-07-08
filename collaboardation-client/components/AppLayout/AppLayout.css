@@ -27,9 +27,17 @@
 @media (max-width: 768px) {
   .app-main {
     flex-direction: column;
+    overflow-x: hidden;
   }
+
+  .app-main > :first-child {
+    width: 100%;
+    flex: none;
+  }
+
   .app-content{
     width: 100%;
+    min-width: 0;
     overflow-x: hidden;
   }
 }

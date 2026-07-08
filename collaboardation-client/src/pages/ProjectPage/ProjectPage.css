@@ -40,15 +40,24 @@
 @media (max-width: 768px){
     .project-page {
         padding: 16px;
+        width: 100%;
+        overflow-x: hidden;
     }
 
     .new-board-form {
         max-width: 100%;
+        width: 100%;
+    }
+
+    .new-board-form input, 
+    .new-board-form button {
+        width: 100%;
     }
 
     .board-list {
         flex-direction: column;
         overflow-x: hidden;
+        width: 100%;
         gap: 16px;
         padding: 0;
     }
