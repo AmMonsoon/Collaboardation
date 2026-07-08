@@ -66,6 +66,8 @@ Amazon CloudFront
 
 ### Drag and Drop
 
+<img width="2878" height="1558" alt="collaboardation-dnd" src="https://github.com/user-attachments/assets/a2b60892-5043-4ee7-9c4c-e3d03325410d" />
+
 ---
 
 ## Architecture
