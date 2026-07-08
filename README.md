@@ -59,10 +59,10 @@ Amazon CloudFront
 <img width="677" height="599" alt="Screenshot 2026-07-08 at 7 45 47 AM" src="https://github.com/user-attachments/assets/cf23b66e-7622-42a0-94ae-cd8c5450cb2c" />
 
 ### SideBar
-<img width="1409" height="780" alt="Screenshot 2026-07-08 at 7 55 56 AM" src="https://github.com/user-attachments/assets/28752649-6364-483f-ba93-c5294ba72843" />
+<img width="1405" height="780" alt="Screenshot 2026-07-08 at 7 54 14 AM" src="https://github.com/user-attachments/assets/b2a78d4e-ef8b-4296-afa3-0a80f573a8e8" />
 
 ### Kanban Board
-<img width="1405" height="780" alt="Screenshot 2026-07-08 at 7 54 14 AM" src="https://github.com/user-attachments/assets/b2a78d4e-ef8b-4296-afa3-0a80f573a8e8" />
+<img width="1409" height="780" alt="Screenshot 2026-07-08 at 7 55 56 AM" src="https://github.com/user-attachments/assets/28752649-6364-483f-ba93-c5294ba72843" />
 
 ### Drag and Drop
 
