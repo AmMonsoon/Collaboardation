@@ -55,6 +55,9 @@ Amazon CloudFront
 
 ---
 ## Screenshots
+### Database Schema
+<img width="699" height="647" alt="Collaboardation_DBSchema" src="https://github.com/user-attachments/assets/a3a2d41a-47af-420c-bc39-0bab50e99b91" />
+
 ### Login Page
 <img width="677" height="599" alt="Screenshot 2026-07-08 at 7 45 47 AM" src="https://github.com/user-attachments/assets/cf23b66e-7622-42a0-94ae-cd8c5450cb2c" />
 
