@@ -8,19 +8,94 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: collaboardation-client
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: collaboardation_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d collaboardation_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: lts/*
-    - name: Install dependencies
+        node-version: 20
+    - name: Install backend dependencies
+      working-directory: app
+      run: npm ci
+    - name: Start backend
+      working-directory: app
+      env:
+        DB_NAME: collaboardation_test
+        DB_USER: postgres
+        DB_PASS: postgres
+        DB_HOST: localhost
+        DB_PORT: 5432
+        PORT: 3000
+        JWT_SECRET: test-secret
+        NODE_ENV: development
+      run: |
+        npm start > backend.log 2>&1 &
+        echo $! > backend.pid
+    - name: Wait for backend
+      run: |
+        for i in {1..30}; do
+          if curl --fail http://localhost:3000/; then
+            echo "Backend is ready"
+            exit 0
+          fi
+
+          sleep 2
+        done
+        echo "Backend failed to start"
+        cat app/backend.log
+        exit 1
+            - name: Wait for backend
+        run: |
+          for i in {1..30}; do
+            if curl --fail http://localhost:3000/; then
+              echo "Backend is ready"
+              exit 0
+            fi
+
+            sleep 2
+          done
+
+          echo "Backend failed to start"
+          cat app/backend.log
+          exit 1
+
+    - name: Create test user
+      run: |
+        curl --fail \
+          --request POST \
+          --url http://localhost:3000/users/register \
+          --header "Content-Type: application/json" \
+          --data '{
+            "username": "newuser",
+            "email": "newuser@test.com",
+            "password": "test"
+          }'
+
+    - name: Install frontend dependencies
+      working-directory: collaboardation-client
+      run: npm ci
+    - name: Install frontend dependencies
+      working-directory: collaboardation-client
       run: npm ci
     - name: Install Playwright Browsers
+      working-directory: collaboardation-client
       run: npx playwright install --with-deps
     - name: Run Playwright tests
+      working-directory: collaboardation-client
       run: npx playwright test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
