@@ -1,6 +1,8 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors  = require('cors')
+const { doubleCsrf } = require("csrf-csrf")
+
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
 });
@@ -42,8 +44,25 @@ app.use(
 app.use(express.json())            //Required to allow Express to read JSON request bodies
 app.use(cookieParser())
 
-app.use('/users', userRoutes);
+const { generateCsrfToken, doubleCsrfProtection, } = doubleCsrf({
+  getSecret: () => process.env.CSRF_SECRET,
+  cookieName: "csrf_token", 
+  cookieOptions: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  },
+})
 
+app.get("/csrf-token", (req, res) => {
+  const csrfToken = generateCsrfToken(req, res);
+
+  res.json({
+    csrfToken,
+  });
+});
+
+app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
 app.use('/projects/:projectId/boards', boardRoutes);
 app.use('/projects/:projectId/boards/:boardId/tasks', taskRoutes)
