@@ -15,7 +15,7 @@ test("user can log in and delete a task", async({page}) => {
         await page.getByTestId("project-title-input").fill(projectTitle)
         await page.getByTestId("submit-project-button").click()
     
-        await expect(page.getByText(projectTitle)).toBeVisible()
+        await expect(page.getByRole("heading", { name: projectTitle })).toBeVisible()
     
         //create a board
         const boardTitle = `E2E Board ${Date.now()}`
