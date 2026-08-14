@@ -20,7 +20,6 @@ const taskRoutes = require('./routes/taskRoutes')
 const { errorHandler, notFoundHandler } = require('./middleware/index')
 const app = express();
 
-console.log("11")
 const allowedOrigins = [
   "http://localhost:5173",
   "https://collaboardation.com",
@@ -36,7 +35,7 @@ app.use(
       }
     },          
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
     credentials: true, 
   })
 );
@@ -46,6 +45,7 @@ app.use(cookieParser())
 
 const { generateCsrfToken, doubleCsrfProtection, } = doubleCsrf({
   getSecret: () => process.env.CSRF_SECRET,
+  getSessionIdentifier: (req) => req.cookies.token || "unauthenticated",
   cookieName: "csrf_token", 
   cookieOptions: {
     httpOnly: true,
@@ -61,6 +61,8 @@ app.get("/csrf-token", (req, res) => {
     csrfToken,
   });
 });
+
+app.use(doubleCsrfProtection);
 
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
