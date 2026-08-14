@@ -1,11 +1,11 @@
 import { test, expect, request } from "@playwright/test"
-import { createApiContext, loginApi , createProject } from "./helpers/apiHelpers"
+import { createApiContext, loginApi , createProject, getCsrfToken } from "./helpers/apiHelpers"
 
 test("user can create a project", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
 
     expect(projectBody.success).toBe(true)
     expect(projectBody.message).toBe("New Project Created")
@@ -18,8 +18,10 @@ test("user can get a specific project", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
 
+    const csrfToken = await getCsrfToken(apiContext)
 
-    const projectBody = await createProject(apiContext, "Testing Get Project By Id API")
+    
+    const projectBody = await createProject(apiContext, csrfToken,  "Testing Get Project By Id API")
     const projectId = projectBody.data.project.id
 
     const getProjectResponse = await apiContext.get(`/projects/${projectId}`)
@@ -36,13 +38,16 @@ test("user can update a project", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
 
-    
+    const csrfToken = await getCsrfToken(apiContext)
 
-    const projectBody = await createProject(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
 
     const updatedProjectResponse = await apiContext.patch(`/projects/${projectId}`, 
         {
+            headers:{
+                "x-csrf-token": csrfToken
+            },
             data: {
                 title: "Update Project API"
             }
@@ -57,10 +62,16 @@ test("user can delete a project", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
 
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
 
-    const deleteProjectResponse = await apiContext.delete(`/projects/${projectId}`)
+    const deleteProjectResponse = await apiContext.delete(`/projects/${projectId}`,
+        { headers:{
+                "x-csrf-token": csrfToken
+            }
+        })
     expect(deleteProjectResponse.status()).toBe(200)
 
     const getProjectResponse = await apiContext.get(`/projects/${projectId}`)

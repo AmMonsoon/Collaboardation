@@ -1,12 +1,14 @@
 import { test, expect } from "@playwright/test"
-import { createApiContext, loginApi, createProject, createBoard } from "./helpers/apiHelpers"
+import { createApiContext, loginApi, createProject, createBoard, getCsrfToken} from "./helpers/apiHelpers"
 
 test("user can create a board", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken =  await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId)
+    const boardBody = await createBoard(apiContext, projectId, csrfToken)
+
 
     expect(boardBody.success).toBe(true)
     expect(boardBody.message).toBe("New Board Created")
@@ -19,9 +21,10 @@ test("user can create a board", async() => {
 test("user can get a specific board", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken =  await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId, "Testing Get Board API", "hopefully one and done")
+    const boardBody = await createBoard(apiContext, projectId, csrfToken, "Testing Get Board API", "hopefully one and done")
     const boardId = boardBody.data.board.id
 
 
@@ -39,12 +42,16 @@ test("user can get a specific board", async() => {
 test("user can update a board", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId, "Testing Update Board API", "working on api update testing")
+    const boardBody = await createBoard(apiContext, projectId,csrfToken, "Testing Update Board API", "working on api update testing")
     const boardId = boardBody.data.board.id
 
     const updatedBoardResponse = await apiContext.patch(`/projects/${projectId}/boards/${boardId}`, {
+        headers:{
+                "x-csrf-token": csrfToken
+            },
         data:{
             title: "Updated Title",
             description: "Updated Description"
@@ -72,13 +79,18 @@ test("user can update a board", async() => {
 test("user can delete a board", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId, "Testing Delete Board API", "this wont exist after the test")
+    const boardBody = await createBoard(apiContext, projectId,csrfToken, "Testing Delete Board API", "this wont exist after the test")
 
     const boardId = boardBody.data.board.id
 
-    const deletedBoardResponse = await apiContext.delete(`/projects/${projectId}/boards/${boardId}`)
+    const deletedBoardResponse = await apiContext.delete(`/projects/${projectId}/boards/${boardId}`, {
+        headers:{
+                "x-csrf-token": csrfToken
+            }
+    })
 
     expect(deletedBoardResponse.status()).toBe(200)
 

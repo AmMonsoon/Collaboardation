@@ -1,10 +1,16 @@
 import {test, expect, request} from "@playwright/test"
+import { getCsrfToken } from "./helpers/apiHelpers"
 
 test("user can fetch current user after login", async() => {
     const apiContext = await request.newContext({
         baseURL: "http://localhost:3000"
     })
+    const csrfToken = await getCsrfToken(apiContext);
+
     const loginResponse =  await apiContext.post("/users/login", {
+        headers:{
+            "x-csrf-token": csrfToken
+        },
         data: {
             email: "newuser@test.com",
             password: "test"
@@ -43,7 +49,12 @@ test("user must have valid credentials", async() => {
         baseURL: " http://localhost:3000"
     })
 
+    const csrfToken = await getCsrfToken(apiContext);
+
     const loginResponse = await apiContext.post("/users/login", {
+        headers: {
+            "x-csrf-token": csrfToken
+        },
         data: {
             email: "invaliduser@test.com",
             password: "fail"
@@ -56,17 +67,28 @@ test("user can successfully logout", async() => {
     const apiContext = await request.newContext({
         baseURL: " http://localhost:3000"
     })
-
+    const csrfToken = await getCsrfToken(apiContext);
+    
     const loginResponse = await apiContext.post("/users/login", {
+        headers:{
+            "x-csrf-token": csrfToken
+        },
         data: {
             email: "newuser@test.com",
             password: "test"
         }
     })
+    
 
     expect(loginResponse.status()).toBe(200)
 
-    const logoutReponse = await apiContext.post("users/logout")
+    const authenticatedCsrfToken = await getCsrfToken(apiContext)
+
+    const logoutReponse = await apiContext.post("users/logout", {
+        headers:{
+            "x-csrf-token": authenticatedCsrfToken
+        },
+    })
 
     expect(logoutReponse.status()).toBe(200)
 

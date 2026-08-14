@@ -1,15 +1,16 @@
 import { test, expect } from "@playwright/test"
-import { createApiContext, loginApi, createProject, createBoard, createTask } from "./helpers/apiHelpers"
+import { createApiContext, loginApi, createProject, createBoard, createTask, getCsrfToken } from "./helpers/apiHelpers"
 
 
 test("user can create a task", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId, "Testing Board for Task API", "test description")
+    const boardBody = await createBoard(apiContext, projectId, csrfToken, "Testing Board for Task API", "test description")
     const boardId = boardBody.data.board.id
-    const taskBody = await createTask(apiContext, projectId, boardId)
+    const taskBody = await createTask(apiContext, projectId, boardId, csrfToken)
     
     expect(taskBody.success).toBe(true)
     expect(taskBody.message).toBe("New Task Created")
@@ -23,11 +24,12 @@ test("user can create a task", async() => {
 test("user can get a task", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId, "Testing Board for Task API", "test description")
+    const boardBody = await createBoard(apiContext, projectId, csrfToken, "Testing Board for Task API", "test description")
     const boardId = boardBody.data.board.id
-    const taskBody = await createTask(apiContext, projectId, boardId, "Testing a specific task", "get task test")
+    const taskBody = await createTask(apiContext, projectId, boardId, csrfToken, "Testing a specific task", "get task test")
     const taskId = taskBody.data.task.id
 
     const getTaskResponse =  await apiContext.get(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`)
@@ -45,14 +47,18 @@ test("user can get a task", async() => {
 test("user can update a task", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId, "Testing Board for Task API", "test description")
+    const boardBody = await createBoard(apiContext, projectId, csrfToken, "Testing Board for Task API", "test description")
     const boardId = boardBody.data.board.id
-    const taskBody = await createTask(apiContext, projectId, boardId, "Testing update for a task", "update task test")
+    const taskBody = await createTask(apiContext, projectId, boardId, csrfToken, "Testing update for a task", "update task test")
     const taskId = taskBody.data.task.id
 
     const updatedTaskResponse =  await apiContext.patch(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`, {
+        headers:{
+                "x-csrf-token": csrfToken
+            },
         data:{
             title: "Updated Task",
             description: "Updated Description",
@@ -80,14 +86,19 @@ test("user can update a task", async() => {
 test("user can delete a task", async() => {
     const apiContext = await createApiContext()
     const loginBody = await loginApi(apiContext)
-    const projectBody = await createProject(apiContext)
+    const csrfToken = await getCsrfToken(apiContext)
+    const projectBody = await createProject(apiContext, csrfToken)
     const projectId = projectBody.data.project.id
-    const boardBody = await createBoard(apiContext, projectId, "Testing Board for Task API", "test description")
+    const boardBody = await createBoard(apiContext, projectId, csrfToken, "Testing Board for Task API", "test description")
     const boardId = boardBody.data.board.id
-    const taskBody = await createTask(apiContext, projectId, boardId, "Testing Delete Task", "delete task test")
+    const taskBody = await createTask(apiContext, projectId, boardId, csrfToken, "Testing Delete Task", "delete task test")
     const taskId = taskBody.data.task.id
 
-    const deleteTaskResponse =  await apiContext.delete(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`)
+    const deleteTaskResponse =  await apiContext.delete(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`,{
+        headers:{
+                "x-csrf-token": csrfToken
+            }
+    })
     expect(deleteTaskResponse.status()).toBe(200)
 
     const getTaskResponse =  await apiContext.get(`/projects/${projectId}/boards/${boardId}/tasks/${taskId}`)
