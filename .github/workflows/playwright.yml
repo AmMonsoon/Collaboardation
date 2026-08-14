@@ -76,15 +76,22 @@ jobs:
 
     - name: Create test user
       run: |
+        CSRF_TOKEN=$(curl -s \
+          -c cookies.txt \
+          http://localhost:3000/csrf-token | jq -r '.csrfToken')
+
         curl --fail \
-          --request POST \
-          --url http://localhost:3000/users/register \
-          --header "Content-Type: application/json" \
-          --data '{
-            "username": "newuser",
-            "email": "newuser@test.com",
-            "password": "test"
-          }'
+           -b cookies.txt \
+           -c cookies.txt \
+           -X POST \
+           http://localhost:3000/users/register \
+           -H "Content-Type: application/json" \
+           -H "x-csrf-token: $CSRF_TOKEN" \
+           -d '{
+              "username": "testuser",
+              "email": "newuser@test.com",
+              "password": "test"
+            }'
 
     - name: Install frontend dependencies
       working-directory: collaboardation-client
