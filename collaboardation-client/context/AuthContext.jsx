@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react"
-import api from "../src/api/axiosInstance"
+import api, { clearCsrfToken } from "../src/api/axiosInstance"
 
 const AuthContext = createContext()
 
@@ -30,6 +30,9 @@ const AuthProvider = ( { children } ) => {
     const logout = async () => {
         try {
             await api.post("/users/logout")
+
+            clearCsrfToken()
+            
         } catch (error) {
             console.error("Logout failed", error)
         }finally{

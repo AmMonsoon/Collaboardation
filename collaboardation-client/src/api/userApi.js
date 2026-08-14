@@ -1,4 +1,4 @@
-import api from "./axiosInstance"
+import api, { clearCsrfToken }from "./axiosInstance"
 
 export const loginUser = async ({ email, password }) => {
   try {
@@ -6,6 +6,8 @@ export const loginUser = async ({ email, password }) => {
       email,
       password,
     });
+
+    clearCsrfToken()
 
     return response.data;
   } catch (error) {
@@ -24,5 +26,8 @@ export const registerUser = async({username, email, password}) => {
         email,
         password
     })
+
+    clearCsrfToken()
+
     return response.data
 }
